@@ -1,6 +1,8 @@
 #' @title Extracts the Psi matrix from a SEM
 #' @description Internal function that extracts the Psi matrix from a lavaan
-#' model.
+#' model. Currently, this function will only work if all variance parameters
+#' are stored in lavaan's psi matrix (covariance of the latent errors) and the
+#' theta matrix (covariance of the manifest errors) is empty.
 #' @param internal_list a list with various information extracted from the
 #' model.
 #' @return \code{build_psi} returns a list with various information extracted
@@ -30,9 +32,11 @@ build_psi <- function(internal_list) {
   # number of manifest variables
   n_ov <- internal_list$info_model$n_var
   
-  # prepare empty matrices for values and labels
+  # get psi matrix with numeric values
   values <- internal_list$info_raw$fitted_object@Model@GLIST$psi[seq_len(n_ov), 
                                                                  seq_len(n_ov)]
+  
+  # empty matrix for the labels of the free parameters
   labels <- matrix(data = NA, nrow = n_ov, ncol = n_ov)
   
   # get parameter table
