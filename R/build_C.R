@@ -1,29 +1,51 @@
 ## Changelog:
+# MH 0.0.2 2021-07-30: added documentation, changed input and output argument to internal_list
 # MH 0.0.1 2021-07-20: initial programming
 
-# function definition
-build_C <- function( fit, verbose=c(0,1,2) ){
+## Documentation
+#' @title Extracts the structural coefficient matrix from a fitted SEM object
+#' @description Internal function that extracts the structural coefficient matrix from a fitted
+#'    structural equation model. Supported fitted objects: lavaan.
+#' @param internal_list A list with various information extracted from the
+#'    model.
+#' @return \code{build_C} returns the inputted internal_list with slot
+#'    C populated with a two-entry list: "values" is a numeric matrix
+#'    containing the structural coefficients (if available with row- and
+#'    column names); "labels" is a character matrix containing parameter
+#'    labels (NA for unlabeled parameters), NULL if labels are not extractable.
+#' @seealso \code{\link{build_Psi}}
+#' @references
+#' Gische, C. & Voelkle, M. C. (under review). Beyond the mean: A flexible framework for
+#'    studying causal effects using linear models. \url{https://www.researchgate.net/profile/Christian-Gische/publication/335030449_Gische_Voelkle_Causal_Inference_in_Linear_Models/links/6054eb6e299bf1736755110b/Gische-Voelkle-Causal-Inference-in-Linear-Models.pdf}
+#' @keywords internal
+
+## Function definition
+build_C <- function( internal_list ){
 
 	# function name
 	fun.name <- "build_C"
 
 	# function version
-	fun.version <- "0.0.1 2021-07-20"
+	fun.version <- "0.0.2 2021-07-30"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
 
-	# handle verbose argument
-	verbose <- verbose_argument_handling( verbose )
+	# get verbose argument
+	### TODO: in the long run / later, internal_list$control$verbose already contains checked verbose, that's why delete check function call here
+	verbose <- verbose_argument_handling( internal_list$control$verbose )
 
 	# console output
-	if( verbose >= 1 ) cat( paste0( "start of function ", fun.name.version, " ", Sys.time(), "\n" ) )
-
-	# supported fit objects
-	supported.fit.objects <- c( "lavaan" )
+	if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ", Sys.time(), "\n" ) )
+	
+	# get fit object from internal_list
+	fit <- internal_list$fitted_object
 
 	# get class of fit object
-	fit.class <- class( fit )
+	fit.class <- internal_list$fitted_object_class
+	
+	# supported fit objects
+	supported.fit.objects <- c( "lavaan" )
 
 	# check if supported
 	if( !any( supported.fit.objects %in% fit.class ) ) stop( fun.name.version, ": fit object of class ", fit.class, " not supported. Supported fit objects are: ", paste( supported.fit.objects, collapse=", " ) )
@@ -55,15 +77,59 @@ build_C <- function( fit, verbose=c(0,1,2) ){
 	rownames( C ) <- beta.dimNames[[1]]
 	colnames( C ) <- beta.dimNames[[2]]
 
-	# console output
-	if( verbose >= 1 ) cat( paste0( "  end of function ", fun.name.version, " ", Sys.time(), "\n" ) )
+	## labels of parameters in C matrix
+	# initialization of C.lab
+	C.lab <- NULL
+	
+	# if parameter labels exist (row/colnames of C) then try to extract parameter labels from partab
+	if( !is.null( rownames( C ) ) & !is.null( colnames( C ) ) ){
 
-	# return C matrix
-	return( C )
+		# empty matrix (consistent with C)
+		C.lab <- C
+		C.lab[] <- as.character(NA)
+		
+		# parameter table
+		partab <- parTable( fit )
+		
+		# loop over elements of C.lab matrix
+		for ( r in 1:nrow( C.lab ) ){
+			for ( s in 1:ncol( C.lab ) ){
+				# dependent variable
+				lhs <- rownames( C.lab )[r]
+				# predictor variable
+				rhs <- colnames( C.lab )[s]
+				# get label from partab
+				lab <- partab[ partab$lhs %in% lhs & partab$op %in% "~" & partab$rhs %in% rhs, "label" ]
+				# if not available or empty string, then NA
+				if( length( lab ) == 0 | identical( lab, "" ) ) lab <- NA
+				# set label
+				C.lab[r,s] <- lab
+			}
+		}
+	} else {
+		# console output
+		if( verbose >= 2 ) cat( paste0( fun.name.version, " ", Sys.time(), ": unable to extract parameter labels", "\n" ) )
+	}
+	
+	# create list, first entry: values (=C matrix), labels (=labels of the parameters in the C matrix)
+	C.list <- list( "values" = C, "labels" = C.lab )
+	
+	# populate slot C of internal_list
+	internal_list$C <- C.list
+	
+	# console output
+	if( verbose >= 2 ) cat( paste0( "  end of function ", fun.name.version, " ", Sys.time(), "\n" ) )
+
+	# return internal list
+	return( internal_list )
 }
 
-# test/development
+## test/development
 # source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/verbose_argument_handling.R" )
-# load( "c:/Users/martin/Dropbox/68_causalSEM/91_zeug/fit.lcs2.Rdata" )
-# build_C( fit, verbose=2 )
-# build_C( fit )
+## load( "c:/Users/martin/Dropbox/68_causalSEM/91_zeug/fit.lcs2.Rdata" )
+# load( "c:/Users/martin/Dropbox/causalSEM_R_Package/test_object/01_lavaan_test_object.Rdata" )
+# internal_list <- list()
+# internal_list$fitted_object <- o01_lavaan_test_object
+# internal_list$fitted_object_class <- class( o01_lavaan_test_object )
+# internal_list$control$verbose <- 2
+# build_C( internal_list )
