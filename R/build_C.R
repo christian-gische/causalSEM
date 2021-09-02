@@ -1,4 +1,5 @@
 ## Changelog:
+# MH 0.0.3 2021-09-01: C list is now correctly inputted into internal list
 # MH 0.0.2 2021-07-30: added documentation, changed input and output argument to internal_list
 # MH 0.0.1 2021-07-20: initial programming
 
@@ -26,14 +27,13 @@ build_C <- function( internal_list ){
 	fun.name <- "build_C"
 
 	# function version
-	fun.version <- "0.0.2 2021-07-30"
+	fun.version <- "0.0.3 2021-09-01"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
 
 	# get verbose argument
-	### TODO: in the long run / later, internal_list$control$verbose already contains checked verbose, that's why delete check function call here
-	verbose <- verbose_argument_handling( internal_list$control$verbose )
+	verbose <- internal_list$control$verbose
 
 	# console output
 	if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ", Sys.time(), "\n" ) )
@@ -48,18 +48,18 @@ build_C <- function( internal_list ){
 	supported.fit.objects <- c( "lavaan" )
 
 	# check if supported
-	if( !any( supported.fit.objects %in% fit.class ) ) stop( fun.name.version, ": fit object of class ", fit.class, " not supported. Supported fit objects are: ", paste( supported.fit.objects, collapse=", " ) )
+	if( !any( supported.fit.objects %in% fit.class ) ) stop( paste0( fun.name.version, ": fit object of class ", fit.class, " not supported. Supported fit objects are: ", paste( supported.fit.objects, collapse=", " ) ) )
 
 	# require package
 	if( fit.class %in% "lavaan" ) require( lavaan )
 
 	# model representation must be "LISREL"
 	model.rep <- fit@Model@representation
-	if( !model.rep %in% "LISREL" ) stop( fun.name.version, ": model representation as defined in fit@Model@representation must be LISREL, but it is ", paste( model.rep, collapse=", " ) )
+	if( !model.rep %in% "LISREL" ) stop( paste0( fun.name.version, ": model representation as defined in fit@Model@representation must be LISREL, but it is ", paste( model.rep, collapse=", " ) ) )
 
 	# check whether beta is present in fit object
 	GLIST.names <- names( fit@Model@GLIST )
-	if( !any( GLIST.names %in% "beta" ) ) stop( fun.name.version, ": fit@Model@GLIST does not contain beta, but only ", paste( GLIST.names, collapse=", " ) )
+	if( !any( GLIST.names %in% "beta" ) ) stop( paste0( fun.name.version, ": fit@Model@GLIST does not contain beta, but only ", paste( GLIST.names, collapse=", " ) ) )
 
 	# get beta matrix from fit object
 	C <- fit@Model@GLIST$beta
@@ -68,7 +68,7 @@ build_C <- function( internal_list ){
 	C.dim <- dim( C )
 	C.dim.n <- length( C.dim )
 	if( !C.dim.n ) stop( fun.name.version, ": number of dimensions is not 2, but ", C.dim.n )
-	if( !( all( length( C.dim ) >= 1 ) & all( C.dim %in% C.dim[1] ) ) ) stop( fun.name.version, ": not all dimensions are of same length or at least one dimension is of length < 1: ", paste( C.dim, collapse=", " ) )
+	if( !( all( length( C.dim ) >= 1 ) & all( C.dim %in% C.dim[1] ) ) ) stop( paste0( fun.name.version, ": not all dimensions are of same length or at least one dimension is of length < 1: ", paste( C.dim, collapse=", " ) ) )
 
 	# get dimension names
 	beta.dimNames <- fit@Model@dimNames[ names( fit@Model@GLIST ) %in% "beta" ][[1]]
@@ -115,7 +115,7 @@ build_C <- function( internal_list ){
 	C.list <- list( "values" = C, "labels" = C.lab )
 	
 	# populate slot C of internal_list
-	internal_list$C <- C.list
+	internal_list$info_model$C <- C.list
 	
 	# console output
 	if( verbose >= 2 ) cat( paste0( "  end of function ", fun.name.version, " ", Sys.time(), "\n" ) )
@@ -126,10 +126,11 @@ build_C <- function( internal_list ){
 
 ## test/development
 # source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/verbose_argument_handling.R" )
+# source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/make_empty_list.R" )
 ## load( "c:/Users/martin/Dropbox/68_causalSEM/91_zeug/fit.lcs2.Rdata" )
 # load( "c:/Users/martin/Dropbox/causalSEM_R_Package/test_object/01_lavaan_test_object.Rdata" )
-# internal_list <- list()
+# internal_list <- make_empty_list()
 # internal_list$fitted_object <- o01_lavaan_test_object
 # internal_list$fitted_object_class <- class( o01_lavaan_test_object )
-# internal_list$control$verbose <- 2
-# build_C( internal_list )
+# ( internal_list <- build_C( internal_list ) )
+# internal_list$info_model
