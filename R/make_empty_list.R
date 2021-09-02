@@ -1,5 +1,6 @@
 ## Changelog:
 # MH 0.0.1 2021-09-01: initial programming
+# CG 0.0.2 2021-09-02: create slot 'param'
 
 ## Documentation
 #' @title Builds an empty internal list
@@ -23,11 +24,12 @@
 #'      ..$ Psi              :List of 2      \tab \tab \cr
 #'      .. ..$ values: num[0 , 0 ]           \tab \tab parameter values of model implied covariance matrix\cr
 #'      .. ..$ labels: chr[0 , 0 ]           \tab \tab parameter names of model implied covariance matrix\cr
-#'      ..$ n_par            : int 0         \tab \tab total number of estimated parameters\cr
-#'      ..$ n_par_unique     : int 0         \tab \tab number of distinct and functionally unrelated parameters\cr
-#'      ..$ par_names_unique : chr(0)        \tab \tab names of distinct and functionally unrelated parameters\cr
-#'      ..$ par_unique       : num(0)        \tab \tab parameter values (estimates) of distinct and functionally unrelated parameters\cr
-#'      ..$ varcov_par_unique: num[0 , 0 ]   \tab \tab variance-covariance matrix of estimator of vector\cr
+#'      ..$ param            :List of 5      \tab \tab \cr  
+#'      .. ..$ n_par            : int 0         \tab \tab total number of estimated parameters\cr
+#'      .. ..$ n_par_unique     : int 0         \tab \tab number of distinct and functionally unrelated parameters\cr
+#'      .. ..$ labels_par_unique : chr(0)        \tab \tab names of distinct and functionally unrelated parameters\cr
+#'      .. ..$ values_par_unique : num(0)        \tab \tab parameter values (estimates) of distinct and functionally unrelated parameters\cr
+#'      .. ..$ varcov_par_unique: num[0 , 0 ]   \tab \tab variance-covariance matrix of the estimator of distinct and functionally unrelated parameters\cr
 #'     $ info_interventions :List of 8       \tab \tab \cr
 #'      ..$ n_intervention    : int 0        \tab \tab number of interventional variables\cr
 #'      ..$ intervention_name : chr(0)       \tab \tab names of interventional variables\cr
@@ -116,32 +118,33 @@ make_empty_list <- function( verbose=NULL ){
 			            # here: using the notation from Gische and Voelkle (under review)
 			            "labels" = matrix(character(0))[-1,-1]
 			), # end of Psi list
-
-			# total number of estimated parameters
-			# normally an integer
-			# equals the total number of non-NA entries in
-			# structural_coeff_names and covariance_names
-			# does NOT take into account other specified equality constraints
-			n_par = as.integer(0), 
-
-			# number of distinct and functionally unrelated parameters
-			# normally an integer
-			n_par_unique = as.integer(0),
-
-			# names of distinct and functionally unrelated parameters
-			# in the order they appear rowwise in the matrices
-			# structural_coeff_names and covariance_names
-			# character vector of length(n_par_unique)
-			par_names_unique = character(0),
-
-			# parameter values (estimates) of distinct and functionally unrelated parameters 
-			# numeric vector of length(n_par_unique)
-			par_unique = numeric(0),
-
-			# variance-covariance matrix of estimator of vector
-			# of distinct and functionally unrelated parameters
-			# numeric matrix of dimension n_par_unique * n_par_unique
-			varcov_par_unique = matrix(numeric(0))[-1,-1]
+			
+			param = list( # # total number of estimated parameters
+			              # normally an integer
+			              # equals the total number of non-NA entries in
+			              # structural_coeff_names and covariance_names
+			              # does NOT take into account other specified equality constraints
+			             "n_par" = integer(0),    
+			             
+			             # number of distinct and functionally unrelated parameters
+			             # normally an integer
+			             "n_par_unique" = as.integer(0),
+			             
+			             # names of distinct and functionally unrelated parameters
+			             # in the order they appear rowwise in the matrices
+			             # structural_coeff_names and covariance_names
+			             # character vector of length(n_par_unique)
+			             "labels_par_unique" = character(0),
+			             
+			             # parameter values (estimates) of distinct and functionally unrelated parameters 
+			             # numeric vector of length(n_par_unique)
+			             "values_par_unique" = numeric(0),
+			             
+			             # variance-covariance matrix of estimator of vector
+			             # of distinct and functionally unrelated parameters
+			             # numeric matrix of dimension n_par_unique * n_par_unique
+			             "varcov_par_unique" = matrix(numeric(0))[-1,-1]
+			             ) # end of param list
 
 		), # end of info_model list
 

@@ -1,119 +1,149 @@
 ## Changelog:
 # CG 0.0.1 2021-07-29: initial programming
+# CG 0.0.2 2021-09-02: updated code; roxygen documentation added
+
+## Documentation
+#' @title Extracts numeric values and labels of distinct and 
+#' functionally unrelated SEM model parameters  
+#' @description Internal function that extracts the numeric values and 
+#'   labels of distinct and functionally unrelated  parameters from a 
+#'   fitted structural equation model (i.e., all uniquely labelled 
+#'   coefficients in c and psi matrix. Duplicates due to symmetry or 
+#'   equality constraints are removed.). The entries in the resulting 
+#'   vectors follow the following predefined order:
+#'   First: structural coefficients from the c matrix are added rowwise.
+#'   Second: variance covariance parameters from the psi matrix are added rowwise.
+#'   Supported fitted objects: lavaan.
+#' @param internal_list A list with various information extracted from the
+#'    model.
+#' @return \code{build_theta} returns the inputted internal_list with slot
+#'    param populated with a five-entry list: 
+#'    "n_par" is an integer indicating the total number of estimated parameters
+#'     (potential duplicates due to symmetry or equality constraints are counted).
+#'    "n_par_unique" is an integer indicating the number of distinct and functionally
+#'     unrelated parameters. 
+#'    "labels_par_unique" is a character vector containing the labels of distinct 
+#'     and functionally unrelated parameters.
+#'    "values_par_unique" is a numeric vector containing the parameter values
+#'     (estimates) of distinct and functionally unrelated parameters.
+#'    "varcov_par_unique" is a numeric matrix containing equal to the variance-covariance
+#'      matrix of the estimator of distinct and functionally unrelated parameters.
+#' @seealso \code{\link{build_Psi, build_C}}
+#' @references
+#' Gische, C. & Voelkle, M. C. (under review). Beyond the mean: A flexible framework for
+#'    studying causal effects using linear models. \url{https://www.researchgate.net/profile/Christian-Gische/publication/335030449_Gische_Voelkle_Causal_Inference_in_Linear_Models/links/6054eb6e299bf1736755110b/Gische-Voelkle-Causal-Inference-in-Linear-Models.pdf}
+#' @keywords internal
 
 # function definition
-build_theta <- function( fit, verbose=c(0,1,2) ){
+build_theta <- function( internal_list ){
   
   # function name
   fun.name <- "build_theta"
   
   # function version
-  fun.version <- "0.0.1 2021-07-29"
+  fun.version <- "0.0.2 2021-09-02"
   
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
   
-  # handle verbose argument
-  verbose <- verbose_argument_handling( verbose )
+  # get verbose argument
+  verbose <- internal_list$control$verbose
   
   # console output
-  if( verbose >= 1 ) cat( paste0( "start of function ", fun.name.version, " ", Sys.time(), "\n" ) )
+  if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ", Sys.time(), "\n" ) )
+  
+  # get fit object from internal_list
+  fit <- internal_list$fitted_object
+  
+  # get class of fit object
+  fit.class <- internal_list$fitted_object_class
   
   # supported fit objects
   supported.fit.objects <- c( "lavaan" )
   
-  # get class of fit object
-  fit.class <- class( fit )
-  
   # check if supported
-  if( !any( supported.fit.objects %in% fit.class ) ) stop( fun.name.version, ": fit object of class ", fit.class, " not supported. Supported fit objects are: ", paste( supported.fit.objects, collapse=", " ) )
+  if( !any( supported.fit.objects %in% fit.class ) ) stop( paste0( fun.name.version, ": fit object of class ", fit.class, " not supported. Supported fit objects are: ", paste( supported.fit.objects, collapse=", " ) ) )
   
   # require package
   if( fit.class %in% "lavaan" ) require( lavaan )
   
   # model representation must be "LISREL"
   model.rep <- fit@Model@representation
-  if( !model.rep %in% "LISREL" ) stop( fun.name.version, ": model representation as defined in fit@Model@representation must be LISREL, but it is ", paste( model.rep, collapse=", " ) )
+  if( !model.rep %in% "LISREL" ) stop( paste0( fun.name.version, ": model representation as defined in fit@Model@representation must be LISREL, but it is ", paste( model.rep, collapse=", " ) ) )
   
   # check whether beta is present in fit object
-  # todo: EXTEND CHECK TO INCLUDE PSI
   GLIST.names <- names( fit@Model@GLIST )
-  if( !any( GLIST.names %in% "beta" ) ) stop( fun.name.version, ": fit@Model@GLIST does not contain beta, but only ", paste( GLIST.names, collapse=", " ) )
+  if( !any( GLIST.names %in% "beta" ) ) stop( paste0( fun.name.version, ": fit@Model@GLIST does not contain beta, but only ", paste( GLIST.names, collapse=", " ) ) )
   
-  # get vector of unique coefficients in a predefined order.
-  # First: structural coefficients from the C matrix (rowwise)
-  # Second: variance covariance parameters from the Psi matrix (rowwise)
-
+  # get vector all estimated parameters in a predefined order.
+  # (might contain duplicates due to symmetry or equality constraints).
+  
+  # structural coefficients from the C matrix (rowwise)
   coef_c<-as.vector(t(lavInspect(fit_100, what = "free")$beta))
   coef_c<-coef_c[coef_c != 0]
   
+  # variance covariance parameters from the Psi matrix (rowwise)
+  
   coef_psi<-as.vector(t(lavInspect(fit_100, what = "free")$psi))
   coef_psi<-coef_psi[coef_psi != 0]
+  
+  # create joint parameter vector
+  
   coef_joint<-c(coef_c,coef_psi)
   
-  # get parameter labels
+  # get parameter labels of all parameters in c and psi
   
   par_names <- names(coef(fit_100))[coef_joint]
-  par_names_coef <- names(coef(fit_100))
-  par_names_unique <- unique(par_names)
   
-  # get total number of parameters in c and psi
-  # get number of parameters ignoring duplicates due to symmetry
-  # get number of parameters ignoring duplicates due to symmetry or equality constratins
+  # get parameter labels of uniquely labelled parameters in c and psi
+  # (remove duplicates due to symmetry or equality constratins)
+  
+  labels_par_unique <- unique(par_names)
+  
+  # get total number of parameters c and psi
   
   n_par <- length(par_names)
-  n_par_coef <- length(coef(fit_100))
-  n_par_unique <- length(par_names_unique)
   
-  # get numeric value of parameters 
+  # get number of uniquely labelled parameters in c and psi
+  # (remove duplicates due to symmetry or equality constratins)
   
-  par <- coef(fit_100)[par_names]
-  par_coef <- coef(fit_100)
-  par_unique <- coef(fit_100)[par_names_unique]
+  n_par_unique <- length(labels_par_unique)
   
-  # get variance covariance matrices 
+  # get numeric values of uniquely labelled parameters in c and psi
+  # (remove duplicates due to symmetry or equality constratins)
+ 
+  values_par_unique <- coef(fit_100)[labels_par_unique]
   
-  varcov_par <- vcov(fit_100)
-  varcov_par_r <- varcov_par[par_names, ]
-  varcov_par <- varcov_par_r[, par_names]
-  
-  varcov_par_coef <- vcov(fit_100)
+  # get variance covariance matrices of estimator of uniquely labelled
+  # parameters in c and psi
   
   varcov_par_unique <- vcov(fit_100)
-  varcov_par_unique_r <- varcov_par_unique[par_names_unique, ]
-  varcov_par_unique <- varcov_par_unique_r[, par_names_unique]
+  varcov_par_unique_r <- varcov_par_unique[labels_par_unique, ]
+  varcov_par_unique <- varcov_par_unique_r[, labels_par_unique]
   
   # todo: DO DIMENSION CHECK
   
-  dim(varcov_par) == c(n_par, n_par)
-  dim(varcov_par_coef) == c(n_par_coef, n_par_coef)
   dim(varcov_par_unique) == c(n_par_unique, n_par_unique)
   
-  # prepare output
-  theta_list <- list(
-    par_total = list(par_names = par_names,
-                     n_par = n_par,
-                     par = par,
-                     varcov_par = varcov_par), 
-    par_coef = list(par_names_coef = par_names_coef,
-                    n_par_coef = n_par_coef,
-                    par_coef = par_coef,
-                    varcov_par_coef = varcov_par_coef),
-    par_unique = list(par_names_unique = par_names_unique,
-                      n_par_unique = n_par_unique,
-                      par_unique = par_unique,
-                      varcov_par_unique = varcov_par_unique))
+  # create list, 
+  # first entry: values (=C matrix), 
+  # second entry: labels (=labels of the parameters in the C matrix)
   
+  theta.list <- list(
+    n_par = n_par,  # total number of estimated parameters
+    n_par_unique = n_par_unique, # of distinct and functionally unrelated parameters\cr
+    labels_par_unique = labels_par_unique ,# names of distinct and functionally unrelated parameters\cr
+    values_par_unique = values_par_unique,# parameter values (estimates) of distinct and functionally unrelated parameters\cr
+    varcov_par_unique = varcov_par_unique # variance-covariance matrix of the estimator of distinct and functionally unrelated parameters\cr
+  )
+  
+  # populate slot C of internal_list
+  internal_list$info_model$param <- theta.list
    
   # console output
   if( verbose >= 1 ) cat( paste0( "  end of function ", fun.name.version, " ", Sys.time(), "\n" ) )
   
   # return C matrix
-  return( theta_list )
+  return( internal_list )
 }
 
-# test/development
-# source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/verbose_argument_handling.R" )
-# load( "c:/Users/martin/Dropbox/68_causalSEM/91_zeug/fit.lcs2.Rdata" )
-# build_C( fit, verbose=2 )
-# build_C( fit )
