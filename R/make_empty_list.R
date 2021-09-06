@@ -1,6 +1,7 @@
 ## Changelog:
-# MH 0.0.1 2021-09-01: initial programming
 # CG 0.0.2 2021-09-02: create slot 'param'
+# MH 0.0.1 2021-09-01: initial programming
+
 
 ## Documentation
 #' @title Builds an empty internal list
