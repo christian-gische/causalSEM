@@ -1,6 +1,12 @@
 ## Changelog:
+# MH 0.0.4 2021-09-08:
+#    -- lav_parTable_fill_labels integrated
+#    -- reduction of C matrix for 1:1 mapped models
+#    -- tests with package testthat added: ..\tests\testthat\test_build_C.R
 # MH 0.0.3 2021-09-01: C list is now correctly inputted into internal list
-# MH 0.0.2 2021-07-30: added documentation, changed input and output argument to internal_list
+# MH 0.0.2 2021-07-30:
+#    -- added documentation
+#    -- changed input and output argument to internal_list
 # MH 0.0.1 2021-07-20: initial programming
 
 ## Documentation
@@ -27,7 +33,7 @@ build_C <- function( internal_list ){
 	fun.name <- "build_C"
 
 	# function version
-	fun.version <- "0.0.3 2021-09-01"
+	fun.version <- "0.0.4 2021-09-08"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -81,7 +87,7 @@ build_C <- function( internal_list ){
 	# initialization of C.lab
 	C.lab <- NULL
 	
-	# if parameter labels exist (row/colnames of C) then try to extract parameter labels from partab
+	# if variable labels exist (row/colnames of C) then try to extract parameter labels from partab
 	if( !is.null( rownames( C ) ) & !is.null( colnames( C ) ) ){
 
 		# empty matrix (consistent with C)
@@ -89,7 +95,9 @@ build_C <- function( internal_list ){
 		C.lab[] <- as.character(NA)
 		
 		# parameter table
-		partab <- parTable( fit )
+		# partab <- parTable( fit )
+		# MH 0.0.4 2021-09-08 call of lav_parTable_fill_labels
+		partab <- lav_parTable_fill_labels( internal_list )
 		
 		# loop over elements of C.lab matrix
 		for ( r in 1:nrow( C.lab ) ){
@@ -106,9 +114,52 @@ build_C <- function( internal_list ){
 				C.lab[r,s] <- lab
 			}
 		}
+		
+		## MH 0.0.4 2021-09-08
+		# C matrix of models with pseudo measurement model (1:1 mapping of manifest variables onto latent variables)
+		# is reduced to manifest variables
+		# test object o00_lavaan_test_object
+		
+		# if current C matrix is twice the size n_ov * n_ov
+		if( all( dim(C) == 2 * rep( internal_list$info_model$n_ov, 2 ) ) ){
+			
+			# console output
+			if( verbose >= 2 ) cat( paste0( fun.name.version, " ", Sys.time(), ": trying to reduce C matrix to observed variables", "\n" ) )
+			
+			# C matrix of observed/non-observed
+			# (observed / latent probably must be blockwise arranged and ordered)
+			C.onov <- C[ internal_list$info_model$var_names , !colnames( C ) %in% internal_list$info_model$var_names ]
+
+			# C matrix of non-observed
+			C.nov <- C[ !rownames( C ) %in% internal_list$info_model$var_names , !colnames( C ) %in% internal_list$info_model$var_names ]
+			
+			# C matrix of non-observed/observed
+			C.noov <- C[ !rownames( C ) %in% internal_list$info_model$var_names , internal_list$info_model$var_names ]
+			
+			# Checks
+			checks <- rep( as.logical(NA), 3 )
+			# C.onov must be identity matrix
+			checks[1] <- identical( unname( C.onov ), diag( dim( C.onov )[1] ) )
+			# C.nov must be null matrix
+			checks[2] <- identical( unname( C.nov ), array( 0, dim=dim( C.nov ) ) )
+			# C.noov must be null matrix
+			checks[3] <- identical( unname( C.noov ), array( 0, dim=dim( C.noov ) ) )
+			
+			# if all checks are true, reduce C and C.lab
+			if( all( checks ) ){
+				C <- C[ internal_list$info_model$var_names, internal_list$info_model$var_names ]
+				C.lab <- C.lab[ rownames(C), colnames(C) ]
+				# console output
+				if( verbose >= 2 ) cat( paste0( fun.name.version, " ", Sys.time(), ": reduction of C matrix to observed variables successful, new dimensions of C: ", paste(dim(C),collapse=" "), "\n" ) )
+			} else {
+				# console output
+				if( verbose >= 2 ) cat( paste0( fun.name.version, " ", Sys.time(), ": reduction of C matrix to observed variables failed, checks: ", paste(as.character(checks),collapse=" "), "\n" ) )
+			}
+		}
+		
 	} else {
 		# console output
-		if( verbose >= 2 ) cat( paste0( fun.name.version, " ", Sys.time(), ": unable to extract parameter labels", "\n" ) )
+		if( verbose >= 2 ) cat( paste0( fun.name.version, " ", Sys.time(), ": C has no row and/or column variable names, extraction of parameter labels not possible", "\n" ) )
 	}
 	
 	# create list, first entry: values (=C matrix), labels (=labels of the parameters in the C matrix)
@@ -124,13 +175,48 @@ build_C <- function( internal_list ){
 	return( internal_list )
 }
 
-## test/development
+### development
 # source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/verbose_argument_handling.R" )
 # source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/make_empty_list.R" )
-## load( "c:/Users/martin/Dropbox/68_causalSEM/91_zeug/fit.lcs2.Rdata" )
-# load( "c:/Users/martin/Dropbox/causalSEM_R_Package/test_object/01_lavaan_test_object.Rdata" )
+# source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/populate_model_info.R" )
+# source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/lav_parTable_fill_labels.R" )
+
+## test object 00_lavaan_test_object
+# load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/00_lavaan_test_object.Rdata" ) )
+# internal_list <- make_empty_list()
+# internal_list$fitted_object <- o00_lavaan_test_object
+# internal_list$fitted_object_class <- class( o00_lavaan_test_object )
+# internal_list <- populate_model_info( internal_list )
+# internal_list <- build_C( internal_list )
+# internal_list$info_model$C
+
+## test object 01_lavaan_test_object
+# load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/01_lavaan_test_object.Rdata" ) )
 # internal_list <- make_empty_list()
 # internal_list$fitted_object <- o01_lavaan_test_object
 # internal_list$fitted_object_class <- class( o01_lavaan_test_object )
-# ( internal_list <- build_C( internal_list ) )
-# internal_list$info_model
+# internal_list <- build_C( internal_list )
+# internal_list <- populate_model_info( internal_list )
+# internal_list$info_model$C
+
+## test object 02_lavaan_test_object
+# load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/02_lavaan_test_object.Rdata" ) )
+# internal_list <- make_empty_list()
+# internal_list$fitted_object <- o02_lavaan_test_object
+# internal_list$fitted_object_class <- class( o02_lavaan_test_object )
+# internal_list <- build_C( internal_list )
+# internal_list <- populate_model_info( internal_list )
+# internal_list$info_model$C
+
+## test object 03_lavaan_test_object
+# load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/03_lavaan_test_object.Rdata" ) )
+# internal_list <- make_empty_list()
+# internal_list$fitted_object <- o03_lavaan_test_object
+# internal_list$fitted_object_class <- class( o03_lavaan_test_object )
+# internal_list <- build_C( internal_list )
+# internal_list <- populate_model_info( internal_list )
+# internal_list$info_model$C
+
+### test
+# require( testthat )
+# test_file("../tests/testthat/test_build_C.R")
