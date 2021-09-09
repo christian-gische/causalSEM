@@ -1,3 +1,8 @@
+## Changelog:
+# CG 0.0.2 2021-09-09: update verbose handling
+# CG 0.0.1 2021-09-04: initial programing
+
+## Documentation
 #' @title Fill in labels in lavaan parTable object
 #' @description Internal function that fills in default labels from the lavaan model syntax into empty slots (i.e., parameters that do not have a user specified label) of the lavaan parTable object.
 #' @param internal_list a list with various information extracted from the
@@ -9,21 +14,21 @@
 
 lav_parTable_fill_labels <- function(internal_list) {
   
+  # function name
+  fun.name <- "lav_parTable_fill_labels"
+  
+  # function version
+  fun.version <- "0.0.2 2021-09-09"
+  
+  # function name+version
+  fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
   
   # get verbose argument
   verbose <- internal_list$control$verbose
   
   # console output
   if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ", Sys.time(), "\n" ) )
-  
-  
-  # console output
-  if (verbose >= 1) {
-    fun_version <- "0.0.1 2021-09-04"
-    fun_name_version <- paste0("lav_parTable_fill_labels", " (", fun.version, ")")
-    cat(paste0("start of function ", fun.name.version, " ", Sys.time(), "\n" ))
-  }
-  
+
   # get fit object from internal_list
   fit <- internal_list$fitted_object
   
@@ -32,18 +37,16 @@ lav_parTable_fill_labels <- function(internal_list) {
     partable = fit@ParTable
   )
   
-  # label unlabelled parameters
+  # label unlabeled parameters
   unlabelled_params <- which(lav_ParTable[, "label"] == "")
   lav_ParTable[unlabelled_params, "label"] <- apply(
     lav_ParTable[unlabelled_params, 2:4], MARGIN = 1, FUN = paste, collapse = ""
   )
   
   # console output
-  if(verbose >= 1) {
-    cat(paste0("  end of function ", fun_name_version, " ", Sys.time(), "\n" ))
-  }
+  if( verbose >= 2 ) cat( paste0( "  end of function ", fun.name.version, " ", Sys.time(), "\n" ) )
   
-  # return updated internal list
-  lav_ParTable
+  # return parameter table with complete label column
+  return(lav_ParTable)
   
 }

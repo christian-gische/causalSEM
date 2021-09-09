@@ -181,7 +181,7 @@ make_empty_list <- function( verbose=NULL ){
 			# character vector 
 			# arguments "probability" only admissible
 			# if n_outcome == 1
-			# if "probability" is specified, userspecified values of 
+			# if "probability" is specified, user specified values of 
 			# lower_bound and upper_bound required
 			# default: "mean"
 			# possible values: c("mean", "varcov", "density", "probability")

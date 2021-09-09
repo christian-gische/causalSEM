@@ -1,18 +1,20 @@
 ## Changelog:
-# CG 0.0.1 2021-07-29: initial programming
+# CG 0.0.3 2021-09-09: updated comments; added comment of checks
 # CG 0.0.2 2021-09-02: updated code; roxygen documentation added
+# CG 0.0.1 2021-07-29: initial programming
+
 
 ## Documentation
-#' @title Extracts numeric values and labels of distinct and 
-#' functionally unrelated SEM model parameters  
+#' @title Extracts the number, the numeric values, and the labels 
+#' of distinct and functionally unrelated SEM model parameters  
 #' @description Internal function that extracts the numeric values and 
-#'   labels of distinct and functionally unrelated  parameters from a 
+#'   labels of distinct and functionally unrelated parameters from a 
 #'   fitted structural equation model (i.e., all uniquely labelled 
-#'   coefficients in c and psi matrix. Duplicates due to symmetry or 
+#'   coefficients in C and Psi matrix. Duplicates due to symmetry or 
 #'   equality constraints are removed.). The entries in the resulting 
 #'   vectors follow the following predefined order:
-#'   First: structural coefficients from the c matrix are added rowwise.
-#'   Second: variance covariance parameters from the psi matrix are added rowwise.
+#'   First: structural coefficients from the C matrix are added rowwise.
+#'   Second: variance covariance parameters from the Psi matrix are added rowwise.
 #'   Supported fitted objects: lavaan.
 #' @param internal_list A list with various information extracted from the
 #'    model.
@@ -91,31 +93,34 @@ build_theta <- function( internal_list ){
   
   coef_joint<-c(coef_c,coef_psi)
   
-  # get parameter labels of all parameters in c and psi
+  # get parameter labels of all parameters in C and Psi
   
   par_names <- names(coef(fit_100))[coef_joint]
   
-  # get parameter labels of uniquely labelled parameters in c and psi
-  # (remove duplicates due to symmetry or equality constratins)
+  # get parameter labels of uniquely labelled parameters in C and Psi
+  # (remove duplicates due to symmetry or equality constraints)
   
   labels_par_unique <- unique(par_names)
   
-  # get total number of parameters c and psi
+  # get total number of parameters C and Psi
   
   n_par <- length(par_names)
   
-  # get number of uniquely labelled parameters in c and psi
-  # (remove duplicates due to symmetry or equality constratins)
+  # get number of uniquely labelled parameters in C and Psi
+  # (remove duplicates due to symmetry or equality constraints)
   
   n_par_unique <- length(labels_par_unique)
   
-  # get numeric values of uniquely labelled parameters in c and psi
+  # get numeric values of uniquely labelled parameters in C and Psi
   # (remove duplicates due to symmetry or equality constratins)
  
   values_par_unique <- coef(fit_100)[labels_par_unique]
   
+  # todo: CHECK if result is identical to reading the slots 
+  # internal_list$info_model$C and internal_list$info_model$Psi, respectively 
+  
   # get variance covariance matrices of estimator of uniquely labelled
-  # parameters in c and psi
+  # parameters in C and Psi
   
   varcov_par_unique <- vcov(fit_100)
   varcov_par_unique_r <- varcov_par_unique[labels_par_unique, ]
@@ -125,25 +130,23 @@ build_theta <- function( internal_list ){
   
   dim(varcov_par_unique) == c(n_par_unique, n_par_unique)
   
-  # create list, 
-  # first entry: values (=C matrix), 
-  # second entry: labels (=labels of the parameters in the C matrix)
+  # create list
   
   theta.list <- list(
-    n_par = n_par,  # total number of estimated parameters
-    n_par_unique = n_par_unique, # of distinct and functionally unrelated parameters\cr
-    labels_par_unique = labels_par_unique ,# names of distinct and functionally unrelated parameters\cr
-    values_par_unique = values_par_unique,# parameter values (estimates) of distinct and functionally unrelated parameters\cr
-    varcov_par_unique = varcov_par_unique # variance-covariance matrix of the estimator of distinct and functionally unrelated parameters\cr
+    n_par = n_par, # total number of estimated parameters
+    n_par_unique = n_par_unique, # number of distinct and functionally unrelated parameters
+    labels_par_unique = labels_par_unique, # names of distinct and functionally unrelated parameters
+    values_par_unique = values_par_unique, # parameter values (estimates) of distinct and functionally unrelated parameters
+    varcov_par_unique = varcov_par_unique # variance-covariance matrix of the estimator of distinct and functionally unrelated parameters
   )
   
-  # populate slot C of internal_list
+  # populate slot param of internal_list
   internal_list$info_model$param <- theta.list
    
   # console output
   if( verbose >= 1 ) cat( paste0( "  end of function ", fun.name.version, " ", Sys.time(), "\n" ) )
   
-  # return C matrix
+  # return internal_list
   return( internal_list )
 }
 
