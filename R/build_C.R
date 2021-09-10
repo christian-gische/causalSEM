@@ -1,4 +1,7 @@
 ## Changelog:
+# MA 0.0.5 2021-09-09:
+#    -- build_C only alters the 'values' and 'labels' slots without overwriting
+#       the complete 'C' list
 # MH 0.0.4 2021-09-08:
 #    -- lav_parTable_fill_labels integrated
 #    -- reduction of C matrix for 1:1 mapped models
@@ -43,13 +46,13 @@ build_C <- function( internal_list ){
 
 	# console output
 	if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ", Sys.time(), "\n" ) )
-	
+
 	# get fit object from internal_list
 	fit <- internal_list$fitted_object
 
 	# get class of fit object
 	fit.class <- internal_list$fitted_object_class
-	
+
 	# supported fit objects
 	supported.fit.objects <- c( "lavaan" )
 
@@ -86,19 +89,19 @@ build_C <- function( internal_list ){
 	## labels of parameters in C matrix
 	# initialization of C.lab
 	C.lab <- NULL
-	
+
 	# if variable labels exist (row/colnames of C) then try to extract parameter labels from partab
 	if( !is.null( rownames( C ) ) & !is.null( colnames( C ) ) ){
 
 		# empty matrix (consistent with C)
 		C.lab <- C
 		C.lab[] <- as.character(NA)
-		
+
 		# parameter table
 		# partab <- parTable( fit )
 		# MH 0.0.4 2021-09-08 call of lav_parTable_fill_labels
 		partab <- lav_parTable_fill_labels( internal_list )
-		
+
 		# loop over elements of C.lab matrix
 		for ( r in 1:nrow( C.lab ) ){
 			for ( s in 1:ncol( C.lab ) ){
@@ -114,28 +117,28 @@ build_C <- function( internal_list ){
 				C.lab[r,s] <- lab
 			}
 		}
-		
+
 		## MH 0.0.4 2021-09-08
 		# C matrix of models with pseudo measurement model (1:1 mapping of manifest variables onto latent variables)
 		# is reduced to manifest variables
 		# test object o00_lavaan_test_object
-		
+
 		# if current C matrix is twice the size n_ov * n_ov
 		if( all( dim(C) == 2 * rep( internal_list$info_model$n_ov, 2 ) ) ){
-			
+
 			# console output
 			if( verbose >= 2 ) cat( paste0( fun.name.version, " ", Sys.time(), ": trying to reduce C matrix to observed variables", "\n" ) )
-			
+
 			# C matrix of observed/non-observed
 			# (observed / latent probably must be blockwise arranged and ordered)
 			C.onov <- C[ internal_list$info_model$var_names , !colnames( C ) %in% internal_list$info_model$var_names ]
 
 			# C matrix of non-observed
 			C.nov <- C[ !rownames( C ) %in% internal_list$info_model$var_names , !colnames( C ) %in% internal_list$info_model$var_names ]
-			
+
 			# C matrix of non-observed/observed
 			C.noov <- C[ !rownames( C ) %in% internal_list$info_model$var_names , internal_list$info_model$var_names ]
-			
+
 			# Checks
 			checks <- rep( as.logical(NA), 3 )
 			# C.onov must be identity matrix
@@ -144,7 +147,7 @@ build_C <- function( internal_list ){
 			checks[2] <- identical( unname( C.nov ), array( 0, dim=dim( C.nov ) ) )
 			# C.noov must be null matrix
 			checks[3] <- identical( unname( C.noov ), array( 0, dim=dim( C.noov ) ) )
-			
+
 			# if all checks are true, reduce C and C.lab
 			if( all( checks ) ){
 				C <- C[ internal_list$info_model$var_names, internal_list$info_model$var_names ]
@@ -156,18 +159,16 @@ build_C <- function( internal_list ){
 				if( verbose >= 2 ) cat( paste0( fun.name.version, " ", Sys.time(), ": reduction of C matrix to observed variables failed, checks: ", paste(as.character(checks),collapse=" "), "\n" ) )
 			}
 		}
-		
+
 	} else {
 		# console output
 		if( verbose >= 2 ) cat( paste0( fun.name.version, " ", Sys.time(), ": C has no row and/or column variable names, extraction of parameter labels not possible", "\n" ) )
 	}
-	
-	# create list, first entry: values (=C matrix), labels (=labels of the parameters in the C matrix)
-	C.list <- list( "values" = C, "labels" = C.lab )
-	
-	# populate slot C of internal_list
-	internal_list$info_model$C <- C.list
-	
+
+	# populate slots of C
+	internal_list$info_model$C$values <- C
+	internal_list$info_model$C$labels <- C.lab
+
 	# console output
 	if( verbose >= 2 ) cat( paste0( "  end of function ", fun.name.version, " ", Sys.time(), "\n" ) )
 

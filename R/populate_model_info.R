@@ -1,4 +1,5 @@
 ## Changelog:
+# MA 0.0.2 2021-09-09: this function stores the model in the designated slot
 # MH 0.0.1 2021-09-01: initial programming
 
 ## Documentation
@@ -10,7 +11,7 @@
 #' @param internal_list A list with various information extracted from the
 #'    model.
 #' @return \code{populate_model_info} returns the inputted internal_list with slots
-#'    \code{n_obs}, \code{n_ov}, and \code{var_names} populated. 
+#'    \code{n_obs}, \code{n_ov}, and \code{var_names} populated.
 #' @seealso \code{\link{build_C}} \code{\link{build_Psi}}
 #' @references
 #' Gische, C. & Voelkle, M. C. (under review). Beyond the mean: A flexible framework for
@@ -18,7 +19,7 @@
 #' @keywords internal
 
 ## Function definition
-populate_model_info <- function( internal_list ){
+populate_model_info <- function(internal_list, model){
 
 	# function name
 	fun.name <- "populate_model_info"
@@ -34,21 +35,27 @@ populate_model_info <- function( internal_list ){
 
 	# console output
 	if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ", Sys.time(), "\n" ) )
-	
+
 	# get fit object from internal_list
-	fit <- internal_list$fitted_object
+	internal_list$fitted_object <- fit <- model
 
 	# get class of fit object
-	fit.class <- internal_list$fitted_object_class
-	
+	internal_list$fitted_object_class <- class(model)
+
 	# supported fit objects
-	supported.fit.objects <- c( "lavaan" )
+	supported_fit_objects <- fit_class <- c( "lavaan" )
 
 	# check if supported
-	if( !any( supported.fit.objects %in% fit.class ) ) stop( paste0( fun.name.version, ": fit object of class ", fit.class, " not supported. Supported fit objects are: ", paste( supported.fit.objects, collapse=", " ) ) )
+	if(!any(supported_fit_objects %in% supported_fit_objects)) stop(
+	  paste0(
+	    fun.name.version, ": fit object of class ", fit_class,
+	    " not supported. Supported fit objects are: ",
+	    paste(supported_fit_objects, collapse = ", ")
+	    )
+	  )
 
 	# require package
-	if( fit.class %in% "lavaan" ) require( lavaan )
+	if( fit_class %in% "lavaan" ) require( lavaan )
 
 	# model representation must be "LISREL"
 	model.rep <- fit@Model@representation
@@ -57,7 +64,7 @@ populate_model_info <- function( internal_list ){
 	# function to check if is integer
 	# https://stackoverflow.com/questions/3476782/check-if-the-number-is-integer
 	is.wholenumber <- function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
-	
+
 	# number of observations
 	n_obs <- lavInspect( fit, "ntotal" )
 	if( is.numeric( n_obs ) && !n_obs<0 && is.wholenumber( n_obs ) ){
@@ -84,7 +91,7 @@ populate_model_info <- function( internal_list ){
 	} else {
 		stop( paste0( fun.name.version, ": setting n_ov in internal list failed; length( internal_list$info_model$'var_names' ) returned ", n_ov ) )
 	}
-	
+
 	# console output
 	if( verbose >= 2 ) cat( paste0( "  end of function ", fun.name.version, " ", Sys.time(), "\n" ) )
 

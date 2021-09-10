@@ -1,4 +1,5 @@
 ## Changelog:
+# MA 0.0.3 2021-09-09: added 'derivative' slot to 'C' and 'Psi'
 # CG 0.0.2 2021-09-02: create slot 'param'
 # MH 0.0.1 2021-09-01: initial programming
 
@@ -25,7 +26,7 @@
 #'      ..$ Psi              :List of 2      \tab \tab \cr
 #'      .. ..$ values: num[0 , 0 ]           \tab \tab parameter values of model implied covariance matrix\cr
 #'      .. ..$ labels: chr[0 , 0 ]           \tab \tab parameter names of model implied covariance matrix\cr
-#'      ..$ param            :List of 5      \tab \tab \cr  
+#'      ..$ param            :List of 5      \tab \tab \cr
 #'      .. ..$ n_par            : int 0         \tab \tab total number of estimated parameters\cr
 #'      .. ..$ n_par_unique     : int 0         \tab \tab number of distinct and functionally unrelated parameters\cr
 #'      .. ..$ labels_par_unique : chr(0)        \tab \tab names of distinct and functionally unrelated parameters\cr
@@ -66,17 +67,17 @@ make_empty_list <- function( verbose=NULL ){
 
 	# console output
 	if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ", Sys.time(), "\n" ) )
-	
+
 	# internal list
 	# as of ...\Dropbox\causalSEM_R_Package\list_hardcoded_for_example_in_Gische_Voelkle_2020.R (2021-09-01)
 	internal_list <- list(
-		
+
 		# fitted object
 		fitted_object = NULL,
-		
-		# class of fitted object		
+
+		# class of fitted object
 		fitted_object_class = NULL,
-		
+
 		# model info
 		info_model = list(
 
@@ -92,11 +93,11 @@ make_empty_list <- function( verbose=NULL ){
 			# character vector of length(n_ov)
 			# general: using all-y LISREL notation
 			# here: using the notation from Gische and Voelkle (under review).
-			var_names = character(0), 
+			var_names = character(0),
 
 			# C list
 			C = list( # parameter values of matrix of structural coefficients
-			          # numeric matrix of dimension n_ov * n_ov 
+			          # numeric matrix of dimension n_ov * n_ov
 			          "values" = matrix(numeric(0))[-1,-1],
 
 			          # parameter names of matrix of structural coefficients
@@ -104,7 +105,11 @@ make_empty_list <- function( verbose=NULL ){
 			          # same labels display equality constraints
 			          # general: using all-y LISREL notation
 			          # here: using the notation from Gische and Voelkle (under review)
-			          "labels" = matrix(character(0))[-1,-1]
+			          "labels" = matrix(character(0))[-1,-1],
+
+			          # Partial derivative of the vectorized C matrix with respect
+			          # to the parameters
+			          "derivative" = matrix(numeric(0))[-1,-1]
 			), # end of C list
 
 			# Psi list
@@ -117,30 +122,34 @@ make_empty_list <- function( verbose=NULL ){
 			            # same labels display equality constraints
 			            # general: using all-y LISREL notation
 			            # here: using the notation from Gische and Voelkle (under review)
-			            "labels" = matrix(character(0))[-1,-1]
+			            "labels" = matrix(character(0))[-1,-1],
+
+			            # Partial derivative of the vectorized Psi matrix with respect
+			            # to the parameters
+			            "derivative" = matrix(numeric(0))[-1,-1]
 			), # end of Psi list
-			
+
 			param = list( # # total number of estimated parameters
 			              # normally an integer
 			              # equals the total number of non-NA entries in
 			              # structural_coeff_names and covariance_names
 			              # does NOT take into account other specified equality constraints
-			             "n_par" = integer(0),    
-			             
+			             "n_par" = integer(0),
+
 			             # number of distinct and functionally unrelated parameters
 			             # normally an integer
 			             "n_par_unique" = as.integer(0),
-			             
+
 			             # names of distinct and functionally unrelated parameters
 			             # in the order they appear rowwise in the matrices
 			             # structural_coeff_names and covariance_names
 			             # character vector of length(n_par_unique)
 			             "labels_par_unique" = character(0),
-			             
-			             # parameter values (estimates) of distinct and functionally unrelated parameters 
+
+			             # parameter values (estimates) of distinct and functionally unrelated parameters
 			             # numeric vector of length(n_par_unique)
 			             "values_par_unique" = numeric(0),
-			             
+
 			             # variance-covariance matrix of estimator of vector
 			             # of distinct and functionally unrelated parameters
 			             # numeric matrix of dimension n_par_unique * n_par_unique
@@ -164,7 +173,7 @@ make_empty_list <- function( verbose=NULL ){
 
 			# number of outcome variables
 			# normally an integer
-			# default: n_ov - n_intervention 
+			# default: n_ov - n_intervention
 			n_outcome = as.integer(0),
 
 			# names of outcome variables
@@ -174,14 +183,14 @@ make_empty_list <- function( verbose=NULL ){
 
 			# interventional level
 			# numeric vector of length(n_intervention)
-			# default: vector of ones 
+			# default: vector of ones
 			intervention_level = numeric(0),
 
 			# parts of the interventional distribution the user is interested in
-			# character vector 
+			# character vector
 			# arguments "probability" only admissible
 			# if n_outcome == 1
-			# if "probability" is specified, user specified values of 
+			# if "probability" is specified, user specified values of
 			# lower_bound and upper_bound required
 			# default: "mean"
 			# possible values: c("mean", "varcov", "density", "probability")
