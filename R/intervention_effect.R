@@ -1,4 +1,5 @@
 ## Changelog:
+# CG/MH 0.0.3 2021-09-10: update first run
 # CG 0.0.2 2021-09-04: add documentation 
 # CG 0.0.1 2021-07-20: initial programming
 
@@ -28,13 +29,12 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   fun.name <- "intervention_effect"
   
   # function version
-  fun.version <- "0.0.2 2021-09-04"
+  fun.version <- "0.0.3 2021-09-10"
   
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
   
-  
-  
+  # TODO
   # check if arguments are well-specified FORMALLY; 
   # give warnings, error, etc.
   # later task
@@ -44,46 +44,35 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   # using (or merging) the verbose_argument_handling function
   # todo: allow object of class causalSEM as input to the 
   # intervention effect function
+  # check_arguments(model, intervention, outcome, levels, effect.type, 
+                # lower.bound, upper.bound, verbose ...)  
+
+  # creates empty list
+  internal_list <- make_empty_list( verbose=verbose )
+
+  # populate model info
+  # fills (some) slots in info_model and fitted_object/class
+  internal_list <- populate_model_info( internal_list = internal_list, 
+                                        model = model )
+
+  # build matrix of structural coefficients
+  internal_list <- build_C( internal_list = internal_list )
   
+  # build variance-covariance matrix of error terms
+  internal_list <- build_Psi( internal_list = internal_list )
   
-check_arguments(model, intervention, outcome, levels, effect.type, 
-                lower.bound, upper.bound, verbose ...)  
-  
-
-# creates empty list
-internal_list <- make_empty_list()
-  
-# fills model info into list
-# todo: fills two slots of internal list: 
-# 1. fitted_object
-# 2. fitted_object_class
+  # build vector of distinct, functionally independent parameters 
+  internal_list <- build_theta( internal_list = internal_list )
 
 
-internal_list <- populate_model_info(internal_list = internal_list, 
-                                     model = model)
-                                     
-                                     
-  
-# fills intervention info into list
-internal_list <- populate_intervention_info(internal_list = internal_list, 
-                                            intervention = intervention,
-                                            outcome = outcome, 
-                                            intervention_level = intervention_level,
-                                            effect.type = effect.type, 
-                                            lower.bound = lower.bound,
-                                            upper.bound = upper.bound )
-
-
-# build matrix of structural coefficients
-internal_list <- build_C(internal_list = internal_list) 
-
-# build variance-covariance matrix of error terms
-internal_list <- build_Psi(internal_list = internal_list) 
-
-# build vector of distinct, functionally independent parameters 
-internal_list <- build_theta(internal_list = internal_list) 
-
-
+# TODO fills intervention info into list
+# internal_list <- populate_intervention_info(internal_list = internal_list, 
+                                            # intervention = intervention,
+                                            # outcome = outcome, 
+                                            # intervention_level = intervention_level,
+                                            # effect.type = effect.type, 
+                                            # lower.bound = lower.bound,
+                                            # upper.bound = upper.bound )
 
 #
 # add other functions from the flow chart analogously
@@ -91,11 +80,27 @@ internal_list <- build_theta(internal_list = internal_list)
 #
 
 # prepare output 
-internal_list <- prepare_output(internal_list = internal_list,)
+# internal_list <- prepare_output(internal_list = internal_list,)
 
 # assign class to list
-class(internal list) <- "causalSEM"
+# class(internal_list) <- "causalSEM"
 
-# create output
-return(internal_list)
+  # create output
+  return(internal_list)
 }
+
+# development
+# source( "verbose_argument_handling.R" )
+# source( "make_empty_list.R" )
+# source( "populate_model_info.R" )
+# source( "lav_parTable_fill_labels.R" )
+# source( "build_C.R" )
+# source( "build_Psi.R" )
+# source( "build_theta.R" )
+
+# ( load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/00_lavaan_test_object.Rdata" ) ) )
+
+# internal_list <- intervention_effect( model=o00_lavaan_test_object,
+                     # intervention=NULL,
+					 # intervention_level=NULL)
+
