@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.4 2021-09-24: add verbose output when start function
 # CG/MH 0.0.3 2021-09-10: update first run
 # CG 0.0.2 2021-09-04: add documentation 
 # CG 0.0.1 2021-07-20: initial programming
@@ -49,7 +50,13 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
 
   # creates empty list
   internal_list <- make_empty_list( verbose=verbose )
-
+  
+  # get verbose argument
+  verbose <- internal_list$control$verbose
+  
+  # console output
+  if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ", Sys.time(), "\n" ) )
+  
   # populate model info
   # fills (some) slots in info_model and fitted_object/class
   internal_list <- populate_model_info( internal_list = internal_list, 

@@ -1,4 +1,6 @@
 ## Changelog:
+# CG 0.0.4 2021-09-24: create slot 'interventional_distribution'
+#                      update Documentation 
 # MA 0.0.3 2021-09-09: added 'derivative' slot to 'C' and 'Psi'
 # CG 0.0.2 2021-09-02: create slot 'param'
 # MH 0.0.1 2021-09-01: initial programming
@@ -21,18 +23,20 @@
 #'      ..$ n_ov             : int 0         \tab \tab number of manifest variables\cr
 #'      ..$ var_names        : chr(0)        \tab \tab names of observed variables\cr
 #'      ..$ C                :List of 2      \tab \tab \cr
-#'      .. ..$ values: num[0 , 0 ]           \tab \tab parameter values of matrix of structural coefficients\cr
-#'      .. ..$ labels: chr[0 , 0 ]           \tab \tab parameter names of matrix of structural coefficients\cr
+#'      .. ..$ values: num[0, 0]           \tab \tab parameter values of matrix of structural coefficients\cr
+#'      .. ..$ labels: chr[0, 0]           \tab \tab parameter names of matrix of structural coefficients\cr
+#'      .. ..$ derivative: chr[0, 0]       \tab \tab partial derivative of the vectorized C matrix with respect to the parameters\cr
 #'      ..$ Psi              :List of 2      \tab \tab \cr
-#'      .. ..$ values: num[0 , 0 ]           \tab \tab parameter values of model implied covariance matrix\cr
-#'      .. ..$ labels: chr[0 , 0 ]           \tab \tab parameter names of model implied covariance matrix\cr
+#'      .. ..$ values: num[0, 0]           \tab \tab parameter values of model implied covariance matrix\cr
+#'      .. ..$ labels: chr[0, 0]           \tab \tab parameter names of model implied covariance matrix\cr
+#'      .. ..$ derivative: chr[0, 0]       \tab \tab partial derivative of the vectorized Psi matrix with respect to the parameters\cr
 #'      ..$ param            :List of 5      \tab \tab \cr
 #'      .. ..$ n_par            : int 0         \tab \tab total number of estimated parameters\cr
 #'      .. ..$ n_par_unique     : int 0         \tab \tab number of distinct and functionally unrelated parameters\cr
 #'      .. ..$ labels_par_unique : chr(0)        \tab \tab names of distinct and functionally unrelated parameters\cr
 #'      .. ..$ values_par_unique : num(0)        \tab \tab parameter values (estimates) of distinct and functionally unrelated parameters\cr
-#'      .. ..$ varcov_par_unique: num[0 , 0 ]   \tab \tab variance-covariance matrix of the estimator of distinct and functionally unrelated parameters\cr
-#'     $ info_interventions :List of 8       \tab \tab \cr
+#'      .. ..$ varcov_par_unique: num[0, 0]   \tab \tab variance-covariance matrix of the estimator of distinct and functionally unrelated parameters\cr
+#'     $ info_interventions : List of 8       \tab \tab \cr
 #'      ..$ n_intervention    : int 0        \tab \tab number of interventional variables\cr
 #'      ..$ intervention_name : chr(0)       \tab \tab names of interventional variables\cr
 #'      ..$ n_outcome         : int 0        \tab \tab number of outcome variables\cr
@@ -41,9 +45,25 @@
 #'      ..$ effect_type       : chr(0)       \tab \tab parts of the interventional distribution the user is interested in\cr
 #'      ..$ lower_bound       : num(0)       \tab \tab lower bound of critical range of univariate outcome variable\cr
 #'      ..$ upper_bound       : num(0)       \tab \tab upper bound of critical range of univariate outcome variable\cr
-#'     $ control            :List of 1       \tab \tab \cr
-#'      ..$ verbose: num 0                   \tab \tab verbosity of console output\cr
+#'     $ interventional_distribution : List of 4 \tab \tab \cr
+#'      ..$ zero_one_matrices : List of 3    \tab \tab \cr
+#'      .. .. $ select_intervention: num[0, 0]  \tab \tab selection matrix for entries that are intervened on \cr
+#'      .. .. $ select_non_intervention: num[0, 0]  \tab \tab selection matrix for entries that are NOT intervened on \cr
+#'      .. .. $ eliminate_intervention: num[0, 0]  \tab \tab matrix that replaces entries that are intervened on by zero \cr
+#'      ..$ moments : List of 2    \tab \tab \cr
+#'      .. .. $ mean_vector: num(0)  \tab \tab mean vector of the interventional distribution  \cr
+#'      .. .. $ variance_matrix: num[0, 0]  \tab \tab variance-covariance matrix of the interventional distribution \cr
+#'      ..$ density : List of 1    \tab \tab \cr
+#'      .. .. $ pdf: num[0, 0]  \tab \tab probability density function interventional distribution \cr
+#'      ..$ probability : List of 1    \tab \tab \cr
+#'      .. .. $ p: num[0, 0]  \tab \tab probability of interventional event \cr
+#'     $ control            : List of 1      \tab \tab \cr
+#'      ..$ verbose: num(0)                   \tab \tab verbosity of console output\cr
 #'  }}
+#'  
+#'  
+#'  
+#'  
 #' @seealso \code{\link{verbose_argument_handling}}
 #' @references
 #' Gische, C. & Voelkle, M. C. (under review). Beyond the mean: A flexible framework for
@@ -164,27 +184,27 @@ make_empty_list <- function( verbose=NULL ){
 			# number of interventional variables
 			# normally an integer
 			# default: zero
-			n_intervention = as.integer(0),
+			"n_intervention" = as.integer(0),
 
 			# names of interventional variables
 			# character vector of length n_intervention
 			# default: empty vector (no intervention)
-			intervention_name = character(0),
+			"intervention_name" = character(0),
 
 			# number of outcome variables
 			# normally an integer
 			# default: n_ov - n_intervention
-			n_outcome = as.integer(0),
+			"n_outcome" = as.integer(0),
 
 			# names of outcome variables
 			# character vector of length(n_outcome)
 			# default: all non-interventional variables
-			outcome_name = character(0),
+			"outcome_name" = character(0),
 
 			# interventional level
 			# numeric vector of length(n_intervention)
 			# default: vector of ones
-			intervention_level = numeric(0),
+			"intervention_level" = numeric(0),
 
 			# parts of the interventional distribution the user is interested in
 			# character vector
@@ -194,19 +214,72 @@ make_empty_list <- function( verbose=NULL ){
 			# lower_bound and upper_bound required
 			# default: "mean"
 			# possible values: c("mean", "varcov", "density", "probability")
-			effect_type = character(0),
+			"effect_type" = character(0),
 
 			# lower bound of critical range of univariate outcome variable
 			# single number, numeric
 			# only admissible if n_outcome==1
-			lower_bound = numeric(0),
+			"lower_bound" = numeric(0),
 
 			# upper bound of critical range of univariate outcome variable
 			# single number, numeric
 			# only admissible if n_outcome==1
-			upper_bound = numeric(0)
+			"upper_bound" = numeric(0)
 
 		), # end of info_interventions list
+		
+		# interventional distribution
+		interventional_distribution = list(
+		  
+		  # selection matrices according to 
+		  # Definition 1 of Gische and Voelkle (under review)
+		  
+		  zero_one_matrices = list(
+		    
+		    # selection matrix for entries that are intervened on
+		    # see Definition 1 point 3 in Gische and Voelkle (2021)
+		    # numeric matrix of dimension n_ov x n_intervention
+		    "select_intervention" = matrix(numeric(0))[-1,-1],  
+		    
+		    # selection matrix for entries that are NOT intervened on
+		    # see Definition 1 point 3 in Gische and Voelkle (2021)
+		    # numeric matrix of dimension n_ov x (n_ov-n_intervention)
+		    "select_non_intervention" = matrix(numeric(0))[-1,-1],
+		    
+		    # matrix that replaces entries that are intervened on by zero
+		    # see Definition 1 point 4 in Gische and Voelkle (2021)
+		    # numeric matrix of dimension n_ov x n_ov
+		    "eliminate_intervention" = matrix(numeric(0))[-1,-1]
+		  ),
+		  
+		  moments = list(
+		    # mean vector of the interventional distribution 
+		    # see Equation (6a) in Gische and Voelkle (2021)
+		    # numeric vector of length n_ov 
+		    "mean_vector" = numeric(0),
+		    
+		    # variance-covariance matrix of the interventional distribution
+		    # see Equation (6b) in Gische and Voelkle (2021)
+		    # numeric matrix of dimension n_ov x n_ov
+		    "variance_matrix" = matrix(numeric(0))[-1,-1]
+		  ),
+		  
+		  density = list(
+		    # probability density function interventional distribution
+		    # see Equation (9) in Gische and Voelkle (2021)
+		    # numeric matrix of with two columns 
+		    # 1 column: grid that captures the range of the outcome variable
+		    # 2 column: values of the pdf
+		    "pdf" = matrix(numeric(0))[-1,-1]
+		  ),
+		  
+		  probability = list(
+		    # probability of interventional event
+		    # see Equation (10) in Gische and Voelkle (2021)
+		    # single numeric number
+		    "p" = numeric(0)
+		  )
+		),
 
 		# control list
 		control = list( # verbosity of console output
