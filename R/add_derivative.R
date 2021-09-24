@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.2 2021-09-09: corrected copy paste typo 
 # MA 0.0.1 2021-09-09: initial programming
 
 
@@ -56,8 +57,9 @@ add_derivative <- function(internal_list){
   }
 
   # populate derivative slots of C and Psi
+  # CG 0.0.2: changed slot from ...$C$... to ...$Psi... in <- Psi_deriv assignment
   internal_list$info_model$C$derivative <- C_deriv
-  internal_list$info_model$C$derivative <- Psi_deriv
+  internal_list$info_model$Psi$derivative <- Psi_deriv
 
   # console output
   if(verbose >= 2) cat(paste0("  end of function ", fun.name.version, " ", Sys.time(), "\n"))
