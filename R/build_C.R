@@ -1,4 +1,5 @@
 ## Changelog:
+# MH 0.0.6 2021-09-21: "development" section updated
 # MA 0.0.5 2021-09-09:
 #    -- build_C only alters the 'values' and 'labels' slots without overwriting
 #       the complete 'C' list
@@ -36,7 +37,7 @@ build_C <- function( internal_list ){
 	fun.name <- "build_C"
 
 	# function version
-	fun.version <- "0.0.4 2021-09-08"
+	fun.version <- "0.0.6 2021-09-21"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -184,39 +185,31 @@ build_C <- function( internal_list ){
 
 ## test object 00_lavaan_test_object
 # load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/00_lavaan_test_object.Rdata" ) )
-# internal_list <- make_empty_list()
-# internal_list$fitted_object <- o00_lavaan_test_object
-# internal_list$fitted_object_class <- class( o00_lavaan_test_object )
-# internal_list <- populate_model_info( internal_list )
-# internal_list <- build_C( internal_list )
-# internal_list$info_model$C
+# o00_internal_list <- make_empty_list()
+# o00_internal_list <- populate_model_info( o00_internal_list, o00_lavaan_test_object )
+# o00_internal_list <- build_C( o00_internal_list )
+# o00_internal_list$info_model$C
 
 ## test object 01_lavaan_test_object
 # load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/01_lavaan_test_object.Rdata" ) )
-# internal_list <- make_empty_list()
-# internal_list$fitted_object <- o01_lavaan_test_object
-# internal_list$fitted_object_class <- class( o01_lavaan_test_object )
-# internal_list <- build_C( internal_list )
-# internal_list <- populate_model_info( internal_list )
-# internal_list$info_model$C
+# o01_internal_list <- make_empty_list()
+# o01_internal_list <- populate_model_info( o01_internal_list, o01_lavaan_test_object )
+# o01_internal_list <- build_C( o01_internal_list )
+# o01_internal_list$info_model$C
 
 ## test object 02_lavaan_test_object
 # load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/02_lavaan_test_object.Rdata" ) )
-# internal_list <- make_empty_list()
-# internal_list$fitted_object <- o02_lavaan_test_object
-# internal_list$fitted_object_class <- class( o02_lavaan_test_object )
-# internal_list <- build_C( internal_list )
-# internal_list <- populate_model_info( internal_list )
-# internal_list$info_model$C
+# o02_internal_list <- make_empty_list()
+# o02_internal_list <- populate_model_info( o02_internal_list, o02_lavaan_test_object )
+# o02_internal_list <- build_C( o02_internal_list )
+# o02_internal_list$info_model$C
 
 ## test object 03_lavaan_test_object
 # load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/03_lavaan_test_object.Rdata" ) )
-# internal_list <- make_empty_list()
-# internal_list$fitted_object <- o03_lavaan_test_object
-# internal_list$fitted_object_class <- class( o03_lavaan_test_object )
-# internal_list <- build_C( internal_list )
-# internal_list <- populate_model_info( internal_list )
-# internal_list$info_model$C
+# o03_internal_list <- make_empty_list()
+# o03_internal_list <- populate_model_info( o03_internal_list, o03_lavaan_test_object )
+# o03_internal_list <- build_C( o03_internal_list )
+# o03_internal_list$info_model$C
 
 ### test
 # require( testthat )
