@@ -1,5 +1,6 @@
 ## Changelog:
 # CG 0.0.4 2021-09-24: add verbose output when start function
+#                      added add_derivative function
 # CG/MH 0.0.3 2021-09-10: update first run
 # CG 0.0.2 2021-09-04: add documentation 
 # CG 0.0.1 2021-07-20: initial programming
@@ -70,6 +71,9 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   
   # build vector of distinct, functionally independent parameters 
   internal_list <- build_theta( internal_list = internal_list )
+  
+  # get partial derivatives of C and Psi with respect to parameters 
+  internal_list <- add_derivative( internal_list = internal_list )
 
 
 # TODO fills intervention info into list
