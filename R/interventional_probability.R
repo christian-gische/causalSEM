@@ -1,26 +1,26 @@
 ## Changelog:
-# MH 0.0.1 2021-09-21: initial programming
+# MH 0.0.1 2021-09-27: initial programming
 
 ## Documentation
-#' @title Calculates interventional moments
+#' @title Calculates interventional probability
 #' @description Internal function that 
 #' @param internal_list A list with various information extracted from the
 #'    model.
-#' @return \code{interventional_moments} returns the inputted internal_list with slot
-#'    interventional_distribution$moments$mean_vector and ..$variance_matrix populated
+#' @return \code{interventional_probability} returns the inputted internal_list with slot
+#'    interventional_distribution$probability$p populated with a numeric value
 #' @references
 #' Gische, C. & Voelkle, M. C. (under review). Beyond the mean: A flexible framework for
 #'    studying causal effects using linear models. \url{https://www.researchgate.net/profile/Christian-Gische/publication/335030449_Gische_Voelkle_Causal_Inference_in_Linear_Models/links/6054eb6e299bf1736755110b/Gische-Voelkle-Causal-Inference-in-Linear-Models.pdf}
 #' @keywords internal
 
 ## Function definition
-interventional_moments <- function( internal_list ){
+interventional_probability <- function( internal_list ){
 
 	# function name
-	fun.name <- "interventional_moments"
+	fun.name <- "interventional_probability"
 
 	# function version
-	fun.version <- "0.0.1 2021-09-21"
+	fun.version <- "0.0.1 2021-09-27"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -31,30 +31,24 @@ interventional_moments <- function( internal_list ){
 	# console output
 	if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ", Sys.time(), "\n" ) )
 
+	# get outcome, z.B. Y3
+	# internal_list$info_interventions
+
 # browser()
+	# get intervential mean and variance
+	E <- internal_list$interventional_distribution$moments$mean_vector
+	V <- internal_list$interventional_distribution$moments$variance_matrix
 
-	# get/define terms
-	C <- internal_list$info_model$C$values
-	Psi <- internal_list$info_model$Psi$values
-	x <- matrix( internal_list$info_model$param$values, ncol=1 )
-	# selection matrix 1_I TODO
-	SI <- matrix( 1, 6, 6 )
-	# number of observed variables
-	n <- internal_list$info_model$n_ov
-	# identity matrix
-	In <- diag( n )
-	# TODO IN matrix, p. 8
-	IN <- diag( n )
-	# diagonal Elemente auf 0 fuer Variablen die interveniert werden
-	
-	## calculate moments, Eq. 6a, 6b in Gische/Voelkle
-	# E <- solve( In - IN %*% C ) %*% SI %*% x
-	# V <- solve( In - IN %*% C ) %*% IN %*% Psi %*% IN %*% t( solve( In - IN %*% C ) )
-	
-	# populate slots of XXXX TODO
-	internal_list$interventional_distribution$moments$mean_vector <- E <- 5 # TEST
-	internal_list$interventional_distribution$moments$variance_matrix <- V <- 5 # TEST
+	# get upper lower bound
+	y_low <- internal_list$info_interventions$lower_bound <- 3 # TEST
+	y_up <- internal_list$info_interventions$upper_bound <- 6  # TEST
 
+	# calculate interventional probability
+	p <- calc_interventional_probability( E=E, V=V, y_low=y_low, y_up=y_up, verbose=verbose )
+	
+	# populate slot
+	internal_list$interventional_distribution$probability$p <- p
+	
 	# console output
 	if( verbose >= 2 ) cat( paste0( "  end of function ", fun.name.version, " ", Sys.time(), "\n" ) )
 
@@ -70,6 +64,8 @@ source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/lav_parTable_fill
 source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/build_C.R" )
 source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/build_Psi.R" )
 source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/build_theta.R" )
+source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/interventional_moments.R" )
+source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/calc_interventional_probability.R" )
 
 ## test object 00_lavaan_test_object
 # load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/00_lavaan_test_object.Rdata" ) )
@@ -79,8 +75,6 @@ source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/build_theta.R" )
 # o00_internal_list <- build_Psi( o00_internal_list )
 # o00_internal_list <- build_theta( o00_internal_list )
 
-# o00_internal_list <- interventional_moments( o00_internal_list )
-
 
 ## test object 01_lavaan_test_object
 load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/01_lavaan_test_object.Rdata" ) )
@@ -89,9 +83,11 @@ o01_internal_list <- populate_model_info( o01_internal_list, o01_lavaan_test_obj
 o01_internal_list <- build_C( o01_internal_list )
 o01_internal_list <- build_Psi( o01_internal_list )
 o01_internal_list <- build_theta( o01_internal_list )
-
 o01_internal_list <- interventional_moments( o01_internal_list )
-o01_internal_list$interventional_distribution$moments
+
+o01_internal_list <- interventional_probability( o01_internal_list )
+
+o01_internal_list$interventional_distribution$probability$p
 
 
 
