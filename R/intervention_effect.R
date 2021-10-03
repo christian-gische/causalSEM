@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.5 2021-10-03: add populate intervention_info
 # CG 0.0.4 2021-09-24: add verbose output when start function
 #                      added add_derivative function
 # CG/MH 0.0.3 2021-09-10: update first run
@@ -62,6 +63,15 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   # fills (some) slots in info_model and fitted_object/class
   internal_list <- populate_model_info( internal_list = internal_list, 
                                         model = model )
+  
+  # fills (some) slots in info_intervention
+  internal_list <-  populate_intervention_info(internal_list = internal_list,
+                                               intervention = intervention, 
+                                               outcome = outcome, 
+                                               intervention_level = intervention_level,
+                                               effect.type = effect.type,
+                                               lower.bound = lower.bound,
+                                               upper.bound = upper.bound)
 
   # build matrix of structural coefficients
   internal_list <- build_C( internal_list = internal_list )
