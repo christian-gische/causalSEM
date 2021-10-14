@@ -3,13 +3,15 @@
 \name{populate_model_info}
 \alias{populate_model_info}
 \title{Extracts number of observations, number of manifest variables,
-   and from a names of observed variables from a fitted SEM object}
+   and names of observed variables from a fitted SEM object}
 \usage{
-populate_model_info(internal_list)
+populate_model_info(internal_list, model)
 }
 \arguments{
 \item{internal_list}{A list with various information extracted from the
 model.}
+
+\item{model}{Fitted model. The fitted model can be of class lavaan.}
 }
 \value{
 \code{populate_model_info} returns the inputted internal_list with slots
