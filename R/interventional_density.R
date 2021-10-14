@@ -50,7 +50,7 @@ interventional_density <- function( internal_list ){
 							pdf.values <- dnorm( x, mean=mean, sd=sd )
 							# return
 							as.matrix( data.frame( "x"=x, "pdf.values"=pdf.values ) )
-					}, E, sds, SIMPLIFY=FALSE )
+					}, E[,1], sds, SIMPLIFY=FALSE )
 	
 	# set variable names for list elements 
 	names( l ) <- internal_list$info_model$var_names

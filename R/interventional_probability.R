@@ -51,7 +51,7 @@ interventional_probability <- function( internal_list ){
 
 		# select only outcome variables
 		outcomes <- internal_list$info_interventions$outcome_name
-		means <- E[outcomes,]
+		means <- E[outcomes,1]
 		sds <- sds[outcomes]
 		
 		# calculate interventional probability
