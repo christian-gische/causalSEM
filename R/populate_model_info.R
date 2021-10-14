@@ -1,4 +1,5 @@
 ## Changelog:
+# MH 0.0.3 2021-10-14: updated documentation
 # MA 0.0.2 2021-09-09: this function stores the model in the designated slot
 # MH 0.0.1 2021-09-01: initial programming
 
@@ -10,6 +11,7 @@
 #'    structural equation model. Supported fitted objects: lavaan.
 #' @param internal_list A list with various information extracted from the
 #'    model.
+#' @param model Fitted model. The fitted model can be of class lavaan.
 #' @return \code{populate_model_info} returns the inputted internal_list with slots
 #'    \code{n_obs}, \code{n_ov}, and \code{var_names} populated.
 #' @seealso \code{\link{build_C}} \code{\link{build_Psi}}
@@ -25,7 +27,7 @@ populate_model_info <- function(internal_list, model){
 	fun.name <- "populate_model_info"
 
 	# function version
-	fun.version <- "0.0.1 2021-09-01"
+	fun.version <- "0.0.3 2021-10-14"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
