@@ -88,6 +88,18 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   
   # get partial derivatives of C and Psi with respect to parameters 
   internal_list <- add_derivative( internal_list = internal_list )
+  
+  # Calculates interventional moments
+  internal_list <- interventional_moment( internal_list = internal_list )
+  
+  # calculates interventional density
+  internal_list <- interventional_density( internal_list = internal_list )
+  
+  # Calculates interventional probability
+  internal_list <- interventional_probability( internal_list = internal_list )
+  
+  # Calculate asymptotic standard errors of the interventional mean and covariance matrix
+  internal_list <- calculate_ase( internal_list = internal_list )
 
 
 # TODO fills intervention info into list

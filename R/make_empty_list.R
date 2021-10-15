@@ -280,7 +280,7 @@ make_empty_list <- function( verbose=NULL ){
 		    "p" = numeric(0)
 		  )
 		),
-
+		
 		# control list
 		control = list( # verbosity of console output
 		                # a number, 0...no output (default), 1...user messages, 2...debugging-relevant messages
