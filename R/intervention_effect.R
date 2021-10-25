@@ -1,4 +1,7 @@
 ## Changelog:
+# MH 0.0.6 2021-10-25:
+#    -- changed call "interventional_moment()" to "interventional_moments()" (with "s")
+#    -- disabled calculate_ase (crashes)
 # CG 0.0.5 2021-10-03: add populate intervention_info
 #                      add build_zero_one_matrix 
 # CG 0.0.4 2021-09-24: add verbose output when start function
@@ -33,7 +36,7 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   fun.name <- "intervention_effect"
   
   # function version
-  fun.version <- "0.0.3 2021-09-10"
+  fun.version <- "0.0.6 2021-10-25"
   
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -90,7 +93,8 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   internal_list <- add_derivative( internal_list = internal_list )
   
   # Calculates interventional moments
-  internal_list <- interventional_moment( internal_list = internal_list )
+  # MH 0.0.6 2021-10-25: changed call "interventional_moment()" to "interventional_moments()" (with "s")
+  internal_list <- interventional_moments( internal_list = internal_list )
   
   # calculates interventional density
   internal_list <- interventional_density( internal_list = internal_list )
@@ -99,7 +103,8 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   internal_list <- interventional_probability( internal_list = internal_list )
   
   # Calculate asymptotic standard errors of the interventional mean and covariance matrix
-  internal_list <- calculate_ase( internal_list = internal_list )
+  # MH 0.0.6 2021-10-25: disabled calculate_ase (crashes)
+  # internal_list <- calculate_ase( internal_list = internal_list )
 
 
 # TODO fills intervention info into list
