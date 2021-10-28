@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.2 2021-10-28: added comments / todos before lower.bounds
 # CG 0.0.1 2021-10-01: initial programming
 
 ## Documentation
@@ -98,6 +99,11 @@ populate_intervention_info <- function(internal_list, intervention, outcome, int
   
   
   # get lower bound of outcome range 
+  # todo: option to provide same number of upper and lower bounds as 
+  # outcome variables of interest 
+  # caution: muliple upper bounds need to be in the same order as multivariate outcome variable
+  # CAUTION: order of upper bounds in case outcome variable is not user specified 
+  
   if( is.numeric(upper.bound ) && length ( upper.bound ) == 1 && internal_list$info_interventions$n_outcome == 1 ){
     # set in internal_list
     internal_list$info_interventions$upper_bound <- upper.bound
