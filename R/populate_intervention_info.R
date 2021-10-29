@@ -100,6 +100,12 @@ populate_intervention_info <- function(internal_list, intervention, outcome, int
   
   # get lower bound of outcome range 
   # todo: option to provide same number of upper and lower bounds as 
+  # verbose: provide lower and upper bound in the same order as outcome variable or
+  # as named vector; if no outcome variable is provided as argument force user to name
+  # upper and lower bound which have to be the same dimension as vector of non interventional
+  # variables 
+  # internally: always name upper and lower bound in internal list and bring in same order 
+  # as outcome names
   # outcome variables of interest 
   # caution: muliple upper bounds need to be in the same order as multivariate outcome variable
   # CAUTION: order of upper bounds in case outcome variable is not user specified 
