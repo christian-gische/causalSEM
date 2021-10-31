@@ -1,4 +1,7 @@
 ## Changelog:
+# MH 0.0.2 2021-10-29:
+#    -- plotting of SE added
+#    -- pdf plots are outputted to plot.dir
 # MH 0.0.1 2021-10-25: initial programming
 
 ## Documentation
@@ -6,19 +9,20 @@
 #' @description Function that generates density plots
 #' @param object The object returned from calling function \code{intervention_effect}.
 #' @param plot logical, if TRUE plots are displayed
+#' @param plot directory, directory to save pdf plot files
 #' @return \code{plot_density} returns ggplot2 code for density plots
 #' @references
 #' Gische, C. & Voelkle, M. C. (under review). Beyond the mean: A flexible framework for
 #'    studying causal effects using linear models. \url{https://www.researchgate.net/profile/Christian-Gische/publication/335030449_Gische_Voelkle_Causal_Inference_in_Linear_Models/links/6054eb6e299bf1736755110b/Gische-Voelkle-Causal-Inference-in-Linear-Models.pdf}
 
 ## Function definition
-plot_density <- function( object, plot=TRUE ){
+plot_density <- function( object, plot=TRUE, plot.dir=NULL ){
 
 	# function name
 	fun.name <- "plot_density"
 
 	# function version
-	fun.version <- "0.0.1 2021-10-25"
+	fun.version <- "0.0.2 2021-10-31"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -31,6 +35,7 @@ plot_density <- function( object, plot=TRUE ){
 	
 	# packages
 	require( ggplot2 )
+	require( gridExtra )
 	
 	# theme
 	theme <- theme_bw() +
@@ -100,31 +105,27 @@ plot_density <- function( object, plot=TRUE ){
 
 
 		### y breaks
-		# get all y values
-		ally <- unname( do.call( "c", sapply( xnames, function( xname ) object$interventional_distribution$density$pdf[[xname]][,"pdf.values"], simplify=FALSE ) ) )
+		# get all y values (incl. bounds of 95% CI)
+		ally <- unname( do.call( "c", sapply( xnames, function( xname ) c(	object$interventional_distribution$density$pdf[[xname]][,"pdf.values"],
+																			object$interventional_distribution$density$pdf[[xname]][,"UL95"],
+																			object$interventional_distribution$density$pdf[[xname]][,"LL95"] ),
+																			simplify=FALSE ) ) )
+
+		# lowest break
+		ylow <- min( ally )
+
+		# highest break
+		yhigh <- max( ally )
 
 		# extremest absolute value
 		extremey <- max( abs( min( ally ) ), abs( max( ally ) ) )
 		extry.ndig <- n_int_digits( extremey )		
-		extry <- round( max( abs( min( ally ) ), abs( max( ally ) ) ), -extry.ndig )
-
-		# lowest break
-		if( min( ally ) < 0 ){
-			ylow <- -extry
-		} else {
-			ylow <- min( ally )
-		}
-
-		# highest break
-		if( max( ally ) < 0 ){
-			yhigh <- max( ally )
-		} else {
-			yhigh <- extry
-		}
 		
-		# y breaks/labs
-		y.breaks <- c( seq( ylow, yhigh, length.out=11 ) )
+		## y breaks/labs
+		y.breaks <- c( ylow, seq( 0, yhigh, length.out=11 ) )
 		y.labs <- formatC( y.breaks, format="f", digits=ifelse( extry.ndig > 0, 0, -extry.ndig+1 ) )
+		# lowest y limit is the UL95, no label
+		y.labs[1] <- ""
 
 
 		# function to generate density plot
@@ -132,18 +133,19 @@ plot_density <- function( object, plot=TRUE ){
 		
 			# data
 			d <- as.data.frame( object$interventional_distribution$density$pdf[[xname]] )
-			
+
 			# generate plot
 			p <- ggplot( data=d, aes( y=pdf.values, x=x ) )
 			p <- p + geom_line()
-			p <- p + scale_x_continuous( limits=c(x.breaks[1], x.breaks[length(x.breaks)]), breaks=x.breaks, labels=x.labs, expand = expansion(mult = c(0, 0)) )
-			p <- p + scale_y_continuous( limits=c(y.breaks[1], y.breaks[length(y.breaks)]), breaks=y.breaks, labels=y.labs, expand = expansion(mult = c(0, 0)) )
-			p <- p + xlab( paste0( xname, "\n" ) )
+			p <- p + geom_ribbon( aes( ymin=LL95, ymax=UL95, x=x ), alpha = 0.2, color=NA, show.legend=FALSE )
+			p <- p + scale_x_continuous( limits=c(x.breaks[1], x.breaks[length(x.breaks)]), breaks=x.breaks, labels=x.labs, expand = expansion(mult = c(0, 0), add=c(0, 0) ) )
+			p <- p + scale_y_continuous( limits=c(y.breaks[1], y.breaks[length(y.breaks)]), breaks=y.breaks, labels=y.labs, expand = expansion(mult = c(0, 0), add=c(0, 0) ) )
+			p <- p + xlab( paste0( "\n", xname ) )
 			p <- p + ylab( "interventional pdf\n" )
 			p <- p + theme
 			# https://stackoverflow.com/questions/18252827/increasing-area-around-plot-area-in-ggplot2
 			# top right bottom left
-			p <- p + theme( plot.margin = unit(c(5.5, 15.5, 5.5, 5.5), "points") )
+			p <- p + theme( plot.margin = unit(c(15.5, 25.5, 5.5, 5.5), "points") )
 			
 			# return plot
 			return( p )
@@ -158,6 +160,23 @@ plot_density <- function( object, plot=TRUE ){
 				dev.new()
 				plot( p )
 			}
+		}
+
+		# output pdf plots
+		if( !is.null( plot.dir ) && is.character( plot.dir ) && dir.exists( plot.dir ) && ( file.access( plot.dir, mode=2 ) %in% 0 ) ){
+
+			# single plots (one for each non-interventional variable)
+			for( i in seq( along = p.l ) ){
+				p <- p.l[[i]]
+				plot.path <- file.path( plot.dir, paste0( "density_plot_", names( p.l )[i], ".pdf" ) )
+				ggsave( plot.path, p, width=297, height=297, units="mm" )
+			}
+
+			# all single plots in one plot 
+			plots <- arrangeGrob( grobs=p.l,ncol=1 )
+			plot.path2 <- file.path( plot.dir, paste0( "density_plot_", paste( names( p.l ), collapse="_" ), ".pdf" ) )
+			ggsave( plot.path2, plots, width=297, height=0+length(p.l)*250, units="mm" )
+
 		}
 	
 	} else {
@@ -185,25 +204,25 @@ plot_density <- function( object, plot=TRUE ){
 ## test object 00_lavaan_test_object
 # load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/00_lavaan_test_object.Rdata" ) )
 # object00 <- intervention_effect( model=o00_lavaan_test_object,intervention="x2",intervention_level=2)
-# p.l <- plot_density( object00 )
+# p.l <- plot_density( object00, plot.dir="c:/users/martin/Desktop/plots" )
 
 
 ## test object 01_lavaan_test_object
 # load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/01_lavaan_test_object.Rdata" ) )
 # object01 <- intervention_effect( model=o01_lavaan_test_object,intervention="x2",intervention_level=2)
-# p.l <- plot_density( object01 )
+# p.l <- plot_density( object01, plot.dir="c:/users/martin/Desktop/plots" )
 
 
 ## test object 02_lavaan_test_object
 # load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/02_lavaan_test_object.Rdata" ) )
 # object02 <- intervention_effect( model=o02_lavaan_test_object,intervention="x2",intervention_level=2)
-# p.l <- plot_density( object02 )
+# p.l <- plot_density( object02, plot.dir="c:/users/martin/Desktop/plots" )
 
 
 ## test object 03_lavaan_test_object
 # load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/03_lavaan_test_object.Rdata" ) )
 # object03 <- intervention_effect( model=o03_lavaan_test_object,intervention="x2",intervention_level=2)
-# p.l <- plot_density( object03, FALSE )
+# p.l <- plot_density( object03, plot.dir="c:/users/martin/Desktop/plots" )
 
 
 ### test
