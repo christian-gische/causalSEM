@@ -1,24 +1,25 @@
 ## Changelog:
+# MA 0.0.8 2021-10-31: addes calculate_ase, calc_se_proability, and class
 # CG 0.0.7 2021-10-28: added @exprt to preamble
 # MH 0.0.6 2021-10-25:
 #    -- changed call "interventional_moment()" to "interventional_moments()" (with "s")
 #    -- disabled calculate_ase (crashes)
 # CG 0.0.5 2021-10-03: add populate intervention_info
-#                      add build_zero_one_matrix 
+#                      add build_zero_one_matrix
 # CG 0.0.4 2021-09-24: add verbose output when start function
 #                      added add_derivative function
 # CG/MH 0.0.3 2021-09-10: update first run
-# CG 0.0.2 2021-09-04: add documentation 
+# CG 0.0.2 2021-09-04: add documentation
 # CG 0.0.1 2021-07-20: initial programming
 
 ## Documentation
 #' @title Calculate estimates of causal effects defined based on the interventional distribution.
 #' @description Calculate estimates of causal effects defined based on the interventional distribution.
-#' @param model Fitted model. The fitted model can be of class lavaan. 
+#' @param model Fitted model. The fitted model can be of class lavaan.
 #' @param intervention Character vector. Variable names of interventional variables. Default: empty vector (no intervention).
-#' @param intervention_level Numeric vector. Interventional levels. Same length and order as argument intervention. Default: vector of ones. 
+#' @param intervention_level Numeric vector. Interventional levels. Same length and order as argument intervention. Default: vector of ones.
 #' @param outcome Character vector. Variable names of outcome variables. Default: all non-interventional variables.
-#' @param effect.type Character vector. Parts of the interventional distribution the user is interested in. Admissible values are "mean", "variance", "density", and "probability". Default: "mean". Argument "probability" only admissible if outcome is univariate. 
+#' @param effect.type Character vector. Parts of the interventional distribution the user is interested in. Admissible values are "mean", "variance", "density", and "probability". Default: "mean". Argument "probability" only admissible if outcome is univariate.
 #' @param lower.bound Single number, numeric. Lower bound of critical range of univariate outcome variable.
 #' @param upper.bound Single number, numeric. Upper bound of critical range of univariate outcome variable.
 #' @param verbose A single number, integer. 0...no output (default), 1...user messages, 2...debugging-relevant messages.
@@ -36,115 +37,90 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
 
   # function name
   fun.name <- "intervention_effect"
-  
+
   # function version
-  fun.version <- "0.0.6 2021-10-25"
-  
+  fun.version <- "0.0.8 2021-10-31"
+
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
-  
+
   # TODO
-  # check if arguments are well-specified FORMALLY; 
+  # check if arguments are well-specified FORMALLY;
   # give warnings, error, etc.
   # later task
   # Check of supported class
   # Check if all variables are "manifest"
-  # Check of verbosity argument 
+  # Check of verbosity argument
   # using (or merging) the verbose_argument_handling function
-  # todo: allow object of class causalSEM as input to the 
+  # todo: allow object of class causalSEM as input to the
   # intervention effect function
-  # check_arguments(model, intervention, outcome, levels, effect.type, 
-                # lower.bound, upper.bound, verbose ...)  
+  # check_arguments(model, intervention, outcome, levels, effect.type,
+                # lower.bound, upper.bound, verbose ...)
 
   # creates empty list
   internal_list <- make_empty_list( verbose=verbose )
-  
+
   # get verbose argument
   verbose <- internal_list$control$verbose
-  
+
   # console output
   if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ", Sys.time(), "\n" ) )
-  
+
   # populate model info
   # fills (some) slots in info_model and fitted_object/class
-  internal_list <- populate_model_info( internal_list = internal_list, 
+  internal_list <- populate_model_info( internal_list = internal_list,
                                         model = model )
-  
+
   # fills (some) slots in info_intervention
   internal_list <-  populate_intervention_info(internal_list = internal_list,
-                                               intervention = intervention, 
-                                               outcome = outcome, 
+                                               intervention = intervention,
+                                               outcome = outcome,
                                                intervention_level = intervention_level,
                                                effect.type = effect.type,
                                                lower.bound = lower.bound,
                                                upper.bound = upper.bound)
-  
+
   # build zero-one matrices to compute interventional distribution
   internal_list <- build_zero_one_matrix( internal_list = internal_list )
 
   # build matrix of structural coefficients
   internal_list <- build_C( internal_list = internal_list )
-  
+
   # build variance-covariance matrix of error terms
   internal_list <- build_Psi( internal_list = internal_list )
-  
-  # build vector of distinct, functionally independent parameters 
+
+  # build vector of distinct, functionally independent parameters
   internal_list <- build_theta( internal_list = internal_list )
-  
-  # get partial derivatives of C and Psi with respect to parameters 
+
+  # get partial derivatives of C and Psi with respect to parameters
   internal_list <- add_derivative( internal_list = internal_list )
-  
+
   # Calculates interventional moments
   # MH 0.0.6 2021-10-25: changed call "interventional_moment()" to "interventional_moments()" (with "s")
   internal_list <- interventional_moments( internal_list = internal_list )
-  
+
   # calculates interventional density
   internal_list <- interventional_density( internal_list = internal_list )
-  
+
   # Calculates interventional probability
   internal_list <- interventional_probability( internal_list = internal_list )
-  
+
   # Calculate asymptotic standard errors of the interventional mean and covariance matrix
-  # MH 0.0.6 2021-10-25: disabled calculate_ase (crashes)
-  # internal_list <- calculate_ase( internal_list = internal_list )
+  internal_list <- calculate_ase(internal_list = internal_list)
 
+  # Calculate asymptotic standard errors of the interventional
+  internal_list <- calc_ase_probability(internal_list = internal_list)
 
-# TODO fills intervention info into list
-# internal_list <- populate_intervention_info(internal_list = internal_list, 
-                                            # intervention = intervention,
-                                            # outcome = outcome, 
-                                            # intervention_level = intervention_level,
-                                            # effect.type = effect.type, 
-                                            # lower.bound = lower.bound,
-                                            # upper.bound = upper.bound )
+  # Implement this when calc_ase_density is done
+  #internal_list <- calc_ase_density(internal_list = internal_list)
 
-#
-# add other functions from the flow chart analogously
-#
-#
+  # Assign class to list
+  ## This needs to be discussed
+  class(internal_list) <- "causalSEM"
 
-# prepare output 
-# internal_list <- prepare_output(internal_list = internal_list,)
-
-# assign class to list
-# class(internal_list) <- "causalSEM"
 
   # create output
-  return(internal_list)
-}
+  internal_list
 
-# development
-# source( "verbose_argument_handling.R" )
-# source( "make_empty_list.R" )
-# source( "populate_model_info.R" )
-# source( "lav_parTable_fill_labels.R" )
-# source( "build_C.R" )
-# source( "build_Psi.R" )
-# source( "build_theta.R" )
-
-# ( load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/00_lavaan_test_object.Rdata" ) ) )
-
-# internal_list <- intervention_effect( model=o00_lavaan_test_object,
-                     # intervention=NULL,
-					 # intervention_level=NULL)
+  }
 
