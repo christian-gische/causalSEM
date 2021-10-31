@@ -1,3 +1,6 @@
+## Changelog:
+# MA 0.0.2 2021-10-31: fixed some variables names related to verbosity
+
 #' @title Extracts the Psi matrix from a SEM
 #' @description Internal function that extracts the Psi matrix from a lavaan
 #' model. Currently, this function will only work if all variance parameters
@@ -13,18 +16,23 @@
 
 build_Psi <- function(internal_list) {
 
-  # !!! This is only for the hardcoded example. Remove late !!!
-  #internal_list <- internal_list_fix
-  #internal_list$info_raw <- list(fitted_object = fit_100) # I guess this should have been there.
+  # Verbosity and bug tracking ----
 
-  # handle verbose argument
-  verbose <- verbose_argument_handling(internal_list$control$verbose)
+  # function name
+  fun_name <- "build_Psi"
+
+  # function version
+  fun_version <- "0.0.2 2021-10-31"
+
+  # function name+version
+  fun_name_version <- paste0(fun_name, " (", fun_version, ")")
+
+  # get verbose argument
+  verbose <- internal_list$control$verbose
 
   # console output
-  if (verbose >= 1) {
-    fun_version <- "0.0.1 2021-07-29"
-    fun_name_version <- paste0("build_psi", " (", fun.version, ")")
-    cat(paste0("start of function ", fun.name.version, " ", Sys.time(), "\n" ))
+  if (verbose >= 2) {
+    cat(paste0("start of function ", fun_name_version, " ", Sys.time(), "\n"))
   }
 
   # number of manifest variables

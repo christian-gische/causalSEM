@@ -1,4 +1,5 @@
 ## Changelog:
+# MA 0.0.4 2021-10-31: Added :: operator for lavInspect and lavNames
 # MH 0.0.3 2021-10-14: updated documentation
 # MA 0.0.2 2021-09-09: this function stores the model in the designated slot
 # MH 0.0.1 2021-09-01: initial programming
@@ -68,7 +69,7 @@ populate_model_info <- function(internal_list, model){
 	is.wholenumber <- function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
 
 	# number of observations
-	n_obs <- lavInspect( fit, "ntotal" )
+	n_obs <- lavaan::lavInspect( fit, "ntotal" )
 	if( is.numeric( n_obs ) && !n_obs<0 && is.wholenumber( n_obs ) ){
 		# set in internal_list
 		internal_list$info_model$"n_obs" <- as.integer( n_obs )
@@ -77,7 +78,7 @@ populate_model_info <- function(internal_list, model){
 	}
 
 	# variable names of observed variables
-	var_names <- lavNames( fit )
+	var_names <- lavaan::lavNames( fit )
 	if( is.character( var_names ) ){
 		# set in internal_list
 		internal_list$info_model$"var_names" <- var_names

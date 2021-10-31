@@ -1,5 +1,10 @@
 ## Changelog:
 # MA 0.0.1 2021-10-14: initial programming
+# MA 0.0.2 2021-10-31: - uncommented gamma_1 and gamma_2
+#                      - some asymptotic standard errors are zero. This is
+#                      - not correct
+
+
 
 ## Documentation
 #' @title Calculate asymptotic standard errors
@@ -19,7 +24,6 @@
 #' @references
 #' Gische, C. & Voelkle, M. C. (under review). Beyond the mean: A flexible framework for
 #'    studying causal effects using linear models. \url{https://www.researchgate.net/profile/Christian-Gische/publication/335030449_Gische_Voelkle_Causal_Inference_in_Linear_Models/links/6054eb6e299bf1736755110b/Gische-Voelkle-Causal-Inference-in-Linear-Models.pdf}
-#' @keywords
 
 calculate_ase <- function(internal_list) {
 
@@ -29,7 +33,7 @@ calculate_ase <- function(internal_list) {
   fun_name <- "calculate_ase"
 
   # function version
-  fun_version <- "0.0.1 2021-10-14"
+  fun_version <- "0.0.2 2021-10-31"
 
   # function name+version
   fun_name_version <- paste0(fun_name, " (", fun_version, ")")
@@ -76,8 +80,10 @@ calculate_ase <- function(internal_list) {
   acov <- internal_list$info_model$param$varcov_par_unique
 
   # Interventional means
-  ## This is not properly linked up
-  # gamma_1 <- internal_list$info_interventions$means
+  gamma_1 <- internal_list$interventional_distribution$moments$mean_vector
+
+  # Interventional covariance
+  gamma_2 <- internal_list$interventional_distribution$moments$variance_matrix
 
   # Compute transformation matrix
   ## I cannot think of a better name. Feel free to change
