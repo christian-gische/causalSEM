@@ -1,5 +1,5 @@
 ## Changelog:
-# MH 0.0.2 2021-10-29:
+# MH 0.0.2 2021-10-31:
 #    -- plotting of SE added
 #    -- pdf plots are outputted to plot.dir
 # MH 0.0.1 2021-10-25: initial programming
