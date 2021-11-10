@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.2 2021-11-09: added elimination, duplication, and commutation matrix
 # CG 0.0.1 2021-10-03: initial programming
 
 ## Documentation
@@ -8,9 +9,12 @@
 #'    model.
 #' @return \code{build_zero_one_matrix} returns the inputted internal_list with several slots
 #'    in ..$zero_one_matrices filled. 
-#'    ..$select_intervention: 
-#'    ..$select_non_intervention:
-#'    ..$eliminate_intervention: 
+#'    ..$select_intervention 
+#'    ..$select_non_intervention
+#'    ..$eliminate_intervention
+#'    ..$duplication_matrix
+#'    ..$elimination_matrix
+#'    ..$commutation_matrix
 #' @seealso \code{\link{intervention_moments}}
 #' @references
 #' Gische, C. & Voelkle, M. C. (2021). Beyond the mean: A flexible framework for
@@ -24,7 +28,7 @@ build_zero_one_matrix <- function( internal_list ){
   fun.name <- "build_zero_one_matrix"
   
   # function version
-  fun.version <- "0.0.1 2021-10-03"
+  fun.version <- "0.0.2 2021-11-09"
   
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -63,10 +67,22 @@ build_zero_one_matrix <- function( internal_list ){
   eliminate_intervention[intervention_index,intervention_index] <- 0
   
   
+  # Elimination, duplication, and commutation matrices
+  # CG 0.0.2 2021-11-09: added elimination, duplication, and commutation matrix
+  elimination_matrix <- matrixcalc::elimination.matrix(n = internal_list$info_model$n_ov)
+  duplication_matrix <- lavaan::lav_matrix_duplication(n = internal_list$info_model$n_ov)
+  commutation_matrix <- lavaan::lav_matrix_commutation(m = internal_list$info_model$n_ov, 
+                                                       n = internal_list$info_model$n_ov)
+  
+  
   # populate slots of ..$zero_one_matrices
   internal_list$interventional_distribution$zero_one_matrices$select_intervention <- select_intervention
   internal_list$interventional_distribution$zero_one_matrices$select_non_intervention <- select_non_intervention
   internal_list$interventional_distribution$zero_one_matrices$eliminate_intervention <- eliminate_intervention
+  internal_list$interventional_distribution$zero_one_matrices$duplication_matrix <- duplication_matrix
+  internal_list$interventional_distribution$zero_one_matrices$elimination_matrix <- elimination_matrix
+  internal_list$interventional_distribution$zero_one_matrices$commutation_matrix <- commutation_matrix
+  
   
   # console output
   if( verbose >= 2 ) cat( paste0( "  end of function ", fun.name.version, " ", Sys.time(), "\n" ) )

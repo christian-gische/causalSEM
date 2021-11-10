@@ -1,4 +1,6 @@
 ## Changelog:
+# CG 0.0.5 2021-11-09: create slots for eliminiation, duplication
+#                      and commutation matrix
 # CG 0.0.4 2021-09-24: create slot 'interventional_distribution'
 #                      update Documentation 
 # MA 0.0.3 2021-09-09: added 'derivative' slot to 'C' and 'Psi'
@@ -50,6 +52,9 @@
 #'      .. .. $ select_intervention: num[0, 0]  \tab \tab selection matrix for entries that are intervened on \cr
 #'      .. .. $ select_non_intervention: num[0, 0]  \tab \tab selection matrix for entries that are NOT intervened on \cr
 #'      .. .. $ eliminate_intervention: num[0, 0]  \tab \tab matrix that replaces entries that are intervened on by zero \cr
+#'      .. .. $ duplication_matrix: num[0, 0]  \tab \tab maps vech(A) onto vec(A) for symmetric A \cr
+#'      .. .. $ elimination_matrix: num[0, 0]  \tab \tab maps vec(A) onto vech(A) \cr
+#'      .. .. $ commutation_matrix: num[0, 0]  \tab \tab maps vech(A) onto vec(A') \cr
 #'      ..$ moments : List of 2    \tab \tab \cr
 #'      .. .. $ mean_vector: num(0)  \tab \tab mean vector of the interventional distribution  \cr
 #'      .. .. $ variance_matrix: num[0, 0]  \tab \tab variance-covariance matrix of the interventional distribution \cr
@@ -249,7 +254,23 @@ make_empty_list <- function( verbose=NULL ){
 		    # matrix that replaces entries that are intervened on by zero
 		    # see Definition 1 point 4 in Gische and Voelkle (2021)
 		    # numeric matrix of dimension n_ov x n_ov
-		    "eliminate_intervention" = matrix(numeric(0))[-1,-1]
+		    "eliminate_intervention" = matrix(numeric(0))[-1,-1],
+		    
+		    # zero-one matrix that maps vech(A) onto vec(A) 
+		    # for symmetric A
+		    # numeric matrix of dimension (n_ov^2) x (1/2*n_ov*(n_ov+1))
+		    "duplication_matrix" = matrix(numeric(0))[-1,-1],  
+		    
+		    # zero-one matrix that eliminates from vec(A)
+		    # the supradiagonal elements of A. In other words,
+		    # it maps vec(A) onto vech(A).
+		    # numeric matrix of dimension (1/2*n_ov*(n_ov+1)) x (n_ov^2)
+		    "elimination_matrix" = matrix(numeric(0))[-1,-1],  
+		    
+		    # zero-one matrix that transforms vec(A) into vec(A')
+		    # numeric matrix of dimension (n_ov^2) x (n_ov^2)
+		    "commutation_matrix" = matrix(numeric(0))[-1,-1]  
+		    
 		  ),
 		  
 		  moments = list(

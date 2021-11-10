@@ -1,6 +1,9 @@
 ## Changelog:
-# MA 0.0.1 2021-10-28: initial programming
+# CG 0.0.3 2021-11-09: get elimination, duplication and commutation
+# matrix from internal list, respectively.
 # MA 0.0.2 2021-10-31: initial programming
+# MA 0.0.1 2021-10-28: initial programming
+
 
 ## Documentation
 #' @title Calculate asymptotic standard errors of the interventional
@@ -27,7 +30,7 @@ calc_ase_probability <- function(internal_list) {
   fun_name <- "ase_probability"
 
   # function version
-  fun_version <- "0.0.2 2021-10-31"
+  fun_version <- "0.0.3 2021-11-09"
 
   # function name+version
   fun_name_version <- paste0(fun_name, " (", fun_version, ")")
@@ -72,9 +75,12 @@ calc_ase_probability <- function(internal_list) {
   i_j[j, 1] <- 1
 
   # Elimination, duplication, and commutation matrices
-  L_n <- matrixcalc::elimination.matrix(n = n)
-  D_n <- lavaan::lav_matrix_duplication(n = n)
-  K_n <- lavaan::lav_matrix_commutation(m = n, n = n)
+  # CG 0.0.3 2021-11-09: get elimination, duplication and commutation
+  # matrix from internal list, respectively.
+  L_n <- internal_list$interventional_distribution$zero_one_matrices$elimination_matrix
+  D_n <- internal_list$interventional_distribution$zero_one_matrices$duplication_matrix
+  K_n <- internal_list$interventional_distribution$zero_one_matrices$commutation_matrix
+  
   ## Select outcome
   i_jDn <- matrix(0, nrow = n^2, ncol = 1)
   i_jDn[(j - 1)*n +j] <- 1

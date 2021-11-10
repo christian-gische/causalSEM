@@ -1,8 +1,12 @@
 ## Changelog:
-# MA 0.0.1 2021-10-14: initial programming
+# CG 0.0.4 2021-11-10: corrected formula for jac_g2
+#                      corrected formula for ase_variances
+# CG 0.0.3 2021-11-09: get elimination, duplication and commutation
+# matrix from internal list, respectively.
 # MA 0.0.2 2021-10-31: - uncommented gamma_1 and gamma_2
 #                      - some asymptotic standard errors are zero. This is
 #                      - not correct
+# MA 0.0.1 2021-10-14: initial programming
 
 
 
@@ -61,13 +65,15 @@ calculate_ase <- function(internal_list) {
 
   # Selection
   ONE_I <- internal_list$interventional_distribution$zero_one_matrices$select_intervention
-  I_N <- internal_list$interventional_distribution$zero_one_matrices$eliminate_interventio
+  I_N <- internal_list$interventional_distribution$zero_one_matrices$eliminate_intervention
 
   # Elimination, duplication, and commutation matrices
-  L_n <- matrixcalc::elimination.matrix(n = n)
-  D_n <- lavaan::lav_matrix_duplication(n = n)
-  K_n <- lavaan::lav_matrix_commutation(m = n, n = n)
-
+  # CG 0.0.3 2021-11-09: get elimination, duplication and commutation
+  # matrix from internal list, respectively.
+  L_n <- internal_list$interventional_distribution$zero_one_matrices$elimination_matrix
+  D_n <- internal_list$interventional_distribution$zero_one_matrices$duplication_matrix
+  K_n <- internal_list$interventional_distribution$zero_one_matrices$commutation_matrix
+  
   # C and Psi matrices
   C <- internal_list$info_model$C$values
   Psi <- internal_list$info_model$Psi$values
@@ -103,7 +109,8 @@ calculate_ase <- function(internal_list) {
 
   G_2Psi <- kronecker(X = C_trans, Y = C_trans) %*% kronecker(X = I_N, Y = I_N)
 
-  jac_g2 <- L_n %*% (G_2C %*% jac_C + G_2Psi %*% jac_Psi)
+  # CG 0.0.4 2021-11-10: corrected formula for jac_g2 
+  jac_g2 <- G_2C %*% jac_C + G_2Psi %*% jac_Psi
 
 
   # Calculate asymptotic covariances ----
@@ -117,16 +124,26 @@ calculate_ase <- function(internal_list) {
 
   ase_gamma_1 <- sqrt(diag(AV_gamma_1))
 
-  ## Diagnonal values only?
-  ase_gamma_2 <- sqrt(diag(AV_gamma_2)[1:n * n])
-
+  # CG 0.0.4 2021-11-10: corrected formula for ase_variances
+  labels_AV_gamma_2 <- expand.grid(internal_list$info_model$var_names,internal_list$info_model$var_names)
+  labels_AV_gamma_2 <- paste0(labels_AV_gamma_2$Var1,labels_AV_gamma_2$Var2)
+  
+  AV_gamma_2 <- as.matrix(AV_gamma_2)
+  colnames(AV_gamma_2) <- labels_AV_gamma_2
+  rownames(AV_gamma_2) <- labels_AV_gamma_2
+  
+  variance_labels <- paste0(internal_list$info_model$var_names,internal_list$info_model$var_names)
+  
+  AV_variances <- AV_gamma_2[variance_labels,variance_labels]
+  
+  ase_variances <- sqrt(diag(AV_variances))
 
   # Calculate z-values
 
   z_gamma_1 <- gamma_1 / ase_gamma_1
 
   ## Are these the correct z-values
-  z_gamma_2 <- diag(gamma_2) / ase_gamma_2
+  z_variances <- diag(gamma_2) / ase_variances
 
 
   # Prepare output ----
@@ -140,16 +157,25 @@ calculate_ase <- function(internal_list) {
   internal_list$interventional_distribution$acov <- list(
     acov_means = AV_gamma_1,
     ase_se = AV_gamma_2
+    # TODO Change names of slots in list
+    # acov_mean_vector = AV_gamma_1,
+    # acov_vec_covariance_matrix = AV_gamma_2
   )
 
   internal_list$interventional_distribution$ase <- list(
     ase_means = ase_gamma_1,
-    ase_covariance = ase_gamma_2
+    ase_covariance = ase_variances
+    # TODO Change names of slots in list
+    # ase_interventional_means = AV_gamma_1,
+    # ase_interventional_variances = AV_gamma_2
   )
 
   internal_list$interventional_distribution$z_values <- list(
     z_means = z_gamma_1,
-    z_variance = z_gamma_2
+    z_variance = z_variances
+    # TODO Change names of slots in list
+    # z_interventional_means = AV_gamma_1,
+    # z_interventional_variances = AV_gamma_2
   )
 
   internal_list
