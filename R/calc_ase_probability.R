@@ -123,6 +123,7 @@ calc_ase_probability <- function(internal_list) {
 
   G_2Psi <- kronecker(X = C_trans, Y = C_trans) %*% kronecker(X = I_N, Y = I_N)
 
+  # Calculate Jacobian of g2
   jac_g2 <- L_n %*% (G_2C %*% jac_C + G_2Psi %*% jac_Psi)
 
 

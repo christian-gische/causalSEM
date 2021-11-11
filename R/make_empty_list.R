@@ -271,7 +271,7 @@ make_empty_list <- function( verbose=NULL ){
 		    # numeric matrix of dimension (n_ov^2) x (n_ov^2)
 		    "commutation_matrix" = matrix(numeric(0))[-1,-1]  
 		    
-		  ),
+		  ), # end of zero_one_matrices sublist
 		  
 		  moments = list(
 		    # mean vector of the interventional distribution 
@@ -283,24 +283,25 @@ make_empty_list <- function( verbose=NULL ){
 		    # see Equation (6b) in Gische and Voelkle (2021)
 		    # numeric matrix of dimension n_ov x n_ov
 		    "variance_matrix" = matrix(numeric(0))[-1,-1]
-		  ),
+		  ), # end of interventional moments sublist 
 		  
 		  density = list(
-		    # probability density function interventional distribution
+		    # probability density function of interventional distribution
 		    # see Equation (9) in Gische and Voelkle (2021)
 		    # numeric matrix of with two columns 
 		    # 1 column: grid that captures the range of the outcome variable
 		    # 2 column: values of the pdf
 		    "pdf" = matrix(numeric(0))[-1,-1]
-		  ),
+		    
+		  ), # end of density sublist 
 		  
 		  probability = list(
 		    # probability of interventional event
 		    # see Equation (10) in Gische and Voelkle (2021)
 		    # single numeric number
 		    "p" = numeric(0)
-		  )
-		),
+		  ) # end of probability sublist 
+		), # end of interventional_distribution sublist
 		
 		# control list
 		control = list( # verbosity of console output

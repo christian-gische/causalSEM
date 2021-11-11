@@ -2,11 +2,11 @@
 # CG 0.0.1 2021-11-10: initial programming
 
 ## Documentation
-#' @title Function to calculate Jacobian of interventional mean vector over a grid of 
-#' interventional levels
-#' @description Internal function that calculates Jacobian of interventional mean vector
-#'    over a grid of interventional levels (can be used with scalars or vectors as inputs)
-#' @param x (grid of) interventional level(s) 
+#' @title Function to calculate Jacobian of the interventional mean vector for a specific
+#' interventional level
+#' @description Internal function that calculates Jacobian of the interventional mean vector
+#'    for a specific interventional level
+#' @param x interventional level  
 #' @param verbose verbosity of console outputs
 #' @return \code{calculate_jacobian_interventional_means} returns the
 #'    Jacobian of interventional mean vector (numeric matrices) 
@@ -20,7 +20,7 @@
 calculate_jacobian_interventional_means <- function( x, verbose ){
   
   # function name
-  fun.name <- "calc_interventional_probability"
+  fun.name <- "calculate_jacobian_interventional_means"
   
   # function version
   fun.version <- "0.0.1 2021-11-10"
@@ -67,5 +67,5 @@ calculate_jacobian_interventional_means <- function( x, verbose ){
   return( jac_g1 )
 }
   
-  
+
 

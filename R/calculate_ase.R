@@ -1,5 +1,6 @@
 ## Changelog:
-# CG 0.0.4 2021-11-10: corrected formula for jac_g2
+# CG 0.0.4 2021-11-10: added formula for jac_g2 for 
+#                      vectorized variance-covariance matrix
 #                      corrected formula for ase_variances
 # CG 0.0.3 2021-11-09: get elimination, duplication and commutation
 # matrix from internal list, respectively.
@@ -109,8 +110,10 @@ calculate_ase <- function(internal_list) {
 
   G_2Psi <- kronecker(X = C_trans, Y = C_trans) %*% kronecker(X = I_N, Y = I_N)
 
-  # CG 0.0.4 2021-11-10: corrected formula for jac_g2 
-  jac_g2 <- G_2C %*% jac_C + G_2Psi %*% jac_Psi
+  # CG 0.0.4 2021-11-10: added formula for jac_g2 for 
+  # vectorized variance-covariance matrix
+  jac_g2 <- L_n %*% (G_2C %*% jac_C + G_2Psi %*% jac_Psi)
+  jac_g2_vec <-  (G_2C %*% jac_C + G_2Psi %*% jac_Psi)
 
 
   # Calculate asymptotic covariances ----
@@ -118,6 +121,7 @@ calculate_ase <- function(internal_list) {
   AV_gamma_1 <- jac_g1 %*% acov %*% t(jac_g1)
 
   AV_gamma_2 <- jac_g2 %*% acov %*% t(jac_g2)
+  AV_gamma_2_vec <- jac_g2_vec %*% acov %*% t(jac_g2_vec)
 
 
   # Calculate asymptotic standard errors ----
@@ -125,16 +129,16 @@ calculate_ase <- function(internal_list) {
   ase_gamma_1 <- sqrt(diag(AV_gamma_1))
 
   # CG 0.0.4 2021-11-10: corrected formula for ase_variances
-  labels_AV_gamma_2 <- expand.grid(internal_list$info_model$var_names,internal_list$info_model$var_names)
-  labels_AV_gamma_2 <- paste0(labels_AV_gamma_2$Var1,labels_AV_gamma_2$Var2)
+  labels_AV_gamma_2_vec <- expand.grid(internal_list$info_model$var_names,internal_list$info_model$var_names)
+  labels_AV_gamma_2_vec <- paste0(labels_AV_gamma_2_vec$Var1,labels_AV_gamma_2_vec$Var2)
   
-  AV_gamma_2 <- as.matrix(AV_gamma_2)
-  colnames(AV_gamma_2) <- labels_AV_gamma_2
-  rownames(AV_gamma_2) <- labels_AV_gamma_2
+  AV_gamma_2_vec <- as.matrix(AV_gamma_2_vec)
+  colnames(AV_gamma_2_vec) <- labels_AV_gamma_2_vec
+  rownames(AV_gamma_2_vec) <- labels_AV_gamma_2_vec
   
   variance_labels <- paste0(internal_list$info_model$var_names,internal_list$info_model$var_names)
   
-  AV_variances <- AV_gamma_2[variance_labels,variance_labels]
+  AV_variances <- AV_gamma_2_vec[variance_labels,variance_labels]
   
   ase_variances <- sqrt(diag(AV_variances))
 
@@ -158,8 +162,8 @@ calculate_ase <- function(internal_list) {
     acov_means = AV_gamma_1,
     ase_se = AV_gamma_2
     # TODO Change names of slots in list
-    # acov_mean_vector = AV_gamma_1,
-    # acov_vec_covariance_matrix = AV_gamma_2
+    # acov_interventional_means = AV_gamma_1,
+    # acov_vec_intervenional_covariance_matrix = AV_gamma_2
   )
 
   internal_list$interventional_distribution$ase <- list(

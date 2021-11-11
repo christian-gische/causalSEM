@@ -1,4 +1,6 @@
 ## Changelog:
+# CG 0.0.9 2021-11-11: replaced add_derivative function by the functions
+#                      calculate_jacobian_C and calculate_jacobian_Psi
 # MA 0.0.8 2021-10-31: addes calculate_ase, calc_se_proability, and class
 # CG 0.0.7 2021-10-28: added @exprt to preamble
 # MH 0.0.6 2021-10-25:
@@ -91,9 +93,15 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
 
   # build vector of distinct, functionally independent parameters
   internal_list <- build_theta( internal_list = internal_list )
+  
+  # CG 0.0.9 2021-11-11: replaced add_derivative function by the functions
+  #                      calculate_jacobian_C and calculate_jacobian_Psi
 
-  # get partial derivatives of C and Psi with respect to parameters
-  internal_list <- add_derivative( internal_list = internal_list )
+  # get Jacobian of C with respect to parameters
+  internal_list <- calculate_jacobian_C( internal_list = internal_list )
+  
+  # get Jacobian of Psi with respect to parameters
+  internal_list <- calculate_jacobian_Psi( internal_list = internal_list )
 
   # Calculates interventional moments
   # MH 0.0.6 2021-10-25: changed call "interventional_moment()" to "interventional_moments()" (with "s")
