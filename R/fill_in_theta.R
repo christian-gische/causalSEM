@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.4 2021-11-18: change name of function from build_theta to fill_in_theta 
 # CG 0.0.3 2021-09-09: updated comments; added comment of checks
 # CG 0.0.2 2021-09-02: updated code; roxygen documentation added
 # CG 0.0.1 2021-07-29: initial programming
@@ -18,7 +19,7 @@
 #'   Supported fitted objects: lavaan.
 #' @param internal_list A list with various information extracted from the
 #'    model.
-#' @return \code{build_theta} returns the inputted internal_list with slot
+#' @return \code{fill_in_theta} returns the inputted internal_list with slot
 #'    param populated with a five-entry list:
 #'    "n_par" is an integer indicating the total number of estimated parameters
 #'     (potential duplicates due to symmetry or equality constraints are counted).
@@ -30,20 +31,20 @@
 #'     (estimates) of distinct and functionally unrelated parameters.
 #'    "varcov_par_unique" is a numeric matrix containing equal to the variance-covariance
 #'      matrix of the estimator of distinct and functionally unrelated parameters.
-#' @seealso \code{\link{build_Psi, build_C}}
+#' @seealso \code{\link{fill_in_Psi, fill_in_C}}
 #' @references
 #' Gische, C. & Voelkle, M. C. (under review). Beyond the mean: A flexible framework for
 #'    studying causal effects using linear models. \url{https://www.researchgate.net/profile/Christian-Gische/publication/335030449_Gische_Voelkle_Causal_Inference_in_Linear_Models/links/6054eb6e299bf1736755110b/Gische-Voelkle-Causal-Inference-in-Linear-Models.pdf}
 #' @keywords internal
 
 # function definition
-build_theta <- function( internal_list ){
+fill_in_theta <- function( internal_list ){
 
   # function name
-  fun.name <- "build_theta"
+  fun.name <- "fill_in_theta"
 
   # function version
-  fun.version <- "0.0.2 2021-09-02"
+  fun.version <- "0.0.4 2021-11-18"
 
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )

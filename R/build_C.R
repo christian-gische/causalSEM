@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.7 2021-11-18: changed name of called funtion to add_labels_in_lavaan_parTable
 # MH 0.0.6 2021-09-21: "development" section updated
 # MA 0.0.5 2021-09-09:
 #    -- build_C only alters the 'values' and 'labels' slots without overwriting
@@ -101,7 +102,8 @@ build_C <- function( internal_list ){
 		# parameter table
 		# partab <- parTable( fit )
 		# MH 0.0.4 2021-09-08 call of lav_parTable_fill_labels
-		partab <- lav_parTable_fill_labels( internal_list )
+		# CG 0.0.7 2021-11-18: changed name of called funtion to add_labels_in_lavaan_parTable 
+		partab <- add_labels_in_lavaan_parTable( internal_list )
 
 		# loop over elements of C.lab matrix
 		for ( r in 1:nrow( C.lab ) ){

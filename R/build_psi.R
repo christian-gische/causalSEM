@@ -60,6 +60,8 @@ build_Psi <- function(internal_list) {
 
   # label unlabelled parameters
   ### Would be better to do this in some preprocessing step
+  # TODO Call the function add_labels_in_lavaan_parTable.R 
+  # (see fill_in_C.R function [old name: build_C-R])
   unlabelled_params <- which(lav_ParTable[, "label"] == "")
   lav_ParTable[unlabelled_params, "label"] <- apply(
     lav_ParTable[unlabelled_params, 2:4], MARGIN = 1, FUN = paste, collapse = ""

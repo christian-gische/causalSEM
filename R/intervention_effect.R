@@ -74,7 +74,7 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
                                         model = model )
 
   # fills (some) slots in info_intervention
-  internal_list <-  populate_intervention_info(internal_list = internal_list,
+  internal_list <-  fill_in_info_interventions(internal_list = internal_list,
                                                intervention = intervention,
                                                outcome = outcome,
                                                intervention_level = intervention_level,
@@ -92,7 +92,7 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   internal_list <- build_Psi( internal_list = internal_list )
 
   # build vector of distinct, functionally independent parameters
-  internal_list <- build_theta( internal_list = internal_list )
+  internal_list <- fill_in_theta( internal_list = internal_list )
   
   # CG 0.0.9 2021-11-11: replaced add_derivative function by the functions
   #                      calculate_jacobian_C and calculate_jacobian_Psi

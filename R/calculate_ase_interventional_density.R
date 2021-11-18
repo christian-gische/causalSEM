@@ -1,12 +1,13 @@
 ## Changelog:
 # CG 0.0.2 2021-11-18: adding the user specified argument model which CURRENTLY NEEDS 
 #                      TO BE THE internal_list
+#                      changed name of function from _pdf to _density
 # CG 0.0.1 2021-11-11: initial programming
 
 ## Documentation
 #' @title Calculate asymptotic standard errors of the interventional pdf for a specific
 #' interventional level and a specific value in the range of the outcome variable
-#' @description The function calculate_ase_interventional_pdf() calculates the asysmptotic 
+#' @description The function calculate_ase_interventional_density() calculates the asysmptotic 
 #' covariance matrix, the aysmptotic standard errors, and the z-value of the 
 #' the interventional pdf for a specific interventional level and a specific value 
 #' in the range of the outcome variable. Currently, the function only accepts a 
@@ -17,7 +18,7 @@
 #' @param intervention_names names of interventional variables
 #' @param outcome_names name of outcome variable 
 #' @param verbose verbosity of console outputs
-#' @return \code{calculate_ase_interventional_pdf} returns the 
+#' @return \code{calculate_ase_interventional_density} returns the 
 #' asysmptotic covariance matrix, the aysmptotic standard errors, and the approximate z-value of the 
 #' the interventional pdf for a specific interventional level and a specific value 
 #' in the range of the outcome variable (see Corollaries, 10, 11 in Gische and Voelkle, 2021)
@@ -25,10 +26,10 @@
 #' Gische, C. & Voelkle, M. C. (under review). Beyond the mean: A flexible framework for
 #'    studying causal effects using linear models. \url{https://www.researchgate.net/profile/Christian-Gische/publication/335030449_Gische_Voelkle_Causal_Inference_in_Linear_Models/links/6054eb6e299bf1736755110b/Gische-Voelkle-Causal-Inference-in-Linear-Models.pdf}
 
-calculate_ase_interventional_pdf <- function(model, x, y, intervention_names, outcome_name, verbose) {
+calculate_ase_interventional_density <- function(model, x, y, intervention_names, outcome_name, verbose) {
   
   # function name
-  fun_name <- "calculate_ase_interventional_pdf"
+  fun_name <- "calculate_ase_interventional_density"
   
   # function version
   fun_version <- "0.0.2 2021-11-18"
@@ -93,7 +94,7 @@ calculate_ase_interventional_pdf <- function(model, x, y, intervention_names, ou
   gamma_3 <- dnorm( y_value, mean=E, sd=sqrt(V) )
   
   # compute jacobian of the pdf
-  jac_gamma_3 <- calculate_jacobian_interventional_pdf( x = x_values,
+  jac_gamma_3 <- calculate_jacobian_interventional_density( x = x_values,
                                                         y = y_value,
                                                         intervention_names = "x2", 
                                                         outcome_name = "y3", 

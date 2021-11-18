@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.3 2021-11-18: changed name from populate_intervention_info to fill_in_info_interventions
 # CG 0.0.2 2021-10-28: added comments / todos before lower.bounds
 # CG 0.0.1 2021-10-01: initial programming
 
@@ -8,7 +9,7 @@
 #'    of the intervention_effect function.
 #' @param internal_list A list with various information extracted from the
 #'    model.
-#' @return \code{populate_intervention_info} returns the inputted internal_list with slots
+#' @return \code{fill_in_info_interventions} returns the inputted internal_list with slots
 #'    \code{n_intervention}, \code{intervention_name}, \code{intervention_level},
 #'    \code{effect_type}, \code{n_outcome}, \code{outcome_name},  
 #'    \code{lower_bound}, and \code{upper_bound} populated.
@@ -19,14 +20,14 @@
 #' @keywords internal
 
 ## Function definition
-populate_intervention_info <- function(internal_list, intervention, outcome, intervention_level,
+fill_in_info_interventions <- function(internal_list, intervention, outcome, intervention_level,
                                        effect.type, lower.bound, upper.bound){
   
   # function name
-  fun.name <- "populate_intervention_info"
+  fun.name <- "fill_in_info_interventions"
   
   # function version
-  fun.version <- "0.0.1 2021-10-01"
+  fun.version <- "0.0.3 2021-11-18"
   
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )

@@ -1,4 +1,6 @@
 ## Changelog:
+# CG 0.0.2 2021-11-18: changed name from lav_parTable_fill_labels.R
+#                      to add_labels_in_lavaan_parTable.R
 # CG 0.0.2 2021-09-09: update verbose handling
 # CG 0.0.1 2021-09-04: initial programing
 
@@ -7,18 +9,18 @@
 #' @description Internal function that fills in default labels from the lavaan model syntax into empty slots (i.e., parameters that do not have a user specified label) of the lavaan parTable object.
 #' @param internal_list a list with various information extracted from the
 #' model.
-#' @return \code{lav_parTable_fill_labels} returns a lavaan parTable object where empty slots (i.e., parameters that do not have a user specified label) in the original parTable object have been filled in with default labels from the lavaan model syntax.
+#' @return \code{add_labels_in_lavaan_parTable} returns a lavaan parTable object where empty slots (i.e., parameters that do not have a user specified label) in the original parTable object have been filled in with default labels from the lavaan model syntax.
 #' @references
 #' Gische, C. & Voelkle, M. C. (under review???). Beyond the mean: A flexible framework for studying causal effects using linear models
 #' \href{https://www.researchgate.net/profile/Christian-Gische/publication/335030449_Gische_Voelkle_Causal_Inference_in_Linear_Models/links/6054eb6e299bf1736755110b/Gische-Voelkle-Causal-Inference-in-Linear-Models.pdf}
 
-lav_parTable_fill_labels <- function(internal_list) {
+add_labels_in_lavaan_parTable <- function(internal_list) {
   
   # function name
-  fun.name <- "lav_parTable_fill_labels"
+  fun.name <- "add_labels_in_lavaan_parTable"
   
   # function version
-  fun.version <- "0.0.2 2021-09-09"
+  fun.version <- "0.0.3 2021-11-18"
   
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )

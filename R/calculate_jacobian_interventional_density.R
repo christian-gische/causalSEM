@@ -1,6 +1,7 @@
 ## Changelog:
-# CG 0.0.2 2021-11-18: adding the user specified argument model which CURRENTLY NEEDS 
+# CG 0.0.2 2021-11-18: added the user specified argument model which CURRENTLY NEEDS 
 #                      TO BE THE internal_list
+#                      changed name of function from _pdf to _density
 # CG 0.0.1 2021-11-11: initial programming
 
 ## Documentation
@@ -14,8 +15,8 @@
 #' @param intervention_names names of interventional variables
 #' @param outcome_names name of outcome variable 
 #' @param verbose verbosity of console outputs
-#' @return \code{calculate_jacobian_interventional_pdf} returns the
-#'    Jacobian of interventional pdf (numeric value) 
+#' @return \code{calculate_jacobian_interventional_density} returns the
+#'    Jacobian of interventional probability density function (numeric value) 
 #'    as defined in Eq. 18c (p. 17)
 #' @references
 #' Gische, C. & Voelkle, M. C. (under review). Beyond the mean: A flexible framework for
@@ -23,10 +24,10 @@
 #' @keywords internal
 
 ## Function definition
-calculate_jacobian_interventional_pdf <- function( model, x, y, intervention_names, outcome_name, verbose ){
+calculate_jacobian_interventional_density <- function( model, x, y, intervention_names, outcome_name, verbose ){
   
   # function name
-  fun.name <- "calculate_jacobian_interventional_pdf"
+  fun.name <- "calculate_jacobian_interventional_density"
   
   # function version
   fun.version <- "0.0.2 2021-11-18"
