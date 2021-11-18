@@ -1,4 +1,6 @@
 ## Changelog:
+# CG 0.0.2 2021-11-18: adding the user specified argument model which CURRENTLY NEEDS 
+#                      TO BE THE internal_list
 # CG 0.0.1 2021-11-11: initial programming
 
 ## Documentation
@@ -9,6 +11,7 @@
 #' the interventional pdf for a specific interventional level and a specific value 
 #' in the range of the outcome variable. Currently, the function only accepts a 
 #' single scalar outcome variable.
+#' @param model internal_list or object of class causalSEM 
 #' @param x interventional level 
 #' @param y value in the range of the outcome variable
 #' @param intervention_names names of interventional variables
@@ -22,13 +25,13 @@
 #' Gische, C. & Voelkle, M. C. (under review). Beyond the mean: A flexible framework for
 #'    studying causal effects using linear models. \url{https://www.researchgate.net/profile/Christian-Gische/publication/335030449_Gische_Voelkle_Causal_Inference_in_Linear_Models/links/6054eb6e299bf1736755110b/Gische-Voelkle-Causal-Inference-in-Linear-Models.pdf}
 
-calculate_ase_interventional_pdf <- function(x, y, intervention_names, outcome_name, verbose) {
+calculate_ase_interventional_pdf <- function(model, x, y, intervention_names, outcome_name, verbose) {
   
   # function name
   fun_name <- "calculate_ase_interventional_pdf"
   
   # function version
-  fun_version <- "0.0.1 2021-11-11"
+  fun_version <- "0.0.2 2021-11-18"
   
   # function name+version
   fun_name_version <- paste0(fun_name, " (", fun_version, ")")
@@ -40,6 +43,13 @@ calculate_ase_interventional_pdf <- function(x, y, intervention_names, outcome_n
   if (verbose >= 2) {
     cat(paste0("start of function ", fun_name_version, " ", Sys.time(), "\n"))
   }
+  
+  # TODO check if user argument model is the internal_list or
+  # an object of class causalSEM
+  # CURRENTLY, the function assumes that the input model is
+  # of type internal_list. After allowing for objects of class causalSEM
+  # the pathes starting with internal_list$ might need adjustment
+  
   
   # get variable names of interventional variables
   if( is.character( intervention_names ) && all( intervention_names %in% internal_list$info_model$var_names ) ){

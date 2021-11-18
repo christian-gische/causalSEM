@@ -1,4 +1,6 @@
 ## Changelog:
+# CG 0.0.2 2021-11-18: adding the user specified argument model which CURRENTLY NEEDS 
+#                      TO BE THE internal_list
 # CG 0.0.1 2021-11-11: initial programming
 
 ## Documentation
@@ -6,6 +8,7 @@
 #' interventional level and a specific value in the range of the outcome variable
 #' @description Internal function that calculates Jacobian of the interventional mean vector
 #'    for a specific interventional level and a specific value in the range of the outcome variable
+#' @param model internal_list or object of class causalSEM 
 #' @param x interventional level 
 #' @param y value in the range of the outcome variable
 #' @param intervention_names names of interventional variables
@@ -20,19 +23,27 @@
 #' @keywords internal
 
 ## Function definition
-calculate_jacobian_interventional_pdf <- function( x, y, intervention_names, outcome_name, verbose ){
+calculate_jacobian_interventional_pdf <- function( model, x, y, intervention_names, outcome_name, verbose ){
   
   # function name
   fun.name <- "calculate_jacobian_interventional_pdf"
   
   # function version
-  fun.version <- "0.0.1 2021-11-11"
+  fun.version <- "0.0.2 2021-11-18"
   
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
   
   # console output
   if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ", Sys.time(), "\n" ) )
+  
+  # TODO check if user argument model is the internal_list or
+  # an object of class causalSEM
+  # CURRENTLY, the function assumes that the input model is
+  # of type internal_list. After allowing for objects of class causalSEM
+  # the pathes starting with internal_list$ might need adjustment
+  
+ 
   
   # get variable names of interventional variables
   if( is.character( intervention_names ) && all( intervention_names %in% internal_list$info_model$var_names ) ){
@@ -63,6 +74,7 @@ calculate_jacobian_interventional_pdf <- function( x, y, intervention_names, out
   } else {
     y_value <- internal_list$interventional_distribution$moments$mean_vector[y_label,1]
   }
+  
   
   # get total number of variables
   # get number of unique parameters 
