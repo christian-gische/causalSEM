@@ -7,7 +7,7 @@
 #' interventional level and a specific value in the range of the outcome variable
 #' @description Internal function that calculates zero-one matrices needed for the computation
 #' of the interventional distribution
-#' @param model internal_list or object of class causalSEM 
+#' @param model internal_list or object of class  causalSEM
 #' @param intervention_names names of interventional variables
 #' @param outcome_names name of outcome variable 
 #' @param verbose verbosity of console outputs
@@ -24,6 +24,8 @@
 #'    studying causal effects using linear models. Psychometrika.
 #' @keywords internal
 
+# TODO if at one point we get runtime problems we might consider using the function
+# Matrix which uses sparsity information 
 ## Function definition
 calculate_zero_one_matrices <- function( model, intervention_names, outcome_names, verbose ){
   
@@ -112,6 +114,7 @@ calculate_zero_one_matrices <- function( model, intervention_names, outcome_name
   
   # Elimination, duplication, and commutation matrices
   # CG 0.0.2 2021-11-09: added elimination, duplication, and commutation matrix
+  # TODO compute the following three matrices by a different function?
   elimination_matrix <- matrixcalc::elimination.matrix(n = internal_list$info_model$n_ov)
   duplication_matrix <- lavaan::lav_matrix_duplication(n = internal_list$info_model$n_ov)
   commutation_matrix <- lavaan::lav_matrix_commutation(m = internal_list$info_model$n_ov, 
