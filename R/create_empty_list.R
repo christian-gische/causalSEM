@@ -1,4 +1,6 @@
 ## Changelog:
+# MH 0.0.8 2021-11-22: renamed from make_empty_list to create_empty_list
+# MH 0.0.7 2021-11-22: moments$variance_matrix changed to covariance_matrix
 # CG 0.0.6 2021-11-22: create slots for select outcome matrix
 # CG 0.0.5 2021-11-09: create slots for eliminiation, duplication
 #                      and commutation matrix
@@ -15,8 +17,8 @@
 #'    verbose argument is written into the internal list
 #' @param verbose A number, 0...no output (default), 1...user messages,
 #'    2...debugging-relevant messages. Valid default is
-#'    set by function \code{\link{verbose_argument_handling}}
-#' @return \code{make_empty_list} returns an empty internal list with structure:\cr
+#'    set by function \code{\link{handle_verbose_argument}}
+#' @return \code{create_empty_list} returns an empty internal list with structure:\cr
 #'  \code{\tabular{lll}{
 #'     List of 5\cr
 #'     $ fitted_object      : NULL           \tab \tab \cr
@@ -71,26 +73,26 @@
 #'  
 #'  
 #'  
-#' @seealso \code{\link{verbose_argument_handling}}
+#' @seealso \code{\link{handle_verbose_argument}}
 #' @references
 #' Gische, C. & Voelkle, M. C. (under review). Beyond the mean: A flexible framework for
 #'    studying causal effects using linear models. \url{https://www.researchgate.net/profile/Christian-Gische/publication/335030449_Gische_Voelkle_Causal_Inference_in_Linear_Models/links/6054eb6e299bf1736755110b/Gische-Voelkle-Causal-Inference-in-Linear-Models.pdf}
 #' @keywords internal
 
 ## Function definition
-make_empty_list <- function( verbose=NULL ){
+create_empty_list <- function( verbose=NULL ){
 
 	# function name
-	fun.name <- "make_empty_list"
+	fun.name <- "create_empty_list"
 
 	# function version
-	fun.version <- "0.0.1 2021-09-01"
+	fun.version <- "0.0.8 2021-11-22"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
 
 	# check verbose argument
-	verbose <- verbose_argument_handling( verbose )
+	verbose <- handle_verbose_argument( verbose )
 
 	# console output
 	if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ", Sys.time(), "\n" ) )
@@ -289,7 +291,8 @@ make_empty_list <- function( verbose=NULL ){
 		    # variance-covariance matrix of the interventional distribution
 		    # see Equation (6b) in Gische and Voelkle (2021)
 		    # numeric matrix of dimension n_ov x n_ov
-		    "variance_matrix" = matrix(numeric(0))[-1,-1]
+		    # MH 0.0.7 2021-11-22 variance_matrix changed to covariance_matrix
+			"covariance_matrix" = matrix(numeric(0))[-1,-1]
 		  ), # end of interventional moments sublist 
 		  
 		  density = list(
@@ -327,6 +330,6 @@ make_empty_list <- function( verbose=NULL ){
 }
 
 ## test/development
-# source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/verbose_argument_handling.R" )
-# internal_list <- make_empty_list()
+# source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/handle_verbose_argument.R" )
+# internal_list <- create_empty_list()
 # str( internal_list )

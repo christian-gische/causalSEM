@@ -128,7 +128,7 @@ fill_in_info_interventions <- function(internal_list, intervention, outcome, int
 }
 
 ## test/development
-#source( "C:/Users/Christian/Dropbox/causalSEM_R_Package/causalSEM/R/verbose_argument_handling.R" )
+#source( "C:/Users/Christian/Dropbox/causalSEM_R_Package/causalSEM/R/handle_verbose_argument.R" )
 #source( "C:/Users/Christian/Dropbox/causalSEM_R_Package/causalSEM/R/make_empty_list.R" )
 #source( "C:/Users/Christian/Dropbox/causalSEM_R_Package/causalSEM/R/populate_model_info.R" )
 
