@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.6 2021-11-22: create slots for select outcome matrix
 # CG 0.0.5 2021-11-09: create slots for eliminiation, duplication
 #                      and commutation matrix
 # CG 0.0.4 2021-09-24: create slot 'interventional_distribution'
@@ -52,6 +53,7 @@
 #'      .. .. $ select_intervention: num[0, 0]  \tab \tab selection matrix for entries that are intervened on \cr
 #'      .. .. $ select_non_intervention: num[0, 0]  \tab \tab selection matrix for entries that are NOT intervened on \cr
 #'      .. .. $ eliminate_intervention: num[0, 0]  \tab \tab matrix that replaces entries that are intervened on by zero \cr
+#'      .. .. $ select_outcome: num[0, 0]  \tab \tab selection matrix for outcomes of interest \cr
 #'      .. .. $ duplication_matrix: num[0, 0]  \tab \tab maps vech(A) onto vec(A) for symmetric A \cr
 #'      .. .. $ elimination_matrix: num[0, 0]  \tab \tab maps vec(A) onto vech(A) \cr
 #'      .. .. $ commutation_matrix: num[0, 0]  \tab \tab maps vech(A) onto vec(A') \cr
@@ -255,6 +257,11 @@ make_empty_list <- function( verbose=NULL ){
 		    # see Definition 1 point 4 in Gische and Voelkle (2021)
 		    # numeric matrix of dimension n_ov x n_ov
 		    "eliminate_intervention" = matrix(numeric(0))[-1,-1],
+		    
+		    # selection matrix for outcome variables of interest
+		    # numeric matrix of dimension n_ov x (number of outcome variables of interest)
+		    "select_outcome" = matrix(numeric(0))[-1,-1],  
+		    
 		    
 		    # zero-one matrix that maps vech(A) onto vec(A) 
 		    # for symmetric A

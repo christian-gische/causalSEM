@@ -1,4 +1,6 @@
 ## Changelog:
+# CG 0.0.3 2021-11-22: get jacobian of gamma1 and gamma2 by calling corresponding 
+#                      calculate_jacobian function 
 # CG 0.0.2 2021-11-18: added the user specified argument model which CURRENTLY NEEDS 
 #                      TO BE THE internal_list
 #                      changed name of function from _pdf to _density
@@ -30,7 +32,7 @@ calculate_jacobian_interventional_density <- function( model, x, y, intervention
   fun.name <- "calculate_jacobian_interventional_density"
   
   # function version
-  fun.version <- "0.0.2 2021-11-18"
+  fun.version <- "0.0.3 2021-11-22"
   
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -88,8 +90,7 @@ calculate_jacobian_interventional_density <- function( model, x, y, intervention
   E <- internal_list$interventional_distribution$moments$mean_vector[y_label,1]
   V <- internal_list$interventional_distribution$moments$variance_matrix[y_label,y_label]
   
-  # compute value of pdf
-  
+  # compute value of interventional density
   f <- dnorm( y_value, mean=E, sd=sqrt(V) )
   
   # compute G3mu and G3Sigma from Corollary 11 in Gische and Voelkle (2021)
@@ -108,68 +109,21 @@ calculate_jacobian_interventional_density <- function( model, x, y, intervention
   
   # get Jacobians of gamma1 and gamma2 and multiply by 
   # corresponding selection matrices 
-  # TODO: use handle verbose function instead of typting zero
   
-  jac_gamma_1 <- calculate_jacobian_interventional_means(x_values, 0)
-  
-  ############## 
-  # TODO: get jac_gamma_2 from the list or by calling the respective functions 
-  
-  I_n <- diag(n)
-  I_n2 <- diag(n^2)
-  
-  # Selection
-  ONE_I <- internal_list$interventional_distribution$zero_one_matrices$select_intervention
-  I_N <- internal_list$interventional_distribution$zero_one_matrices$eliminate_intervention
-  
-  # Elimination, duplication, and commutation matrices
-  # CG 0.0.3 2021-11-09: get elimination, duplication and commutation
-  # matrix from internal list, respectively.
-  L_n <- internal_list$interventional_distribution$zero_one_matrices$elimination_matrix
-  D_n <- internal_list$interventional_distribution$zero_one_matrices$duplication_matrix
-  K_n <- internal_list$interventional_distribution$zero_one_matrices$commutation_matrix
-  
-  # C and Psi matrices
-  C <- internal_list$info_model$C$values
-  Psi <- internal_list$info_model$Psi$values
-  
-  # Jacobian matrices
-  jac_C <- internal_list$info_model$C$derivative
-  jac_Psi <- internal_list$info_model$Psi$derivative
-  
-  # Asymptotic covariance matrix of the model parameters
-  acov <- internal_list$info_model$param$varcov_par_unique
-  
-  # Interventional means
-  gamma_1 <- internal_list$interventional_distribution$moments$mean_vector
-  
-  # Interventional covariance
-  gamma_2 <- internal_list$interventional_distribution$moments$variance_matrix
-  
-  # Compute transformation matrix
-  ## I cannot think of a better name. Feel free to change
-  C_trans <- solve(I_n - I_N %*% C)
+  jac_gamma_1 <- calculate_jacobian_interventional_means(model = internal_list, 
+                                                         x = x_values, 
+                                                         intervention_names = x_labels, 
+                                                         outcome_names = y_label, 
+                                                         verbose = internal_list$control$verbose)
   
   
-  # Calculate Jacobian g2 ----
   
-  G_2C <- (I_n2 + K_n) %*%
-    kronecker(X = C_trans %*% I_N %*% Psi %*% I_N, Y = I_n) %*%
-    kronecker(X = t(C_trans), Y = C_trans %*% I_N)
+  jac_gamma_2 <- calculate_jacobian_interventional_variances(model = internal_list, 
+                                                             intervention_names = x_labels, 
+                                                             outcome_names = y_label, 
+                                                             verbose = internal_list$control$verbose)
   
-  G_2Psi <- kronecker(X = C_trans, Y = C_trans) %*% kronecker(X = I_N, Y = I_N)
-  
-  # CG 0.0.4 2021-11-10: added formula for jac_g2 for 
-  # vectorized variance-covariance matrix
-  
-  jac_g2 <- L_n %*% (G_2C %*% jac_C + G_2Psi %*% jac_Psi)
-  
-  ## end of TODO section
-  ##########################
-  
-  jac_gamma_2 <- jac_g2
-  
-  
+ 
   jac_gamma_1_selected <- t(ONE_N) %*% jac_gamma_1
   jac_gamma_2_selected <- ((kronecker(X = t(ONE_N), Y = t(ONE_N))) %*%
                             internal_list$interventional_distribution$zero_one_matrices$duplication_matrix %*%
@@ -180,11 +134,11 @@ calculate_jacobian_interventional_density <- function( model, x, y, intervention
   
   J <- matrix(c(jac_gamma_1_selected, jac_gamma_2_selected), ncol = n_unique, nrow = 2, byrow = T)
   
-  # Compute Jacobian of gamma_4
+  # Compute Jacobian of gamma_3
   
   jac_gamma_3 <- f * G3 %*% J
   
-  # return Jacobian of gamma_4
+  # return Jacobian of gamma_3
   return( jac_gamma_3 )
   
   

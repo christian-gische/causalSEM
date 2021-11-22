@@ -1,4 +1,6 @@
 ## Changelog:
+# CG 0.0.10 2021-11-22: replaced build_zero_one_matrix function by 
+#                       fill_in_zero_one_matrices
 # CG 0.0.9 2021-11-11: replaced add_derivative function by the functions
 #                      calculate_jacobian_C and calculate_jacobian_Psi
 # MA 0.0.8 2021-10-31: addes calculate_ase, calc_se_proability, and class
@@ -83,7 +85,9 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
                                                upper.bound = upper.bound)
 
   # build zero-one matrices to compute interventional distribution
-  internal_list <- build_zero_one_matrix( internal_list = internal_list )
+  # CG 0.0.10 2021-11-22: replaced build_zero_one_matrix function by 
+  #                       fill_in_zero_one_matrices
+  internal_list <- fill_in_zero_one_matrices( internal_list = internal_list )
 
   # build matrix of structural coefficients
   internal_list <- build_C( internal_list = internal_list )
