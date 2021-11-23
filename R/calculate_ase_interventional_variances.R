@@ -76,7 +76,17 @@ calculate_ase_interventional_variances <- function(model, x, intervention_names,
     verbose = verbose
   )
 
-  jac_g2_vec <- K_n %*% (G_2C %*% jac_C + G_2Psi %*% jac_Psi)
+  # get zero one matrices
+  zero_one_matrices <- calculate_zero_one_matrices(
+    model = model,
+    intervention_names = intervention_names,
+    outcome_names = outcome_names,
+    verbose = verbose
+  )
+  D_n <- zero_one_matrices$duplication_matrix
+
+  # compute vectorized jacobian
+  jac_g2_vec <- D_n %*% jac_g2
 
   # get AV of parameter vector
   acov <- model$info_model$param$varcov_par_unique
@@ -85,16 +95,16 @@ calculate_ase_interventional_variances <- function(model, x, intervention_names,
   #acov_gamma_2 <- jac_g2 %*% acov %*% t(jac_g2)
   acov_gamma_2_vec <- jac_g2_vec %*% acov %*% t(jac_g2_vec)
 
-  labels_AV_gamma_2_vec <- expand.grid(model$info_model$var_names,model$info_model$var_names)
-  labels_AV_gamma_2_vec <- paste0(labels_AV_gamma_2_vec$Var1,labels_AV_gamma_2_vec$Var2)
+  labels_acov_gamma_2_vec <- expand.grid(model$info_model$var_names,model$info_model$var_names)
+  labels_acov_gamma_2_vec <- paste0(labels_acov_gamma_2_vec$Var1,labels_acov_gamma_2_vec$Var2)
 
-  AV_gamma_2_vec <- as.matrix(AV_gamma_2_vec)
-  colnames(AV_gamma_2_vec) <- labels_AV_gamma_2_vec
-  rownames(AV_gamma_2_vec) <- labels_AV_gamma_2_vec
+  acov_gamma_2_vec <- as.matrix(acov_gamma_2_vec)
+  colnames(acov_gamma_2_vec) <- labels_acov_gamma_2_vec
+  rownames(acov_gamma_2_vec) <- labels_acov_gamma_2_vec
 
   variance_labels <- paste0(model$info_model$var_names,model$info_model$var_names)
 
-  acov_variances <- AV_gamma_2_vec[variance_labels,variance_labels]
+  acov_variances <- acov_gamma_2_vec[variance_labels,variance_labels]
 
   # compute asymptotic standard errors
   ase_gamma_2 <- sqrt(diag(acov_variances))
