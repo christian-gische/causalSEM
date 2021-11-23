@@ -64,7 +64,7 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   # Check of supported class
   # Check if all variables are "manifest"
   # Check of verbosity argument
-  # using (or merging) the verbose_argument_handling function
+  # using (or merging) the handle_verbose_argument function
   # todo: allow object of class causalSEM as input to the
   # intervention effect function
   # check_arguments(model, intervention, outcome, levels, effect.type,
@@ -98,7 +98,7 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
                                                lower.bound = lower.bound,
                                                upper.bound = upper.bound)
 
-  # build zero-one matrices to compute interventional distribution
+  # fill in zero one matrices to compute interventional distribution
   # CG 0.0.10 2021-11-22: replaced build_zero_one_matrix function by 
   #                       fill_in_zero_one_matrices
   internal_list <- fill_in_zero_one_matrices( internal_list = internal_list )
