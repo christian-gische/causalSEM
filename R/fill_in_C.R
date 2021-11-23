@@ -1,13 +1,14 @@
 ## Changelog:
+# MH 0.0.8 2021-11-22: renamed build_C to fill_in_C
 # CG 0.0.7 2021-11-18: changed name of called funtion to add_labels_in_lavaan_parTable
 # MH 0.0.6 2021-09-21: "development" section updated
 # MA 0.0.5 2021-09-09:
-#    -- build_C only alters the 'values' and 'labels' slots without overwriting
+#    -- fill_in_C only alters the 'values' and 'labels' slots without overwriting
 #       the complete 'C' list
 # MH 0.0.4 2021-09-08:
 #    -- lav_parTable_fill_labels integrated
 #    -- reduction of C matrix for 1:1 mapped models
-#    -- tests with package testthat added: ..\tests\testthat\test_build_C.R
+#    -- tests with package testthat added: ..\tests\testthat\test_fill_in_C.R
 # MH 0.0.3 2021-09-01: C list is now correctly inputted into internal list
 # MH 0.0.2 2021-07-30:
 #    -- added documentation
@@ -20,7 +21,7 @@
 #'    structural equation model. Supported fitted objects: lavaan.
 #' @param internal_list A list with various information extracted from the
 #'    model.
-#' @return \code{build_C} returns the inputted internal_list with slot
+#' @return \code{fill_in_C} returns the inputted internal_list with slot
 #'    C populated with a two-entry list: "values" is a numeric matrix
 #'    containing the structural coefficients (if available with row- and
 #'    column names); "labels" is a character matrix containing parameter
@@ -32,13 +33,13 @@
 #' @keywords internal
 
 ## Function definition
-build_C <- function( internal_list ){
+fill_in_C <- function( internal_list ){
 
 	# function name
-	fun.name <- "build_C"
+	fun.name <- "fill_in_C"
 
 	# function version
-	fun.version <- "0.0.6 2021-09-21"
+	fun.version <- "0.0.8 2021-11-22"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -180,39 +181,39 @@ build_C <- function( internal_list ){
 }
 
 ### development
-# source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/verbose_argument_handling.R" )
-# source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/make_empty_list.R" )
-# source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/populate_model_info.R" )
-# source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/lav_parTable_fill_labels.R" )
+# source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/handle_verbose_argument.R" )
+# source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/create_empty_list.R" )
+# source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/fill_in_info_model.R" )
+# source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/add_labels_in_lavaan_parTable.R" )
 
 ## test object 00_lavaan_test_object
 # load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/00_lavaan_test_object.Rdata" ) )
-# o00_internal_list <- make_empty_list()
-# o00_internal_list <- populate_model_info( o00_internal_list, o00_lavaan_test_object )
-# o00_internal_list <- build_C( o00_internal_list )
+# o00_internal_list <- create_empty_list()
+# o00_internal_list <- fill_in_info_model( o00_internal_list, o00_lavaan_test_object )
+# o00_internal_list <- fill_in_C( o00_internal_list )
 # o00_internal_list$info_model$C
 
 ## test object 01_lavaan_test_object
 # load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/01_lavaan_test_object.Rdata" ) )
-# o01_internal_list <- make_empty_list()
-# o01_internal_list <- populate_model_info( o01_internal_list, o01_lavaan_test_object )
-# o01_internal_list <- build_C( o01_internal_list )
+# o01_internal_list <- create_empty_list()
+# o01_internal_list <- fill_in_info_model( o01_internal_list, o01_lavaan_test_object )
+# o01_internal_list <- fill_in_C( o01_internal_list )
 # o01_internal_list$info_model$C
 
 ## test object 02_lavaan_test_object
 # load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/02_lavaan_test_object.Rdata" ) )
-# o02_internal_list <- make_empty_list()
-# o02_internal_list <- populate_model_info( o02_internal_list, o02_lavaan_test_object )
-# o02_internal_list <- build_C( o02_internal_list )
+# o02_internal_list <- create_empty_list()
+# o02_internal_list <- fill_in_info_model( o02_internal_list, o02_lavaan_test_object )
+# o02_internal_list <- fill_in_C( o02_internal_list )
 # o02_internal_list$info_model$C
 
 ## test object 03_lavaan_test_object
 # load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/03_lavaan_test_object.Rdata" ) )
-# o03_internal_list <- make_empty_list()
-# o03_internal_list <- populate_model_info( o03_internal_list, o03_lavaan_test_object )
-# o03_internal_list <- build_C( o03_internal_list )
+# o03_internal_list <- create_empty_list()
+# o03_internal_list <- fill_in_info_model( o03_internal_list, o03_lavaan_test_object )
+# o03_internal_list <- fill_in_C( o03_internal_list )
 # o03_internal_list$info_model$C
 
 ### test
 # require( testthat )
-# test_file("../tests/testthat/test_build_C.R")
+# test_file("../tests/testthat/test_fill_in_C.R")

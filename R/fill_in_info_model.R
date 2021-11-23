@@ -1,4 +1,5 @@
 ## Changelog:
+# MH 0.0.5 2021-11-22: renamed from populate_model_info to fill_in_info_model
 # MA 0.0.4 2021-10-31: Added :: operator for lavInspect and lavNames
 # MH 0.0.3 2021-10-14: updated documentation
 # MA 0.0.2 2021-09-09: this function stores the model in the designated slot
@@ -13,7 +14,7 @@
 #' @param internal_list A list with various information extracted from the
 #'    model.
 #' @param model Fitted model. The fitted model can be of class lavaan.
-#' @return \code{populate_model_info} returns the inputted internal_list with slots
+#' @return \code{fill_in_info_model} returns the inputted internal_list with slots
 #'    \code{n_obs}, \code{n_ov}, and \code{var_names} populated.
 #' @seealso \code{\link{build_C}} \code{\link{build_Psi}}
 #' @references
@@ -22,13 +23,13 @@
 #' @keywords internal
 
 ## Function definition
-populate_model_info <- function(internal_list, model){
+fill_in_info_model <- function(internal_list, model){
 
 	# function name
-	fun.name <- "populate_model_info"
+	fun.name <- "fill_in_info_model"
 
 	# function version
-	fun.version <- "0.0.3 2021-10-14"
+	fun.version <- "0.0.5 2021-11-22"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -103,12 +104,12 @@ populate_model_info <- function(internal_list, model){
 }
 
 ## test/development
-# source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/verbose_argument_handling.R" )
+# source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/handle_verbose_argument.R" )
 # source( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R/make_empty_list.R" )
 ## load( "c:/Users/martin/Dropbox/68_causalSEM/91_zeug/fit.lcs2.Rdata" )
 # load( "c:/Users/martin/Dropbox/causalSEM_R_Package/test_object/01_lavaan_test_object.Rdata" )
 # internal_list <- make_empty_list()
 # internal_list$fitted_object <- o01_lavaan_test_object
 # internal_list$fitted_object_class <- class( o01_lavaan_test_object )
-# ( internal_list <- populate_model_info( internal_list ) )
+# ( internal_list <- fill_in_info_model( internal_list ) )
 # internal_list$info_model

@@ -1,4 +1,5 @@
 ## Changelog:
+# MH 0.0.3 2021-11-22: renamed from verbose_argument_handling to handle_verbose_argument
 # MH 0.0.2 2021-07-30: added documentation
 # MH 0.0.1 2021-07-20: initial programming
 
@@ -12,13 +13,13 @@
 #' @keywords internal
 
 # Function definition
-verbose_argument_handling <- function( verbose=c(0,1,2) ){
+handle_verbose_argument <- function( verbose=c(0,1,2) ){
 
 	# function name
-	fun.name <- "verbose_argument_handling"
+	fun.name <- "handle_verbose_argument"
 
 	# function version
-	fun.version <- "0.0.2 2021-07-30"
+	fun.version <- "0.0.3 2021-11-22"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -50,10 +51,10 @@ verbose_argument_handling <- function( verbose=c(0,1,2) ){
 }
 
 ## test/development
-# verbose_argument_handling()   # 0
-# verbose_argument_handling(0)  # 0
-# verbose_argument_handling(1)  # 1
-# verbose_argument_handling(2)  # 2
-# verbose_argument_handling(3)  # 0
-# verbose_argument_handling(NA) # 0
-# verbose_argument_handling(-1) # 0
+# handle_verbose_argument()   # 0
+# handle_verbose_argument(0)  # 0
+# handle_verbose_argument(1)  # 1
+# handle_verbose_argument(2)  # 2
+# handle_verbose_argument(3)  # 0
+# handle_verbose_argument(NA) # 0
+# handle_verbose_argument(-1) # 0

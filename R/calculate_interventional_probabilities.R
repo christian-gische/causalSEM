@@ -1,4 +1,5 @@
 ## Changelog:
+# MH 0.0.3 2021-11-22: renamed from calc_interventional_probability to calculate_interventional_probabilities
 # MH 0.0.2 2021-10-14: added loop over values
 # MH 0.0.1 2021-09-27: initial programming
 
@@ -11,7 +12,7 @@
 #' @param y_low lower bound(s)
 #' @param y_up upper bound(s)
 #' @param verbose verbosity of console outputs
-#' @return \code{calc_interventional_probability} returns the
+#' @return \code{calculate_interventional_probabilities} returns the
 #'    interventional probability/ies (numeric value/s) as defined in Eq. 22d (p. 22)
 #' @references
 #' Gische, C. & Voelkle, M. C. (under review). Beyond the mean: A flexible framework for
@@ -19,13 +20,13 @@
 #' @keywords internal
 
 ## Function definition
-calc_interventional_probability <- function( mean, sd, y_low, y_up, verbose ){
+calculate_interventional_probabilities <- function( mean, sd, y_low, y_up, verbose ){
 
 	# function name
-	fun.name <- "calc_interventional_probability"
+	fun.name <- "calculate_interventional_probabilities"
 
 	# function version
-	fun.version <- "0.0.2 2021-10-14"
+	fun.version <- "0.0.3 2021-11-22"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )

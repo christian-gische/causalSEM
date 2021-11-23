@@ -1,4 +1,13 @@
 ## Changelog:
+# MH 0.0.11 2021-11-22:
+#    -- disabled calc_ase_probability (crashes)
+#    -- disabled interventional_density, not needed anymore?
+#    -- interventional_moments splitted into
+#       fill_in_interventional_means / calculate_interventional_means
+#       fill_in_interventional_covariance_matrix / calculate_interventional_covariance_matrix
+#    -- call of interventional_probability changed to fill_in_interventional_probabilities
+#    -- call of populate_model_info changed to fill_in_info_model
+#    -- call of make_empty_list changed to create_empty_list
 # CG 0.0.10 2021-11-22: replaced build_zero_one_matrix function by 
 #                       fill_in_zero_one_matrices
 # CG 0.0.9 2021-11-11: replaced add_derivative function by the functions
@@ -43,7 +52,7 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   fun.name <- "intervention_effect"
 
   # function version
-  fun.version <- "0.0.8 2021-10-31"
+  fun.version <- "0.0.11 2021-11-22"
 
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -62,7 +71,9 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
                 # lower.bound, upper.bound, verbose ...)
 
   # creates empty list
-  internal_list <- make_empty_list( verbose=verbose )
+  # internal_list <- make_empty_list( verbose=verbose )
+  # MH 0.0.11 2021-11-22, changed to create_empty_list
+  internal_list <- create_empty_list( verbose=verbose )
 
   # get verbose argument
   verbose <- internal_list$control$verbose
@@ -72,8 +83,11 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
 
   # populate model info
   # fills (some) slots in info_model and fitted_object/class
-  internal_list <- populate_model_info( internal_list = internal_list,
-                                        model = model )
+  # internal_list <- populate_model_info( internal_list = internal_list,
+                                        # model = model )
+  # MH 0.0.11 2021-11-22, call of populate_model_info changed to fill_in_info_model
+  internal_list <- fill_in_info_model( internal_list = internal_list,
+                                               model = model )
 
   # fills (some) slots in info_intervention
   internal_list <-  fill_in_info_interventions(internal_list = internal_list,
@@ -90,7 +104,8 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   internal_list <- fill_in_zero_one_matrices( internal_list = internal_list )
 
   # build matrix of structural coefficients
-  internal_list <- build_C( internal_list = internal_list )
+  # MH 0.0.11 2021-11-22, call changed from build_C to fill_in_C
+  internal_list <- fill_in_C( internal_list = internal_list )
 
   # build variance-covariance matrix of error terms
   internal_list <- build_Psi( internal_list = internal_list )
@@ -109,19 +124,28 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
 
   # Calculates interventional moments
   # MH 0.0.6 2021-10-25: changed call "interventional_moment()" to "interventional_moments()" (with "s")
-  internal_list <- interventional_moments( internal_list = internal_list )
+  # internal_list <- interventional_moments( internal_list = internal_list )
+  # MH 0.0.11 2021-11-22: interventional_moments splitted into
+  #   fill_in_interventional_means / calculate_interventional_means
+  #   fill_in_interventional_covariance_matrix / calculate_interventional_covariance_matrix
+  internal_list <- fill_in_interventional_means( internal_list = internal_list )
+  internal_list <- fill_in_interventional_covariance_matrix( internal_list = internal_list )
 
   # calculates interventional density
-  internal_list <- interventional_density( internal_list = internal_list )
+  # MH 0.0.11 2021-11-22 disabled, not needed anymore?
+  # internal_list <- interventional_density( internal_list = internal_list )
 
   # Calculates interventional probability
-  internal_list <- interventional_probability( internal_list = internal_list )
+  # internal_list <- interventional_probability( internal_list = internal_list )
+  # MH 0.0.11 2021-11-22, call changed from interventional_probability to fill_in_interventional_probabilities
+  internal_list <- fill_in_interventional_probabilities( internal_list = internal_list )
 
   # Calculate asymptotic standard errors of the interventional mean and covariance matrix
   internal_list <- calculate_ase(internal_list = internal_list)
 
   # Calculate asymptotic standard errors of the interventional
-  internal_list <- calc_ase_probability(internal_list = internal_list)
+  # MH 0.0.11 2021-11-22 disabled/crashes
+  # internal_list <- calc_ase_probability(internal_list = internal_list)
 
   # Implement this when calc_ase_density is done
   #internal_list <- calc_ase_density(internal_list = internal_list)
@@ -135,4 +159,16 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   internal_list
 
   }
+
+
+### development
+# Rfiles <- list.files( "c:/Users/martin/Dropbox/68_causalSEM/04_martinhecht/R", pattern="*.R" )
+# Rfiles <- Rfiles[ !Rfiles %in% "intervention_effect.R" ]
+# for( Rfile in Rfiles ){
+	# source( Rfile )
+# }
+
+## test object 00_lavaan_test_object
+# load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/00_lavaan_test_object.Rdata" ) )
+# object00 <- intervention_effect( model=o00_lavaan_test_object,intervention="x2",intervention_level=2)
 
