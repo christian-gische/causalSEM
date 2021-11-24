@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.1 2021-11-24: replaced $variance with $covariance in internal list path
 # MA 0.0.1 2021-11-19: initial programming
 
 ## Documentation
@@ -66,7 +67,7 @@ calculate_ase_interventional_variances <- function(model, x, intervention_names,
 
   # get intervential means
   # TODO: assign E by calling the function calculate_interventional_means
-  gamma_2 <- model$interventional_distribution$moments$variance_matrix
+  gamma_2 <- model$interventional_distribution$moments$covariance_matrix
 
   # compute jacobian of the pdf
   jac_g2 <- calculate_jacobian_interventional_variances(

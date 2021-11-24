@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.5 2021-11-24: changed $variance to $covariance in internal_list path
 # CG 0.0.4 2021-11-10: added formula for jac_g2 for 
 #                      vectorized variance-covariance matrix
 #                      corrected formula for ase_variances
@@ -90,7 +91,7 @@ calculate_ase <- function(internal_list) {
   gamma_1 <- internal_list$interventional_distribution$moments$mean_vector
 
   # Interventional covariance
-  gamma_2 <- internal_list$interventional_distribution$moments$variance_matrix
+  gamma_2 <- internal_list$interventional_distribution$moments$covariance_matrix
 
   # Compute transformation matrix
   ## I cannot think of a better name. Feel free to change

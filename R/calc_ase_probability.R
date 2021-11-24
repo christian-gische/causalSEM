@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.4 2021-11-24: changed $variance to $covariance in internal_list path
 # CG 0.0.3 2021-11-09: get elimination, duplication and commutation
 # matrix from internal list, respectively.
 # MA 0.0.2 2021-10-31: initial programming
@@ -100,7 +101,7 @@ calc_ase_probability <- function(internal_list) {
   gamma_1 <- internal_list$interventional_distribution$moments$mean_vector
 
   # Interventional variance-covariance matrix
-  gamma_2 <- internal_list$interventional_distribution$moments$variance_matrix
+  gamma_2 <- internal_list$interventional_distribution$moments$covariance_matrix
 
   #
   gamma_4 <- internal_list$interventional_distribution$probability$p

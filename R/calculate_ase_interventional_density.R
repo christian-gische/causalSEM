@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.3 2021-11-24: changed $variance to $covariance in internal_list path
 # CG 0.0.2 2021-11-18: adding the user specified argument model which CURRENTLY NEEDS 
 #                      TO BE THE internal_list
 #                      changed name of function from _pdf to _density
@@ -88,7 +89,7 @@ calculate_ase_interventional_density <- function(model, x, y, intervention_names
   # get intervential mean and variance
   # TODO: assign E by calling the function calculate_interventional_means
   E <- internal_list$interventional_distribution$moments$mean_vector[y_label,1]
-  V <- internal_list$interventional_distribution$moments$variance_matrix[y_label,y_label]
+  V <- internal_list$interventional_distribution$moments$covariance_matrix[y_label,y_label]
   
   # compute value of pdf
   gamma_3 <- dnorm( y_value, mean=E, sd=sqrt(V) )

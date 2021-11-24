@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.3 2021-11-24: changed $variance to $covariance in internal_list path
 # MH 0.0.3 2021-11-22: renamed from interventional_probability to fill_in_interventional_probabilities
 # MH 0.0.2 2021-10-14: functional update
 # MH 0.0.1 2021-09-27: initial programming
@@ -45,7 +46,7 @@ fill_in_interventional_probabilities <- function( internal_list ){
 	} else {
 		# get intervential mean and variance
 		E <- internal_list$interventional_distribution$moments$mean_vector
-		V <- internal_list$interventional_distribution$moments$variance_matrix
+		V <- internal_list$interventional_distribution$moments$covariance_matrix
 		
 		# standard deviations (sqrt of diagonal elements of V)
 		sds <- sqrt( diag( V ) )

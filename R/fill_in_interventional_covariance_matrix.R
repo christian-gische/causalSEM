@@ -1,9 +1,10 @@
 ## Changelog:
+# CG 0.0.3 2021-11-24: changed $variance to $covariance in internal_list path
 # MH 0.0.1 2021-11-22: chunked from interventional_moments() 0.0.2 2021-10-14
 
 ## Documentation
 #' @title fill_in_interventional_covariance_matrix
-#' @description Fills in slot internal_list$interventional_distribution$moments$variance_matrix
+#' @description Fills in slot internal_list$interventional_distribution$moments$covariance_matrix
 #' @param internal_list A list with various information extracted from the
 #'    model.
 #' @return \code{fill_in_interventional_means} returns the inputted internal_list with slot

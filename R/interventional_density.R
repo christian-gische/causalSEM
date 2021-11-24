@@ -9,6 +9,7 @@
 # can be used in several of the functions suggested above
 
 ## Changelog:
+# CG 0.0.3 2021-11-24: changed $variance to $covariance in internal_list path
 # CG 0.0.4 2021-11-23: Added TODO above
 # MH 0.0.3 2021-10-31: test dummy se added
 # MH 0.0.2 2021-10-14: functional update
@@ -49,7 +50,7 @@ interventional_density <- function( internal_list ){
 
 	# get intervential mean and variance
 	E <- internal_list$interventional_distribution$moments$mean_vector
-	V <- internal_list$interventional_distribution$moments$variance_matrix
+	V <- internal_list$interventional_distribution$moments$covariance_matrix
 	
 	# standard deviations (sqrt of diagonal elements of V)
 	sds <- sqrt( diag( V ) )

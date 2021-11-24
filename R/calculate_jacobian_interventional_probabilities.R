@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.1 2021-11-24: changed $variane to $covariance in internal list
 # MA 0.0.1 2021-11-19: initial programming
 
 ## Documentation
@@ -93,7 +94,8 @@ calculate_jacobian_interventional_probabilities <- function(
   gamma_1 <- model$interventional_distribution$moments$mean_vector
 
   # Interventional variance-covariance matrix
-  gamma_2 <- model$interventional_distribution$moments$variance_matrix
+  # CG 0.0.1 2021-11-24: changed $variane to $covariance in internal list
+  gamma_2 <- model$interventional_distribution$moments$covariance_matrix
 
   # Compute transformation matrix
   C_trans <- solve(I_n - I_N %*% C)
