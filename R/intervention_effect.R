@@ -1,5 +1,6 @@
 ## Changelog:
-# CG 0.0.12 2021-11-24: add fill_in_asymptotics functions 
+# MA 0.0.13 2021-11-26, call changed from build_Psi to fill_in_Psi
+# CG 0.0.12 2021-11-24: add fill_in_asymptotics functions
 # MH 0.0.11 2021-11-22:
 #    -- disabled calc_ase_probability (crashes)
 #    -- disabled interventional_density, not needed anymore?
@@ -9,7 +10,7 @@
 #    -- call of interventional_probability changed to fill_in_interventional_probabilities
 #    -- call of populate_model_info changed to fill_in_info_model
 #    -- call of make_empty_list changed to create_empty_list
-# CG 0.0.10 2021-11-22: replaced build_zero_one_matrix function by 
+# CG 0.0.10 2021-11-22: replaced build_zero_one_matrix function by
 #                       fill_in_zero_one_matrices
 # CG 0.0.9 2021-11-11: replaced add_derivative function by the functions
 #                      calculate_jacobian_C and calculate_jacobian_Psi
@@ -53,7 +54,7 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   fun.name <- "intervention_effect"
 
   # function version
-  fun.version <- "0.0.11 2021-11-22"
+  fun.version <- "0.0.13 2021-11-22"
 
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -100,7 +101,7 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
                                                upper.bound = upper.bound)
 
   # fill in zero one matrices to compute interventional distribution
-  # CG 0.0.10 2021-11-22: replaced build_zero_one_matrix function by 
+  # CG 0.0.10 2021-11-22: replaced build_zero_one_matrix function by
   #                       fill_in_zero_one_matrices
   internal_list <- fill_in_zero_one_matrices( internal_list = internal_list )
 
@@ -109,17 +110,18 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   internal_list <- fill_in_C( internal_list = internal_list )
 
   # build variance-covariance matrix of error terms
-  internal_list <- build_Psi( internal_list = internal_list )
+  # MA 0.0.13 2021-11-26, call changed from build_Psi to fill_in_Psi
+  internal_list <- fill_in_Psi( internal_list = internal_list )
 
   # build vector of distinct, functionally independent parameters
   internal_list <- fill_in_theta( internal_list = internal_list )
-  
+
   # CG 0.0.9 2021-11-11: replaced add_derivative function by the functions
   #                      calculate_jacobian_C and calculate_jacobian_Psi
 
   # get Jacobian of C with respect to parameters
   internal_list <- calculate_jacobian_C( internal_list = internal_list )
-  
+
   # get Jacobian of Psi with respect to parameters
   internal_list <- calculate_jacobian_Psi( internal_list = internal_list )
 
@@ -140,13 +142,13 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   # internal_list <- interventional_probability( internal_list = internal_list )
   # MH 0.0.11 2021-11-22, call changed from interventional_probability to fill_in_interventional_probabilities
   internal_list <- fill_in_interventional_probabilities( internal_list = internal_list )
-  
-  # 
-  # CG 0.0.12 2021-11-24: add fill_in_asymptotics functions 
+
+  #
+  # CG 0.0.12 2021-11-24: add fill_in_asymptotics functions
   internal_list <- fill_in_asymptotics_interventional_means( internal_list = internal_list )
   internal_list <- fill_in_asymptotics_interventional_probabilities( internal_list = internal_list )
   internal_list <- fill_in_asymptotics_interventional_variances( internal_list = internal_list )
-  
+
   # Calculate asymptotic standard errors of the interventional mean and covariance matrix
   # internal_list <- calculate_ase(internal_list = internal_list)
 
