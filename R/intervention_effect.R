@@ -1,4 +1,8 @@
 ## Changelog:
+# MH 0.0.14 2021-11-30: disabled fill_in_asymptotics_interventional_probabilities, crashes
+#                       added call fill_in_interventional_density
+#                       added create_causalSEM_s3_object
+#                       changed return to causalSEM_object
 # MA 0.0.13 2021-11-26, call changed from build_Psi to fill_in_Psi
 # CG 0.0.12 2021-11-24: add fill_in_asymptotics functions
 # MH 0.0.11 2021-11-22:
@@ -54,7 +58,7 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   fun.name <- "intervention_effect"
 
   # function version
-  fun.version <- "0.0.13 2021-11-22"
+  fun.version <- "0.0.14 2021-11-30"
 
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -137,6 +141,8 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   # calculates interventional density
   # MH 0.0.11 2021-11-22 disabled, not needed anymore?
   # internal_list <- interventional_density( internal_list = internal_list )
+  # MH 0.0.14 2021-11-30, call of fill_in_interventional_density
+  internal_list <- fill_in_interventional_density( internal_list = internal_list )
 
   # Calculates interventional probability
   # internal_list <- interventional_probability( internal_list = internal_list )
@@ -146,7 +152,8 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   #
   # CG 0.0.12 2021-11-24: add fill_in_asymptotics functions
   internal_list <- fill_in_asymptotics_interventional_means( internal_list = internal_list )
-  internal_list <- fill_in_asymptotics_interventional_probabilities( internal_list = internal_list )
+  # MH 0.0.14 2021-11-30, disabled/crashes
+  # internal_list <- fill_in_asymptotics_interventional_probabilities( internal_list = internal_list )
   internal_list <- fill_in_asymptotics_interventional_variances( internal_list = internal_list )
 
   # Calculate asymptotic standard errors of the interventional mean and covariance matrix
@@ -159,13 +166,15 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   # Implement this when calc_ase_density is done
   #internal_list <- calc_ase_density(internal_list = internal_list)
 
-  # Assign class to list
-  ## This needs to be discussed
-  class(internal_list) <- "causalSEM"
-
+  # Assign class causalSEM to internal list
+  # MH 0.0.14 2021-11-30
+  causalSEM_object <- create_causalSEM_s3_object( internal_list )
+  
 
   # create output
-  internal_list
+  # internal list
+  # MH 0.0.14 2021-11-30, changed return to causalSEM_object
+  causalSEM_object
 
   }
 
