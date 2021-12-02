@@ -1,4 +1,7 @@
 ## Changelog:
+# MH 0.0.9 2021-11-30: changed defaults of interventional_distribution$density$pdfs to empty list
+#                      changed "pdf" to "pdfs"
+#                      updated documentation accordingly 
 # MH 0.0.8 2021-11-22: renamed from make_empty_list to create_empty_list
 # MH 0.0.7 2021-11-22: moments$variance_matrix changed to covariance_matrix
 # CG 0.0.6 2021-11-22: create slots for select outcome matrix
@@ -63,7 +66,9 @@
 #'      .. .. $ mean_vector: num(0)  \tab \tab mean vector of the interventional distribution  \cr
 #'      .. .. $ variance_matrix: num[0, 0]  \tab \tab variance-covariance matrix of the interventional distribution \cr
 #'      ..$ density : List of 1    \tab \tab \cr
-#'      .. .. $ pdf: num[0, 0]  \tab \tab probability density function interventional distribution \cr
+#      .. .. $ pdf: num[0, 0]  \tab \tab probability density function interventional distribution \cr
+# MH 0.0.9 2021-11-30 
+#'      .. .. $ pdfs: num[0]  \tab \tab probability density function interventional distribution \cr
 #'      ..$ probability : List of 1    \tab \tab \cr
 #'      .. .. $ p: num[0, 0]  \tab \tab probability of interventional event \cr
 #'     $ control            : List of 1      \tab \tab \cr
@@ -86,7 +91,7 @@ create_empty_list <- function( verbose=NULL ){
 	fun.name <- "create_empty_list"
 
 	# function version
-	fun.version <- "0.0.8 2021-11-22"
+	fun.version <- "0.0.9 2021-11-30"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -296,13 +301,18 @@ create_empty_list <- function( verbose=NULL ){
 		  ), # end of interventional moments sublist 
 		  
 		  density = list(
-		    # probability density function of interventional distribution
+		    ### until version 0.0.8
+			# probability density function of interventional distribution
 		    # see Equation (9) in Gische and Voelkle (2021)
 		    # numeric matrix of with two columns 
 		    # 1 column: grid that captures the range of the outcome variable
 		    # 2 column: values of the pdf
-		    "pdf" = matrix(numeric(0))[-1,-1]
+		    # "pdf" = matrix(numeric(0))[-1,-1]
 		    
+			### MH 0.0.9 2021-11-30
+			# empty numeric vector
+			"pdfs" = numeric(0)
+			
 		  ), # end of density sublist 
 		  
 		  probability = list(
