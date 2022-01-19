@@ -1,19 +1,24 @@
 ## Changelog:
+# CG 0.0.4 2022-01-13: changed structure of internal_list
+#                       cleaned up code (documentation, 80 char per line)
+#                       changed dot-case to snake-case
+# 
 # MA 0.0.3 2021-11-26: changed function name from "build_Psi" to "fill_in_Psi"
 # MA 0.0.2 2021-10-31: fixed some variables names related to verbosity
 
 #' @title Extracts the Psi matrix from a SEM
-#' @description Internal function that extracts the Psi matrix from a lavaan
+#' @description Extracts the Psi matrix from a lavaan
 #' model. Currently, this function will only work if all variance parameters
 #' are stored in lavaan's psi matrix (covariance of the latent errors) and the
 #' theta matrix (covariance of the manifest errors) is empty.
 #' @param internal_list a list with various information extracted from the
 #' model.
 #' @return \code{build_psi} returns a list with various information extracted
-#' from the model. \code{build_psi} with changed 'values' and 'labels' slots of Psi.
-#' @references
-#' Gische, C. & Voelkle, M. C. (under review???). Beyond the mean: A flexible framework for studying causal effects using linear models
-#' \href{https://www.researchgate.net/profile/Christian-Gische/publication/335030449_Gische_Voelkle_Causal_Inference_in_Linear_Models/links/6054eb6e299bf1736755110b/Gische-Voelkle-Causal-Inference-in-Linear-Models.pdf}
+#' from the model. \code{build_psi} with changed 'values' and 'labels' slots 
+#' of Psi.
+#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
+#' framework for studying causal effects using linear models. Psychometrika 
+#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
 
 fill_in_Psi <- function(internal_list) {
 
@@ -23,7 +28,7 @@ fill_in_Psi <- function(internal_list) {
   fun_name <- "fill_in_Psi"
 
   # function version
-  fun_version <- "0.0.3 2021-11-26"
+  fun_version <- "0.0.4 2022-01-13"
 
   # function name+version
   fun_name_version <- paste0(fun_name, " (", fun_version, ")")
@@ -63,6 +68,9 @@ fill_in_Psi <- function(internal_list) {
   ### Would be better to do this in some preprocessing step
   # TODO Call the function add_labels_in_lavaan_parTable.R
   # (see fill_in_C.R function [old name: build_C-R])
+  # for example:
+  # lav_ParTable <- add_labels_in_lavaan_parTable( internal_list )
+  
   unlabelled_params <- which(lav_ParTable[, "label"] == "")
   lav_ParTable[unlabelled_params, "label"] <- apply(
     lav_ParTable[unlabelled_params, 2:4], MARGIN = 1, FUN = paste, collapse = ""

@@ -1,10 +1,14 @@
 ## Changelog:
+# CG 0.0.9 2022-01-13: changed structure of internal_list
+#                       cleaned up code (documentation, 80 char per line)
+#                       changed dot-case to snake-case
 # MH 0.0.8 2021-11-22: renamed build_C to fill_in_C
-# CG 0.0.7 2021-11-18: changed name of called funtion to add_labels_in_lavaan_parTable
+# CG 0.0.7 2021-11-18: changed name of called funtion to 
+#                      add_labels_in_lavaan_parTable
 # MH 0.0.6 2021-09-21: "development" section updated
 # MA 0.0.5 2021-09-09:
-#    -- fill_in_C only alters the 'values' and 'labels' slots without overwriting
-#       the complete 'C' list
+#    -- fill_in_C only alters the 'values' and 'labels' slots without 
+#       overwriting the complete 'C' list
 # MH 0.0.4 2021-09-08:
 #    -- lav_parTable_fill_labels integrated
 #    -- reduction of C matrix for 1:1 mapped models
@@ -16,20 +20,20 @@
 # MH 0.0.1 2021-07-20: initial programming
 
 ## Documentation
-#' @title Extracts the structural coefficient matrix from a fitted SEM object
-#' @description Internal function that extracts the structural coefficient matrix from a fitted
+#' @title Extracts the Structural Coefficient Matrix from a Fitted SEM Object
+#' @description Extracts the structural coefficient matrix from a fitted
 #'    structural equation model. Supported fitted objects: lavaan.
 #' @param internal_list A list with various information extracted from the
 #'    model.
-#' @return \code{fill_in_C} returns the inputted internal_list with slot
-#'    C populated with a two-entry list: "values" is a numeric matrix
-#'    containing the structural coefficients (if available with row- and
-#'    column names); "labels" is a character matrix containing parameter
-#'    labels (NA for unlabeled parameters), NULL if labels are not extractable.
+#' @return The inputted internal_list with two slot in the sublist 
+#'    C filled in: slot "values" is a numeric matrix containing the structural 
+#'    coefficients (if available with row- and column names); slot "labels" is 
+#'    a character matrix containing parameter labels (NA for unlabeled 
+#'    parameters), NULL if labels are not extractable.
 #' @seealso \code{\link{build_Psi}}
-#' @references
-#' Gische, C. & Voelkle, M. C. (under review). Beyond the mean: A flexible framework for
-#'    studying causal effects using linear models. \url{https://www.researchgate.net/profile/Christian-Gische/publication/335030449_Gische_Voelkle_Causal_Inference_in_Linear_Models/links/6054eb6e299bf1736755110b/Gische-Voelkle-Causal-Inference-in-Linear-Models.pdf}
+#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
+#' framework for studying causal effects using linear models. Psychometrika 
+#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
 #' @keywords internal
 
 ## Function definition
@@ -39,7 +43,7 @@ fill_in_C <- function( internal_list ){
 	fun.name <- "fill_in_C"
 
 	# function version
-	fun.version <- "0.0.8 2021-11-22"
+	fun.version <- "0.0.9 2022-01-13"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -48,7 +52,8 @@ fill_in_C <- function( internal_list ){
 	verbose <- internal_list$control$verbose
 
 	# console output
-	if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ", Sys.time(), "\n" ) )
+	if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ", 
+	                                Sys.time(), "\n" ) )
 
 	# get fit object from internal_list
 	fit <- internal_list$fitted_object
@@ -60,18 +65,26 @@ fill_in_C <- function( internal_list ){
 	supported.fit.objects <- c( "lavaan" )
 
 	# check if supported
-	if( !any( supported.fit.objects %in% fit.class ) ) stop( paste0( fun.name.version, ": fit object of class ", fit.class, " not supported. Supported fit objects are: ", paste( supported.fit.objects, collapse=", " ) ) )
+	if( !any( supported.fit.objects %in% fit.class ) ) 
+	  stop( paste0( fun.name.version, ": fit object of class ", fit.class, " not 
+	                supported. Supported fit objects are: ",
+	                paste( supported.fit.objects, collapse=", " ) ) )
 
 	# require package
 	if( fit.class %in% "lavaan" ) require( lavaan )
 
 	# model representation must be "LISREL"
 	model.rep <- fit@Model@representation
-	if( !model.rep %in% "LISREL" ) stop( paste0( fun.name.version, ": model representation as defined in fit@Model@representation must be LISREL, but it is ", paste( model.rep, collapse=", " ) ) )
+	if( !model.rep %in% "LISREL" ) 
+	  stop( paste0( fun.name.version, ": model representation as defined in 
+	                fit@Model@representation must be LISREL, 
+	                but it is ", paste( model.rep, collapse=", " ) ) )
 
 	# check whether beta is present in fit object
 	GLIST.names <- names( fit@Model@GLIST )
-	if( !any( GLIST.names %in% "beta" ) ) stop( paste0( fun.name.version, ": fit@Model@GLIST does not contain beta, but only ", paste( GLIST.names, collapse=", " ) ) )
+	if( !any( GLIST.names %in% "beta" ) ) 
+	  stop( paste0( fun.name.version, ": fit@Model@GLIST does not contain beta, 
+	                but only ", paste( GLIST.names, collapse=", " ) ) )
 
 	# get beta matrix from fit object
 	C <- fit@Model@GLIST$beta
@@ -79,11 +92,16 @@ fill_in_C <- function( internal_list ){
 	# check dimensions
 	C.dim <- dim( C )
 	C.dim.n <- length( C.dim )
-	if( !C.dim.n ) stop( fun.name.version, ": number of dimensions is not 2, but ", C.dim.n )
-	if( !( all( length( C.dim ) >= 1 ) & all( C.dim %in% C.dim[1] ) ) ) stop( paste0( fun.name.version, ": not all dimensions are of same length or at least one dimension is of length < 1: ", paste( C.dim, collapse=", " ) ) )
+	if( !C.dim.n ) 
+	  stop( fun.name.version, ": number of dimensions is not 2, but ", C.dim.n )
+	if( !( all( length( C.dim ) >= 1 ) & all( C.dim %in% C.dim[1] ) ) ) 
+	  stop( paste0( fun.name.version, ": not all dimensions are of same length 
+	                or at least one dimension is of length < 1:", 
+	                paste( C.dim, collapse=", " ) ) )
 
 	# get dimension names
-	beta.dimNames <- fit@Model@dimNames[ names( fit@Model@GLIST ) %in% "beta" ][[1]]
+	beta.dimNames <- 
+	  fit@Model@dimNames[ names( fit@Model@GLIST ) %in% "beta" ][[1]]
 
 	# set dimension names
 	rownames( C ) <- beta.dimNames[[1]]
@@ -93,7 +111,8 @@ fill_in_C <- function( internal_list ){
 	# initialization of C.lab
 	C.lab <- NULL
 
-	# if variable labels exist (row/colnames of C) then try to extract parameter labels from partab
+	# if variable labels exist (row/colnames of C) then try to extract 
+	# parameter labels from partab
 	if( !is.null( rownames( C ) ) & !is.null( colnames( C ) ) ){
 
 		# empty matrix (consistent with C)
@@ -103,7 +122,8 @@ fill_in_C <- function( internal_list ){
 		# parameter table
 		# partab <- parTable( fit )
 		# MH 0.0.4 2021-09-08 call of lav_parTable_fill_labels
-		# CG 0.0.7 2021-11-18: changed name of called funtion to add_labels_in_lavaan_parTable 
+		# CG 0.0.7 2021-11-18: changed name of called funtion 
+		# to add_labels_in_lavaan_parTable 
 		partab <- add_labels_in_lavaan_parTable( internal_list )
 
 		# loop over elements of C.lab matrix
@@ -114,7 +134,8 @@ fill_in_C <- function( internal_list ){
 				# predictor variable
 				rhs <- colnames( C.lab )[s]
 				# get label from partab
-				lab <- partab[ partab$lhs %in% lhs & partab$op %in% "~" & partab$rhs %in% rhs, "label" ]
+				lab <- partab[ partab$lhs %in% lhs & 
+				                 partab$op %in% "~" & partab$rhs %in% rhs, "label" ]
 				# if not available or empty string, then NA
 				if( length( lab ) == 0 | identical( lab, "" ) ) lab <- NA
 				# set label
@@ -123,7 +144,8 @@ fill_in_C <- function( internal_list ){
 		}
 
 		## MH 0.0.4 2021-09-08
-		# C matrix of models with pseudo measurement model (1:1 mapping of manifest variables onto latent variables)
+		# C matrix of models with pseudo measurement model (1:1 mapping of manifest 
+		# variables onto latent variables)
 		# is reduced to manifest variables
 		# test object o00_lavaan_test_object
 
@@ -131,17 +153,22 @@ fill_in_C <- function( internal_list ){
 		if( all( dim(C) == 2 * rep( internal_list$info_model$n_ov, 2 ) ) ){
 
 			# console output
-			if( verbose >= 2 ) cat( paste0( fun.name.version, " ", Sys.time(), ": trying to reduce C matrix to observed variables", "\n" ) )
+			if( verbose >= 2 ) cat( paste0( fun.name.version, " ", Sys.time(), 
+			                                ": trying to reduce C matrix to observed 
+			                                variables", "\n" ) )
 
 			# C matrix of observed/non-observed
 			# (observed / latent probably must be blockwise arranged and ordered)
-			C.onov <- C[ internal_list$info_model$var_names , !colnames( C ) %in% internal_list$info_model$var_names ]
+			C.onov <- C[ internal_list$info_model$var_names , 
+			             !colnames( C ) %in% internal_list$info_model$var_names ]
 
 			# C matrix of non-observed
-			C.nov <- C[ !rownames( C ) %in% internal_list$info_model$var_names , !colnames( C ) %in% internal_list$info_model$var_names ]
+			C.nov <- C[ !rownames( C ) %in% internal_list$info_model$var_names ,
+			            !colnames( C ) %in% internal_list$info_model$var_names ]
 
 			# C matrix of non-observed/observed
-			C.noov <- C[ !rownames( C ) %in% internal_list$info_model$var_names , internal_list$info_model$var_names ]
+			C.noov <- C[ !rownames( C ) %in% internal_list$info_model$var_names ,
+			             internal_list$info_model$var_names ]
 
 			# Checks
 			checks <- rep( as.logical(NA), 3 )
@@ -154,19 +181,29 @@ fill_in_C <- function( internal_list ){
 
 			# if all checks are true, reduce C and C.lab
 			if( all( checks ) ){
-				C <- C[ internal_list$info_model$var_names, internal_list$info_model$var_names ]
+				C <- C[ internal_list$info_model$var_names, 
+				        internal_list$info_model$var_names ]
 				C.lab <- C.lab[ rownames(C), colnames(C) ]
 				# console output
-				if( verbose >= 2 ) cat( paste0( fun.name.version, " ", Sys.time(), ": reduction of C matrix to observed variables successful, new dimensions of C: ", paste(dim(C),collapse=" "), "\n" ) )
+				if( verbose >= 2 ) cat( 
+				  paste0( fun.name.version, " ", Sys.time(), ": 
+				          reduction of C matrix to observed variables successful, 
+				          new dimensions of C: ", paste(dim(C),collapse=" "), "\n" ) )
 			} else {
 				# console output
-				if( verbose >= 2 ) cat( paste0( fun.name.version, " ", Sys.time(), ": reduction of C matrix to observed variables failed, checks: ", paste(as.character(checks),collapse=" "), "\n" ) )
+				if( verbose >= 2 ) cat( 
+				  paste0( fun.name.version, " ", Sys.time(), ": reduction of C matrix 
+				          to observed variables failed, checks: ",
+				          paste(as.character(checks),collapse=" "), "\n" ) )
 			}
 		}
 
 	} else {
 		# console output
-		if( verbose >= 2 ) cat( paste0( fun.name.version, " ", Sys.time(), ": C has no row and/or column variable names, extraction of parameter labels not possible", "\n" ) )
+		if( verbose >= 2 ) cat( 
+		  paste0( fun.name.version, " ", Sys.time(), 
+		          ": C has no row and/or column variable names, 
+		          extraction of parameter labels not possible", "\n" ) )
 	}
 
 	# populate slots of C
@@ -174,7 +211,8 @@ fill_in_C <- function( internal_list ){
 	internal_list$info_model$C$labels <- C.lab
 
 	# console output
-	if( verbose >= 2 ) cat( paste0( "  end of function ", fun.name.version, " ", Sys.time(), "\n" ) )
+	if( verbose >= 2 ) cat( paste0( "  end of function ", fun.name.version, " ",
+	                                Sys.time(), "\n" ) )
 
 	# return internal list
 	return( internal_list )

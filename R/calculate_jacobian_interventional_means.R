@@ -1,47 +1,50 @@
 ## Changelog:
-# MA 0.0.2 2021-11-19: function makes use of calculate_zero_one_matrices and
-#                      other small changes. Should accept scalar and vector x now.
+# CG 0.0.3 2022-01-13:  changed structure of internal_list
+#                       cleaned up code (documentation, 80 char per line)
+#                       changed dot-case to snake-case
+# MA 0.0.2 2021-11-19: function makes use of calculate_constant_matrices and
+#                      other small changes. Should accept scalar and vector x 
+#                      now.
 # CG 0.0.1 2021-11-10: initial programming
 
 ## Documentation
-#' @title Calculate Jacobian of the interventional means for a specific
-#' interventional level and a specific value in the range of the outcome variable
-#' @description Internal function that calculates the Jacobian of the
-#' interventional means for a specific interventional level and a specific value
-#' in the range of the outcome variable.
+#' @title Calculate Jacobian of the Interventional Mean Vector
+#' @description Calculate Jacobian of the interventional mean Vector for a 
+#' specific interventional level.
 #' @param model internal_list or object of class causalSEM
 #' @param x interventional level
 #' @param intervention_names names of interventional variables
 #' @param outcome_names name of outcome variable
 #' @param verbose verbosity of console outputs
-#' @return \code{calculate_jacobian_interventional_means} returns the
-#'    Jacobian of interventional mean vector (numeric matrices)
-#'    as defined in Eq. 18a (p. 17)
-#' @references
-#' Gische, C. & Voelkle, M. C. (under review). Beyond the mean: A flexible framework for
-#'    studying causal effects using linear models. \url{https://www.researchgate.net/profile/Christian-Gische/publication/335030449_Gische_Voelkle_Causal_Inference_in_Linear_Models/links/6054eb6e299bf1736755110b/Gische-Voelkle-Causal-Inference-in-Linear-Models.pdf}
+#' @return The Jacobian of interventional mean vector (numeric matrices)
+#'    as defined in Eq. 18a (p. 17).
+#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
+#' framework for studying causal effects using linear models. Psychometrika 
+#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
 #' @keywords internal
 
 ## Function definition
-calculate_jacobian_interventional_means <- function(model, x, intervention_names, outcome_names, verbose){
+calculate_jacobian_interventional_means <- 
+  function(model, x, intervention_names, outcome_names, verbose){
 
   # function name
   fun_name <- "calculate_jacobian_interventional_means"
 
   # function version
-  fun_version <- "0.0.2 2021-11-19"
+  fun_version <- "0.0.3 2022-01-13"
 
   # function name+version
   fun_name_version <- paste0(fun_name, " (", fun_version, ")")
 
   # console output
-  if(verbose >= 2) cat(paste0( "start of function ", fun_name_version, " ", Sys.time(), "\n" ))
+  if(verbose >= 2) cat(paste0( "start of function ", fun_name_version, " ",
+                               Sys.time(), "\n" ))
 
 
   # Prepare elements ----
 
   # Calculate zero one matrices
-  zero_one_matrices <- calculate_zero_one_matrices(
+  constant_matrices <- calculate_constant_matrices(
     model = model,
     intervention_names = intervention_names,
     outcome_names = outcome_names,
@@ -52,8 +55,8 @@ calculate_jacobian_interventional_means <- function(model, x, intervention_names
   I_n <- diag(model$info_model$n_ov)
 
   # Selection
-  ONE_I <- zero_one_matrices$select_intervention
-  I_N <- zero_one_matrices$eliminate_intervention
+  ONE_I <- constant_matrices$select_intervention
+  I_N <- constant_matrices$eliminate_intervention
 
   # C and Psi matrices
   C <- model$info_model$C$values
@@ -72,7 +75,8 @@ calculate_jacobian_interventional_means <- function(model, x, intervention_names
   # Calculate Jacobian g1 ----
   # TODO: allow x to be a vector
 
-  jac_g1 <- kronecker(X = t(x) %*% t(ONE_I) %*% t(C_trans), Y = C_trans %*% I_N) %*% jac_C
+  jac_g1 <- kronecker(X = t(x) %*% t(ONE_I) %*% t(C_trans), 
+                      Y = C_trans %*% I_N) %*% jac_C
 
   # return jacobian matrix
   jac_g1

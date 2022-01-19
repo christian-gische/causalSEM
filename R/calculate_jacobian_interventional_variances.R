@@ -1,22 +1,23 @@
 ## Changelog:
+# CG 0.0.3 2022-01-13:  changed structure of internal_list
+#                       cleaned up code (documentation, 80 char per line)
+#                       changed dot-case to snake-case
 # MA 0.0.1 2021-11-19: Initial programming
 
 ## Documentation
-#' @title Calculate Jacobian of the interventional variances for a specific
-#' interventional level and a specific value in the range of the outcome variable
-#' @description Internal function that calculates the Jacobian of the
-#' interventional variances for a specific interventional level and a specific value.
-#' in the range of the outcome variable
+#' @title Calculate Jacobian of the Covariance Matrix of the Interventional
+#' Distribution
+#' @description Calculate Jacobian of the covariance matrix of the
+#' interventional distribution for a specific interventional level.
 #' @param model internal_list or object of class causalSEM
 #' @param intervention_names names of interventional variables
-#' @param outcome_names name of outcome variable
+#' @param outcome_names names of outcome variable
 #' @param verbose verbosity of console outputs
-#' @return \code{calculate_jacobian_interventional_variances} returns the
-#'    Jacobian of interventional covariance matrix (numeric matrices)
+#' @return The Jacobian of interventional covariance matrix (numeric matrices)
 #'    as defined in Eq. 18b (p. 17)
-#' @references
-#' Gische, C. & Voelkle, M. C. (under review). Beyond the mean: A flexible framework for
-#'    studying causal effects using linear models. \url{https://www.researchgate.net/profile/Christian-Gische/publication/335030449_Gische_Voelkle_Causal_Inference_in_Linear_Models/links/6054eb6e299bf1736755110b/Gische-Voelkle-Causal-Inference-in-Linear-Models.pdf}
+#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
+#' framework for studying causal effects using linear models. Psychometrika 
+#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
 #' @keywords internal
 
 ## Function definition
@@ -28,13 +29,14 @@ calculate_jacobian_interventional_variances <- function(
   fun_name <- "calculate_jacobian_interventional_variances"
 
   # function version
-  fun_version <- "0.0.1 2021-11-19"
+  fun_version <- "0.0.3 2022-01-13"
 
   # function name+version
   fun_name_version <- paste0(fun_name, " (", fun_version, ")")
 
   # console output
-  if(verbose >= 2) cat(paste0( "start of function ", fun_name_version, " ", Sys.time(), "\n" ))
+  if(verbose >= 2) cat(paste0( "start of function ", fun_name_version, " ",
+                               Sys.time(), "\n" ))
 
 
   # Prepare elements ----
@@ -47,7 +49,7 @@ calculate_jacobian_interventional_variances <- function(
   I_n2 <- diag(n^2)
 
   # # Calculate zero one matrices
-  zero_one_matrices <- calculate_zero_one_matrices(
+  constant_matrices <- calculate_constant_matrices(
     model = model,
     intervention_names = intervention_names,
     outcome_names = outcome_names,
@@ -55,13 +57,13 @@ calculate_jacobian_interventional_variances <- function(
   )
 
   # Selection
-  ONE_I <- zero_one_matrices$select_intervention
-  I_N <- zero_one_matrices$eliminate_intervention
+  ONE_I <- constant_matrices$select_intervention
+  I_N <- constant_matrices$eliminate_intervention
 
   # Elimination, duplication, and commutation matrices
-  L_n <- zero_one_matrices$elimination_matrix
-  D_n <- zero_one_matrices$duplication_matrix
-  K_n <- zero_one_matrices$commutation_matrix
+  L_n <- constant_matrices$elimination_matrix
+  D_n <- constant_matrices$duplication_matrix
+  K_n <- constant_matrices$commutation_matrix
 
   # C and Psi matrices
   C <- model$info_model$C$values
@@ -87,7 +89,6 @@ calculate_jacobian_interventional_variances <- function(
 
   jac_g2
 
-  # Should the output be vectorized or not?
 
 }
 

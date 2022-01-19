@@ -15,8 +15,9 @@
 #' @param plot directory, directory to save pdf plot files
 #' @return \code{plot_interventional_density} returns ggplot2 code for density plots
 #' @references
-#' Gische, C. & Voelkle, M. C. (under review). Beyond the mean: A flexible framework for
-#'    studying causal effects using linear models. \url{https://www.researchgate.net/profile/Christian-Gische/publication/335030449_Gische_Voelkle_Causal_Inference_in_Linear_Models/links/6054eb6e299bf1736755110b/Gische-Voelkle-Causal-Inference-in-Linear-Models.pdf}
+#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
+#' framework for studying causal effects using linear models. Psychometrika 
+#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
 
 ## Function definition
 plot_interventional_density <- function( object, plot=TRUE, plot.dir=NULL ){
@@ -44,14 +45,14 @@ plot_interventional_density <- function( object, plot=TRUE, plot.dir=NULL ){
 	# MH 0.0.3 2021-11-22, moved grid calculation from interventional_density.R to here
 	
 	# get intervential mean and variance
-	E <- object$interventional_distribution$moments$mean_vector
-	V <- object$interventional_distribution$moments$covariance_matrix
+	E <- object$interventional_distribution$means$values
+	V <- object$interventional_distribution$covariance_matrix$values
 	
 	# standard deviations (sqrt of diagonal elements of V)
 	sds <- sqrt( diag( V ) )
 
 	# generate x values and calculate pdfs for each variable, return list
-	pdf <- mapply( function( mean, sd, outcome_name, intervention_names, verbose ){
+	pdf <- mapply( function( mean, sd, outcome_names, intervention_names, verbose ){
 
 							# generate x-axis values
 							x <- seq( -3*sd, 3*sd, length.out=200 ) + mean
@@ -70,14 +71,14 @@ plot_interventional_density <- function( object, plot=TRUE, plot.dir=NULL ){
 																								   # x=x,
 																								   # y=pdf.value,
 																								   # intervention_names=intervention_names,
-																								   # outcome_name=outcome_name,
+																								   # outcome_names=outcome_names,
 																								   # verbose=verbose ),
 																								   # x, pdf.values, MoreArgs=list("model"=object,"verbose"=verbose) )
 							# calculate_ase_interventional_density( model=object,
 																  # x=-0.1694369,
 																  # y=0.03549121,
 																  # intervention_names="x2",
-																  # outcome_name="x1",
+																  # outcome_names="x1",
 																  # verbose=TRUE )
 							
 
@@ -88,7 +89,7 @@ plot_interventional_density <- function( object, plot=TRUE, plot.dir=NULL ){
 							# return
 							as.matrix( data.frame( "x"=x, "pdf.values"=pdf.values, "se"=se, "LL95"=LL95, "UL95"=UL95 ) )
 
-					}, E[,1], sds, names(E[,1]), MoreArgs=list("intervention_names"=object$info_interventions$intervention_name,"verbose"=verbose), SIMPLIFY=FALSE )	
+					}, E[,1], sds, names(E[,1]), MoreArgs=list("intervention_names"=object$info_interventions$intervention_names,"verbose"=verbose), SIMPLIFY=FALSE )	
 	###################################################################################
 	
 	# theme
@@ -119,7 +120,7 @@ plot_interventional_density <- function( object, plot=TRUE, plot.dir=NULL ){
 	xnames <- object$info_model$var_names
 	
 	# omit interventional variables for plotting
-	xnames <- xnames[ !xnames %in% object$info_interventions$intervention_name ]
+	xnames <- xnames[ !xnames %in% object$info_interventions$intervention_names ]
 	
 	if( length( xnames ) > 0 ){
 
@@ -270,25 +271,25 @@ plot_interventional_density <- function( object, plot=TRUE, plot.dir=NULL ){
 
 ## test object 00_lavaan_test_object
 # load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/00_lavaan_test_object.Rdata" ) )
-# object00 <- intervention_effect( model=o00_lavaan_test_object,intervention="x2",intervention_level=2)
+# object00 <- intervention_effect( model=o00_lavaan_test_object,intervention="x2",intervention_levels=2)
 # p.l <- plot_interventional_density( object00, plot.dir="c:/users/martin/Desktop/plots" )
 
 
 ## test object 01_lavaan_test_object
 # load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/01_lavaan_test_object.Rdata" ) )
-# object01 <- intervention_effect( model=o01_lavaan_test_object,intervention="x2",intervention_level=2)
+# object01 <- intervention_effect( model=o01_lavaan_test_object,intervention="x2",intervention_levels=2)
 # p.l <- plot_interventional_density( object01, plot.dir="c:/users/martin/Desktop/plots" )
 
 
 ## test object 02_lavaan_test_object
 # load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/02_lavaan_test_object.Rdata" ) )
-# object02 <- intervention_effect( model=o02_lavaan_test_object,intervention="x2",intervention_level=2)
+# object02 <- intervention_effect( model=o02_lavaan_test_object,intervention="x2",intervention_levels=2)
 # p.l <- plot_interventional_density( object02, plot.dir="c:/users/martin/Desktop/plots" )
 
 
 ## test object 03_lavaan_test_object
 # load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), "Dropbox/causalSEM_R_Package/test_object/03_lavaan_test_object.Rdata" ) )
-# object03 <- intervention_effect( model=o03_lavaan_test_object,intervention="x2",intervention_level=2)
+# object03 <- intervention_effect( model=o03_lavaan_test_object,intervention="x2",intervention_levels=2)
 # p.l <- plot_interventional_density( object03, plot.dir="c:/users/martin/Desktop/plots" )
 
 

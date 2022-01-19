@@ -1,4 +1,7 @@
 ## Changelog:
+# CG 0.0.6 2022-01-13: changed structure of internal_list
+#                      cleaned up code (documentation, 80 char per line)
+#                      changed dot-case to snake-case
 # MH 0.0.5 2021-11-22: renamed from populate_model_info to fill_in_info_model
 # MA 0.0.4 2021-10-31: Added :: operator for lavInspect and lavNames
 # MH 0.0.3 2021-10-14: updated documentation
@@ -6,20 +9,19 @@
 # MH 0.0.1 2021-09-01: initial programming
 
 ## Documentation
-#' @title Extracts number of observations, number of manifest variables,
-#'    and names of observed variables from a fitted SEM object
-#' @description Internal function that extracts number of observations,
-#'    number of manifest variables, and names of observed variables from a fitted
+#' @title Extract Information From a Fitted Structural Equation Model Object
+#' @description Extract number of observations, number of manifest
+#'    variables, and names of observed variables from a fitted
 #'    structural equation model. Supported fitted objects: lavaan.
 #' @param internal_list A list with various information extracted from the
 #'    model.
 #' @param model Fitted model. The fitted model can be of class lavaan.
-#' @return \code{fill_in_info_model} returns the inputted internal_list with slots
-#'    \code{n_obs}, \code{n_ov}, and \code{var_names} populated.
+#' @return The inputted internal_list with slots
+#'    \code{n_obs}, \code{n_ov}, and \code{var_names} filled in.
 #' @seealso \code{\link{build_C}} \code{\link{build_Psi}}
-#' @references
-#' Gische, C. & Voelkle, M. C. (under review). Beyond the mean: A flexible framework for
-#'    studying causal effects using linear models. \url{https://www.researchgate.net/profile/Christian-Gische/publication/335030449_Gische_Voelkle_Causal_Inference_in_Linear_Models/links/6054eb6e299bf1736755110b/Gische-Voelkle-Causal-Inference-in-Linear-Models.pdf}
+#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
+#' framework for studying causal effects using linear models. Psychometrika 
+#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
 #' @keywords internal
 
 ## Function definition
@@ -29,7 +31,7 @@ fill_in_info_model <- function(internal_list, model){
 	fun.name <- "fill_in_info_model"
 
 	# function version
-	fun.version <- "0.0.5 2021-11-22"
+	fun.version <- "0.0.6 2022-01-13"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -38,7 +40,8 @@ fill_in_info_model <- function(internal_list, model){
 	verbose <- internal_list$control$verbose
 
 	# console output
-	if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ", Sys.time(), "\n" ) )
+	if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ",
+	                                Sys.time(), "\n" ) )
 
 	# get fit object from internal_list
 	internal_list$fitted_object <- fit <- model
@@ -63,11 +66,16 @@ fill_in_info_model <- function(internal_list, model){
 
 	# model representation must be "LISREL"
 	model.rep <- fit@Model@representation
-	if( !model.rep %in% "LISREL" ) stop( paste0( fun.name.version, ": model representation as defined in fit@Model@representation must be LISREL, but it is ", paste( model.rep, collapse=", " ) ) )
+	if( !model.rep %in% "LISREL" ) stop( paste0( fun.name.version, ": model 
+	                                             representation as defined in 
+	                                             fit@Model@representation must 
+	                                             be LISREL, but it is ",
+	                                       paste( model.rep, collapse=", " ) ) )
 
 	# function to check if is integer
 	# https://stackoverflow.com/questions/3476782/check-if-the-number-is-integer
-	is.wholenumber <- function(x, tol = .Machine$double.eps^0.5)  abs(x - round(x)) < tol
+	is.wholenumber <- function(x, tol = .Machine$double.eps^0.5) abs(x - round(x)
+	                                                                 ) < tol
 
 	# number of observations
 	n_obs <- lavaan::lavInspect( fit, "ntotal" )
@@ -75,7 +83,8 @@ fill_in_info_model <- function(internal_list, model){
 		# set in internal_list
 		internal_list$info_model$"n_obs" <- as.integer( n_obs )
 	} else {
-		stop( paste0( fun.name.version, ": setting n_obs in internal list failed; lavInspect( fit, 'ntotal' ) returned ", n_obs ) )
+		stop( paste0( fun.name.version, ": setting n_obs in internal list failed; 
+		              lavInspect( fit, 'ntotal' ) returned ", n_obs ) )
 	}
 
 	# variable names of observed variables
@@ -84,7 +93,8 @@ fill_in_info_model <- function(internal_list, model){
 		# set in internal_list
 		internal_list$info_model$"var_names" <- var_names
 	} else {
-		stop( paste0( fun.name.version, ": setting var_names in internal list failed; lavNames( fit ) returned ", var_names ) )
+		stop( paste0( fun.name.version, ": setting var_names in internal list 
+		              failed; lavNames( fit ) returned ", var_names ) )
 	}
 
 	# number of manifest variables
@@ -93,11 +103,14 @@ fill_in_info_model <- function(internal_list, model){
 		# set in internal_list
 		internal_list$info_model$"n_ov" <- as.integer( n_ov )
 	} else {
-		stop( paste0( fun.name.version, ": setting n_ov in internal list failed; length( internal_list$info_model$'var_names' ) returned ", n_ov ) )
+		stop( paste0( fun.name.version, ": setting n_ov in internal list failed; 
+		              length( internal_list$info_model$'var_names' ) returned ",
+		              n_ov ) )
 	}
 
 	# console output
-	if( verbose >= 2 ) cat( paste0( "  end of function ", fun.name.version, " ", Sys.time(), "\n" ) )
+	if( verbose >= 2 ) cat( paste0( "  end of function ", fun.name.version, " ",
+	                                Sys.time(), "\n" ) )
 
 	# return internal list
 	return( internal_list )

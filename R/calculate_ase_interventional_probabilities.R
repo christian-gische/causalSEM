@@ -1,35 +1,40 @@
 ## Changelog:
+# CG 0.0.2 2022-01-13:  changed structure of internal_list
+#                       cleaned up code (documentation, 80 char per line)
+#                       changed dot-case to snake-case
 # MA 0.0.1 2021-11-19: initial programming
 
 ## Documentation
-#' @title Calculate asymptotic standard errors of the interventional probabilities
-#' @description Internal functions that calculates the asymptotic covariance,
-#' standard errors, and z-values of the interventional probabilities.
+#' @title Calculate Asymptotic Standard Errors of Interventional Probabilities
+#' @description Calculates the asysmptotic covariance matrix,
+#' the aysmptotic standard errors, and the approximate z-values of the 
+#' interventional probabilities for a specific interventional level and a 
+#' specific range (lower_bounds, upper_bounds) of the outcome variables.
 #' @param model internal_list or object of class causalSEM
-#' @param x interventional level
+#' @param x interventional levels
 #' @param intervention_names names of interventional variables
-#' @param outcome_names name of outcome variable
-#' @param lower_bound numeric with lower bound
-#' @param upper_bound numeric with upper bound
+#' @param outcome_names names of outcome variables
+#' @param lower_bounds numeric with lower bounds
+#' @param upper_bounds numeric with upper bounds
 #' @param verbose verbosity of console outputs
-#' @return \code{calculate_ase_interventional_means} returns the
-#' asysmptotic covariance matrix, the aysmptotic standard errors, and the
-#' approximate z-values of the the interventional means for a specific
-#' interventional level and a specific value in the range of the outcome
-#' variable (see Corollaries, 10, 11 in Gische and Voelkle, 2021).
-#' @references
-#' Gische, C. & Voelkle, M. C. (under review). Beyond the mean: A flexible framework for
-#'    studying causal effects using linear models. \url{https://www.researchgate.net/profile/Christian-Gische/publication/335030449_Gische_Voelkle_Causal_Inference_in_Linear_Models/links/6054eb6e299bf1736755110b/Gische-Voelkle-Causal-Inference-in-Linear-Models.pdf}
+#' @return Asysmptotic covariance matrix, the aysmptotic standard errors, and
+#' the approximate z-values of the the interventional interventional  
+#' probabilities for a specific interventional level and a specific range 
+#' (lower_bounds, upper_bounds) of the outcome variables. 
+#' (see Corollaries, 10, 11 in Gische and Voelkle, 2021).
+#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
+#' framework for studying causal effects using linear models. Psychometrika 
+#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
 
-calculate_ase_interventional_probabilities <- function(
-  model, x, intervention_names, outcome_names, lower_bound, upper_bound, verbose
-  ) {
+calculate_ase_interventional_probabilities <- 
+  function(model, x, intervention_names, outcome_names, lower_bounds, 
+           upper_bounds, verbose) {
 
   # function name
   fun_name <- "calculate_ase_interventional_probabilities"
 
   # function version
-  fun_version <- "0.0.1 2021-11-19"
+  fun_version <- "0.0.2 2022-01-13"
 
   # function name+version
   fun_name_version <- paste0(fun_name, " (", fun_version, ")")
@@ -48,38 +53,104 @@ calculate_ase_interventional_probabilities <- function(
   # of type internal_list. After allowing for objects of class causalSEM
   # the pathes starting with internal_list$ might need adjustment
 
-
   # get variable names of interventional variables
-  if (is.character(intervention_names) && all(intervention_names %in% model$info_model$var_names)) {
+  if (is.character(intervention_names) && 
+      all(intervention_names %in% model$info_model$var_names)) {
     x_labels <- intervention_names
   } else {
-    x_labels <- model$info_interventions$intervention_name
+    x_labels <- model$info_interventions$intervention_names
   }
-
+  
   # get interventional levels
   if (is.numeric(x) && length (x) == length(intervention_names)) {
     x_values <- x
   } else {
-    x_values <- model$info_interventions$intervention_level
+    x_values <- model$info_interventions$intervention_levels
   }
+  
+  # get variable names of outcome variables
+  if( is.character( outcome_names ) && 
+      outcome_names %in% setdiff(model$info_model$var_names, 
+                                 x_labels) ){
+    y_labels <- outcome_names
+  } else {
+    stop( paste0( fun.name.version, ": Argument outcome_names needs to be the 
+                  a character string with the name of a non-interventional 
+                  variable."  ) )
+  }
+  
+  # get lower bound of outcome range 
+  # TODO: allow lower bounds to be multivariate
+  if( is.numeric( lower_bounds ) && length ( lower_bounds ) == 1 &&
+      model$info_interventions$n_outcome == 1 ){
+  
+    lower_bounds <- lower_bounds 
+    
+  } else if ( is.null( lower_bounds ) ){
+    # TODO: give warning / error if model$info_interventions$lower_bounds
+    # has no entry
+    
+    lower_bounds <- model$info_interventions$lower_bounds
+    
+  } else {
+    
+    stop( paste0( fun.name.version, ": setting lower_bounds failed. Argument 
+                  lower_bounds needs to be a numeric scalar."  ) )
+  }
+  
+  
+  # TODO: option to provide same number of upper and lower bounds as 
+  # verbose: provide lower and upper bound in the same order as outcome 
+  # variable or as named vector; if no outcome variable is provided as argument 
+  # force user to name upper and lower bound which have to be the same 
+  # dimension as vector of non interventional variables 
+  # internally: always name upper and lower bound in internal list and bring in 
+  # same order as outcome names
+  # outcome variables of interest 
+  # caution: muliple upper bounds need to be in the same order as multivariate 
+  # outcome variable
+  # CAUTION: order of upper bounds in case outcome variable is not user 
+  # specified 
+  
+  # get upper bounds of outcome range 
+  # TODO: allow lower bounds to be multivariate
+  
+  if( is.numeric(upper_bounds ) && length ( upper_bounds ) == 1 &&
+      model$info_interventions$n_outcome == 1 ){
+    
+    upper_bounds <- upper_bounds
+    
+  } else if ( is.null( upper_bounds ) ){
+    # TODO: give warning / error if model$info_interventions$lower_bounds
+    # has no entry
+    upper_bounds <- model$info_interventions$upper_bounds 
+    
+  } else {
+    stop( paste0( fun.name.version, ": setting upper_bounds failed. Argument 
+                  lower_bounds needs to be a numeric scalar." ) )
+  }
+  
 
   # get total number of variables
   # get number of unique parameters
+  
   n <- model$info_model$n_ov
   n_unique <- model$info_model$param$n_par_unique
 
-  # get intervential means
-  # TODO: assign E by calling the function calculate_interventional_means
-  gamma_4 <- model$interventional_distribution$probability$p
+  # get intervential probability
+  # TODO: assign gamma by calling the 
+  # function calculate_interventional_probability
+  
+  gamma_4 <- model$interventional_distribution$probabilities$values
 
   # compute jacobian of the pdf
   jac_g4 <- calculate_jacobian_interventional_probabilities(
     model = model,
     x = x_values,
-    intervention_names = intervention_names,
-    outcome_names = outcome_names,
-    lower_bound = lower_bound,
-    upper_bound = upper_bound,
+    intervention_names = x_labels,
+    outcome_names = y_labels,
+    lower_bounds = lower_bounds,
+    upper_bounds = upper_bounds,
     verbose = verbose
   )
 
