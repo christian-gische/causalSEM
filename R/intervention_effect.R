@@ -1,4 +1,7 @@
 ## Changelog:
+# MA 0.0.15 2022-01-13: added a slot "table containing information accessed
+#                       with generic functions
+#                       added information for the print function
 # MH 0.0.14 2021-11-30: disabled fill_in_asymptotics_interventional_probabilities, crashes
 #                       added call fill_in_interventional_density
 #                       added create_causalSEM_s3_object
@@ -58,7 +61,7 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   fun.name <- "intervention_effect"
 
   # function version
-  fun.version <- "0.0.14 2021-11-30"
+  fun.version <- "0.0.15 2021-12-13"
 
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -166,10 +169,14 @@ intervention_effect <- function(model, intervention, outcome = NULL, interventio
   # Implement this when calc_ase_density is done
   #internal_list <- calc_ase_density(internal_list = internal_list)
 
+  # Add a slot containing output for generic functions
+  # MA
+  internal_list$tables <- fill_in_print_table(internal_list = internal_list)
+
   # Assign class causalSEM to internal list
   # MH 0.0.14 2021-11-30
   causalSEM_object <- create_causalSEM_s3_object( internal_list )
-  
+
 
   # create output
   # internal list
