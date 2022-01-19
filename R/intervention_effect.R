@@ -6,6 +6,11 @@
 # MH 0.0.14 2021-11-30: disabled 
 #                       fill_in_asymptotics_interventional_probabilities, 
 #                       crashes, added call fill_in_interventional_density
+# MA 0.0.15 2022-01-13: added a slot "table containing information accessed
+#                       with generic functions
+#                       added information for the print function
+# MH 0.0.14 2021-11-30: disabled fill_in_asymptotics_interventional_probabilities, crashes
+#                       added call fill_in_interventional_density
 #                       added create_causalSEM_s3_object
 #                       changed return to causalSEM_object
 # MA 0.0.13 2021-11-26, call changed from build_Psi to fill_in_Psi
@@ -210,10 +215,15 @@ intervention_effect <- function(model, intervention, intervention_level,
                                                       internal_list )
   
   
+
+  # Add a slot containing output for generic functions
+  # MA
+  internal_list$tables <- fill_in_print_table(internal_list = internal_list)
+
   # Assign class causalSEM to internal list
   # MH 0.0.14 2021-11-30
- # causalSEM_object <- create_causalSEM_s3_object( internal_list )
-  
+  causalSEM_object <- create_causalSEM_s3_object( internal_list )
+
 
   # create output
   # internal list
