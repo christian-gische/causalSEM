@@ -138,8 +138,6 @@ calculate_ase_interventional_probabilities <-
   n_unique <- model$info_model$param$n_par_unique
 
   # get intervential probability
-  # TODO: assign gamma by calling the 
-  # function calculate_interventional_probability
   
   gamma_4 <- model$interventional_distribution$probabilities$values
 

@@ -221,19 +221,20 @@ intervention_effect <- function(model, intervention, intervention_level,
   # traceback:
   #   4: stats::dnorm(lower_bounds, mean = outcome_mean, sd = outcome_std)
                # at calculate_jacobian_interventional_probabilities.R#133
-  #   3: calculate_jacobian_interventional_probabilities(model = internal_list, 
+  #   3: calculate_jacobian_interventional_probabilities(
+       # model = internal_list, 
        # x = internal_list$info_interventions$intervention_levels, 
        # intervention_names = internal_list$info_interventions$
-	   #                                                   intervention_names, 
+	     #                                                   intervention_names, 
        # outcome_names = internal_list$info_interventions$outcome_names, 
        # lower_bounds = internal_list$info_interventions$lower_bounds, 
        # upper_bounds = internal_list$info_interventions$upper_bounds, 
-       # verbose = verbose) at fill_in_asymptotics_interventional_
-	   #                                                    probabilities.R#46
-  #   2: fill_in_asymptotics_interventional_probabilities(internal_list =
-       #                            internal_list) at intervention_effect.R#210
-  #   1: intervention_effect(model = o00_lavaan_test_object, intervention =
-       #                                                                  "x2", 
+       # verbose = verbose) 
+  # at fill_in_asymptotics_interventional_probabilities.R#46
+  #   2: fill_in_asymptotics_interventional_probabilities(
+       # internal_list = internal_list) at intervention_effect.R#210
+  #   1: intervention_effect(model = o00_lavaan_test_object, 
+       # intervention = "x2", 
        # intervention_level = 2)
 
  # internal_list <- 
