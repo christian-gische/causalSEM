@@ -1,4 +1,6 @@
 ## Changelog:
+# MH 0.0.17 2022-01-29: disabled fill_in_asymptotics_interventional_
+#                       probabilities (crashes)
 # CG 0.0.16 2022-01-13: changed structure of internal_list
 #                       cleaned up code (documentation, 80 char per line)
 #                       changed dot-case to snake-case
@@ -178,8 +180,8 @@ intervention_effect <- function(model, intervention, intervention_level,
   # Calculates interventional probability
   # internal_list <- interventional_probability( internal_list = internal_list )
   # MH 0.0.11 2021-11-22, call changed from interventional_probability to
-  # fill_in_interventional_probabilities
- internal_list <- fill_in_interventional_probabilities( internal_list = 
+  #   fill_in_interventional_probabilities
+  internal_list <- fill_in_interventional_probabilities( internal_list = 
                                                         internal_list )
 
   #
@@ -207,9 +209,36 @@ intervention_effect <- function(model, intervention, intervention_level,
  internal_list <- fill_in_asymptotics_interventional_density( internal_list = 
                                                               internal_list )
   
- internal_list <- 
-   fill_in_asymptotics_interventional_probabilities( internal_list = 
-                                                      internal_list )
+
+
+  # MH 0.0.17 2022-01-29 disabled, crashes with call:
+  #    intervention_effect( model=o00_lavaan_test_object,intervention="x2",
+  #                         intervention_level=2)
+  # error message:
+  #   Fehler in stats::dnorm(lower_bounds, mean = outcome_mean,
+  #                        sd = outcome_std) : 
+  #   Nicht-numerisches Argument für mathematische Funktion  
+  # traceback:
+  #   4: stats::dnorm(lower_bounds, mean = outcome_mean, sd = outcome_std)
+               # at calculate_jacobian_interventional_probabilities.R#133
+  #   3: calculate_jacobian_interventional_probabilities(model = internal_list, 
+       # x = internal_list$info_interventions$intervention_levels, 
+       # intervention_names = internal_list$info_interventions$
+	   #                                                   intervention_names, 
+       # outcome_names = internal_list$info_interventions$outcome_names, 
+       # lower_bounds = internal_list$info_interventions$lower_bounds, 
+       # upper_bounds = internal_list$info_interventions$upper_bounds, 
+       # verbose = verbose) at fill_in_asymptotics_interventional_
+	   #                                                    probabilities.R#46
+  #   2: fill_in_asymptotics_interventional_probabilities(internal_list =
+       #                            internal_list) at intervention_effect.R#210
+  #   1: intervention_effect(model = o00_lavaan_test_object, intervention =
+       #                                                                  "x2", 
+       # intervention_level = 2)
+
+ # internal_list <- 
+   # fill_in_asymptotics_interventional_probabilities( internal_list = 
+                                                      # internal_list )
   
   
 
