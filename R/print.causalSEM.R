@@ -55,16 +55,16 @@ print.causalSEM <- function(internal_list, digits = 3){
     round(internal_list$tables$interventional_means[, 2:3], digits = digits),
     paste0(
       "[",
-      round(internal_list$tables$interventional_means$CI_lower, digits = 3),
+      round(internal_list$tables$interventional_means$CI_lower, digits = digits),
       ",",
-      round(internal_list$tables$interventional_means$CI_upper, digits = 3),
+      round(internal_list$tables$interventional_means$CI_upper, digits = digits),
       "]"),
     round(internal_list$tables$interventional_variances[, 2:3], digits = digits),
     paste0(
       "[",
-      round(internal_list$tables$interventional_means$CI_lower, digits = 3),
+      round(internal_list$tables$interventional_variances$CI_lower, digits = digits),
       ",",
-      round(internal_list$tables$interventional_means$CI_upper, digits = 3),
+      round(internal_list$tables$interventional_variances$CI_upper, digits = digits),
       "]")
   )
 
@@ -97,3 +97,4 @@ print.causalSEM <- function(internal_list, digits = 3){
   writeLines(df)
 
 }
+
