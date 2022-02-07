@@ -1,4 +1,5 @@
 ## Changelog:
+# MA 0.0.3 2022-02-07: Added Psi to @param
 # CG 0.0.2 2022-01-13: changed structure of internal_list
 #                      cleaned up code (documentation, 80 char per line)
 #                      changed dot-case to snake-case
@@ -8,14 +9,16 @@
 #' @title Calculate Covariance Matrix of the Interventional Distribution
 #' @description Calculate Covariance Matrix of the Interventional Distribution.
 #' @param C C matrix
+#' @param Psi Psi matrix
 #' @param x interventional level
 #' @param SI selection matrix 1_I
 #' @param n number of observed variables
 #' @param IN I_N matrix
-#' @param verbose
+#' @param verbose A single number, integer. 0...no output (default),
+#' 1...user messages, 2...debugging-relevant messages.
 #' @return The covariance matrix of the interventional distribution.
-#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-#' framework for studying causal effects using linear models. Psychometrika 
+#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible
+#' framework for studying causal effects using linear models. Psychometrika
 #' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
 #' @keywords internal
 
@@ -38,14 +41,14 @@ calculate_interventional_covariance_matrix <- function( C, Psi, x, SI, n, IN,
 
 	# identity matrix
 	In <- diag( n )
-	
+
 	# calculate interventional covariance matrix, Eq. 6b in Gische and
 	# Voelkle (2021)
-	V <- 
+	V <-
 	  solve( In - IN %*% C ) %*% IN %*% Psi %*% IN %*% t( solve( In - IN %*% C ) )
-	
+
 	# console output
-	if( verbose >= 2 ) cat( paste0( "  end of function ", fun.name.version, " ", 
+	if( verbose >= 2 ) cat( paste0( "  end of function ", fun.name.version, " ",
 	                                Sys.time(), "\n" ) )
 
 	# return internal list

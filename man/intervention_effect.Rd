@@ -2,16 +2,17 @@
 % Please edit documentation in R/intervention_effect.R
 \name{intervention_effect}
 \alias{intervention_effect}
-\title{Calculate estimates of causal effects defined based on the interventional distribution.}
+\title{Calculate Estimates of Causal Effects Based on the Interventional 
+Distribution.}
 \usage{
 intervention_effect(
   model,
   intervention,
-  outcome = NULL,
   intervention_level,
-  effect.type = NULL,
-  lower.bound = NULL,
-  upper.bound = NULL,
+  outcome = NULL,
+  effect_type = NULL,
+  lower_bound = NULL,
+  upper_bound = NULL,
   verbose = 0,
   ...
 )
@@ -19,28 +20,41 @@ intervention_effect(
 \arguments{
 \item{model}{Fitted model. The fitted model can be of class lavaan.}
 
-\item{intervention}{Character vector. Variable names of interventional variables. Default: empty vector (no intervention).}
+\item{intervention}{Character vector. Variable names of interventional 
+variables. Default: empty vector (no intervention).}
 
-\item{outcome}{Character vector. Variable names of outcome variables. Default: all non-interventional variables.}
+\item{intervention_level}{Numeric vector. Interventional levels. 
+Same length and order as argument intervention. Default: vector of ones.}
 
-\item{intervention_level}{Numeric vector. Interventional levels. Same length and order as argument intervention. Default: vector of ones.}
+\item{outcome}{Character vector. Variable names of outcome variables.
+Default: all non-interventional variables.}
 
-\item{effect.type}{Character vector. Parts of the interventional distribution the user is interested in. Admissible values are "mean", "variance", "density", and "probability". Default: "mean". Argument "probability" only admissible if outcome is univariate.}
+\item{effect_type}{Character vector. Parts of the interventional 
+distribution the user is interested in. Admissible values are 
+"mean", "variance", "density", and "probability". 
+Default: "mean". Argument "probability" only admissible if outcome 
+is univariate.}
 
-\item{lower.bound}{Single number, numeric. Lower bound of critical range of univariate outcome variable.}
+\item{lower_bound}{Single number, numeric. Lower bound of critical range 
+of univariate outcome variable.}
 
-\item{upper.bound}{Single number, numeric. Upper bound of critical range of univariate outcome variable.}
+\item{upper_bound}{Single number, numeric. Upper bound of critical range 
+of univariate outcome variable.}
 
-\item{verbose}{A single number, integer. 0...no output (default), 1...user messages, 2...debugging-relevant messages.}
+\item{verbose}{A single number, integer. 0...no output (default), 
+1...user messages, 2...debugging-relevant messages.}
 }
 \value{
-An object of class causalSEM, for which several methods are available, including a summary method.
+An object of class causalSEM, for which several methods 
+are available, including a summary method.
 }
 \description{
-Calculate estimates of causal effects defined based on the interventional distribution.
+Calculate estimates of causal effects defined based on the 
+interventional distribution.
 }
 \references{
-Gische, C. & Voelkle, M. C. (under review). Beyond the mean: A flexible framework for
-   studying causal effects using linear models. \url{https://www.researchgate.net/profile/Christian-Gische/publication/335030449_Gische_Voelkle_Causal_Inference_in_Linear_Models/links/6054eb6e299bf1736755110b/Gische-Voelkle-Causal-Inference-in-Linear-Models.pdf}
+Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
+framework for studying causal effects using linear models. Psychometrika 
+(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
 }
 \keyword{extenal}
