@@ -66,7 +66,7 @@ plot_interventional_density <- function( object, plot=TRUE, plot.dir=NULL ){
 							x <- seq( -3*sd, 3*sd, length.out=200 ) + mean
 
 							# get pdf values
-							pdf.values <- dnorm( x, mean=mean, sd=sd )
+							pdf.values <- stats::dnorm( x, mean=mean, sd=sd )
 
 							# get standard errors
 							# TODO call se function
@@ -95,8 +95,8 @@ plot_interventional_density <- function( object, plot=TRUE, plot.dir=NULL ){
 							
 
 							# 95% CI
-							LL95 <- pdf.values - qnorm(0.975)*se
-							UL95 <- pdf.values + qnorm(0.975)*se
+							LL95 <- pdf.values - stats::qnorm(0.975)*se
+							UL95 <- pdf.values + stats::qnorm(0.975)*se
 
 							# return
 							as.matrix( data.frame( "x"=x,
@@ -270,7 +270,7 @@ MoreArgs=list(
 		# plot the plots
 		if( plot ) {
 			for( p in p.l ){
-				dev.new()
+				grDevices::dev.new()
 				plot( p )
 			}
 		}
@@ -290,7 +290,7 @@ MoreArgs=list(
 
 			# all single plots in one plot 
 			plots <- arrangeGrob( grobs=p.l,ncol=1 )
-			if( !plot ) dev.off()
+			if( !plot ) grDevices::dev.off()
 			plot.path2 <- file.path( plot.dir, paste0( "density_plot_",
 								paste( names( p.l ), collapse="_" ), ".pdf" ) )
 			ggsave( plot.path2, plots, width=297, height=0+length(p.l)*250,

@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.2 2022-02-07: replace sigma by stats::sigma
 # MH 0.0.1 2022-01-29: initial programming
 
 ## Documentation
@@ -79,11 +80,12 @@ plot_distributions <- function( object, plot=TRUE, plot.dir=NULL ){
 
 	# mean predictions
 	cond.mean <- unname( sapply( fitted.l, function( fitted ) 
-							predict.lm( object=fitted, newdata=int.wide ),
+							stats::predict.lm( object=fitted, newdata=int.wide ),
 							simplify=TRUE ) )
 	
 	# sd
-	cond.sd <- unname( sapply( fitted.l, sigma, simplify=TRUE ) )
+	# CG 0.0.2 2022-02-07: replace sigma by stats::sigma
+	cond.sd <- unname( sapply( fitted.l, stats::sigma, simplify=TRUE ) )
 
 	# conditional statistics data frame
 	condstat <- data.frame( "outvar"=outvars, 
@@ -135,26 +137,26 @@ plot_distributions <- function( object, plot=TRUE, plot.dir=NULL ){
 							x <- seq( -3*sd, 3*sd, length.out=200 ) + mean
 
 							# get pdf values
-							pdf.values <- dnorm( x, mean=mean, sd=sd )
+							pdf.values <- stats::dnorm( x, mean=mean, sd=sd )
 
 							# data frame for distribution line
 							d <- data.frame( "outvar"=outvar, "stat"=stat,
 							            "x"=x, "pdf.values"=pdf.values )
 										
 							# data frame for shaded 95% area
-							s <- d[ d$x > ( qnorm(0.025)*sd + mean ) &
-							               d$x < ( -qnorm(0.025)*sd + mean ), ]
+							s <- d[ d$x > ( stats::qnorm(0.025)*sd + mean ) &
+							               d$x < ( -stats::qnorm(0.025)*sd + mean ), ]
 
 							# data frame for mean, q025, q975
 							x2 <- c( mean,
-							         qnorm(0.025)*sd + mean,
-									 -qnorm(0.025)*sd + mean )
+							         stats::qnorm(0.025)*sd + mean,
+									 -stats::qnorm(0.025)*sd + mean )
 							m <- data.frame( "outvar"=outvar, "stat"=stat,
 											 "q"=c("mean","q025","q975"),
 											 "x"=x2,
 											 "pdf.values"=
 													 sapply( x2, function( x )
-													 dnorm(x,mean=mean,sd=sd) )
+													 stats::dnorm(x,mean=mean,sd=sd) )
 											)
 							# return
 							return( list( d, s, m ) )
@@ -326,7 +328,7 @@ plot_distributions <- function( object, plot=TRUE, plot.dir=NULL ){
 	# plot the plots
 	if( plot ) {
 		for( p in p.l ){
-			dev.new()
+			grDevices::dev.new()
 			plot( p )
 		}
 	}
@@ -346,7 +348,7 @@ plot_distributions <- function( object, plot=TRUE, plot.dir=NULL ){
 	
 		# all single plots in one plot 
 		plots <- arrangeGrob( grobs=p.l,ncol=1 )
-		if( !plot ) dev.off()
+		if( !plot ) grDevices::dev.off()
 		plot.path2 <- file.path( plot.dir, paste0( "distribution_plot_",
 		                        paste( names( p.l ), collapse="_" ), ".pdf" ) )
 		ggsave( plot.path2, plots, width=297/1.5, height=0+length(p.l)*250,

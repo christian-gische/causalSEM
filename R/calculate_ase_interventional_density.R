@@ -123,7 +123,7 @@ calculate_ase_interventional_density <- function(model, x, y,
                                                                y_labels]
   
   # compute value of pdf
-  gamma_3 <- dnorm( y_values, mean=E, sd=sqrt(V) )
+  gamma_3 <- stats::dnorm( y_values, mean=E, sd=sqrt(V) )
   
   # compute jacobian of the pdf
   jac_gamma_3 <- 

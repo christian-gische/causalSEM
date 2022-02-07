@@ -112,7 +112,7 @@ fill_in_theta <- function( internal_list ){
 
   # get parameter labels of all parameters in C and Psi
 
-  par_names <- names(coef(internal_list$fitted_object))[coef_joint]
+  par_names <- names(stats::coef(internal_list$fitted_object))[coef_joint]
 
   # get parameter labels of uniquely labelled parameters in C and Psi
   # (remove duplicates due to symmetry or equality constraints)
@@ -131,7 +131,7 @@ fill_in_theta <- function( internal_list ){
   # get numeric values of uniquely labelled parameters in C and Psi
   # (remove duplicates due to symmetry or equality constratins)
 
-  values_par_unique <- coef(internal_list$fitted_object)[labels_par_unique]
+  values_par_unique <- stats::coef(internal_list$fitted_object)[labels_par_unique]
 
   # todo: CHECK if result is identical to reading the slots
   # internal_list$info_model$C and internal_list$info_model$Psi, respectively
@@ -139,7 +139,7 @@ fill_in_theta <- function( internal_list ){
   # get variance covariance matrices of estimator of uniquely labelled
   # parameters in C and Psi
 
-  varcov_par_unique <- vcov(internal_list$fitted_object)
+  varcov_par_unique <- stats::vcov(internal_list$fitted_object)
   varcov_par_unique_r <- varcov_par_unique[labels_par_unique, ]
   varcov_par_unique <- varcov_par_unique_r[, labels_par_unique]
 

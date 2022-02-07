@@ -15,7 +15,7 @@
 #' @param V vector of variances
 #' @param var_names optional, vector of variable names
 #' @return vector (named if var_names are supplied) of density values
-#'  [ pnorm( q=E, mean=E, sd=sqrt(V) ) ]
+#'  [ stats::pnorm( q=E, mean=E, sd=sqrt(V) ) ]
 #' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
 #' framework for studying causal effects using linear models. Psychometrika 
 #' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
@@ -41,7 +41,7 @@ calculate_interventional_density <- function( E, V, var_names=NULL, verbose ){
 
 	# calculate pdfs for each variable
 	# CG 0.0.2 2022-01-13 commented out this part 
-	# pdfs <- mapply( function( mean, sd ){ dnorm( mean, mean=mean, sd=sd ) }, E,
+	# pdfs <- mapply( function( mean, sd ){ stats::dnorm( mean, mean=mean, sd=sd ) }, E,
 	                # sds, SIMPLIFY=TRUE )
 	
 	# CG 0.0.2 2022-01-13 introduced this part
@@ -52,7 +52,7 @@ calculate_interventional_density <- function( E, V, var_names=NULL, verbose ){
 	  x <- seq( -3*sd, 3*sd, length.out=200 ) + mean
 	  
 	  # get pdf values
-	  pdf.values <- dnorm( x, mean=mean, sd=sd )
+	  pdf.values <- stats::dnorm( x, mean=mean, sd=sd )
 	  
 	  # return
 	  as.matrix( data.frame( "x"=x, "pdf.values"=pdf.values ) )

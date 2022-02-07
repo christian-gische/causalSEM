@@ -112,7 +112,7 @@ calculate_jacobian_interventional_density <-
                                                                y_labels]
   
   # compute value of interventional density
-  f <- dnorm( y_value, mean=E, sd=sqrt(V) )
+  f <- stats::dnorm( y_value, mean=E, sd=sqrt(V) )
   
   # compute G3mu and G3Sigma from Corollary 11 in Gische and Voelkle (2021)
   # stack together in a matrix of appropriate dimensions

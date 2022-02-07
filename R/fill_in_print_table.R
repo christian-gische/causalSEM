@@ -37,11 +37,11 @@ fill_in_print_table <- function(internal_list){
   # interval
 
   CI_lower_border <- function(mean, sd) {
-    qnorm(p = 0.025, mean = mean, sd = sd)
+    stats::qnorm(p = 0.025, mean = mean, sd = sd)
   }
 
   CI_upper_border <- function(mean, sd) {
-    qnorm(p = 0.975, mean = mean, sd = sd)
+    stats::qnorm(p = 0.975, mean = mean, sd = sd)
   }
 
 # Data frame with the interventional means

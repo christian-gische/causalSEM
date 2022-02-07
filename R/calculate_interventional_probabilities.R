@@ -43,7 +43,7 @@ calculate_interventional_probabilities <- function( mean, sd, y_low, y_up,
 
 	# Eq. 22d, p. 22
 	p <- mapply( function( mean, sd, y_low, y_up ) { 
-	  pnorm( ( y_up - mean ) / sd ) - pnorm( ( y_low - mean ) / sd ) }, 
+	  stats::pnorm( ( y_up - mean ) / sd ) - stats::pnorm( ( y_low - mean ) / sd ) }, 
 	  mean, sd, y_low, y_up, SIMPLIFY=TRUE )
 
 	# return p
