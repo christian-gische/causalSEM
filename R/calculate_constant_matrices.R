@@ -34,7 +34,7 @@
 #' Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible framework for 
 #' studying causal effects using linear models. Psychometrika 
 #' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
-#' @keywords internal
+
 
 # TODO if at one point we get runtime problems we might consider using
 # the function Matrix which uses sparsity information

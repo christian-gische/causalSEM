@@ -10,7 +10,7 @@
 #' @param verbose A number, 0...no output (default), 1...user messages,
 #'    2...debugging-relevant messages.
 #' @return returns either the valid user input or 0 (no output) as default
-#' @keywords internal
+
 
 # Function definition
 handle_verbose_argument <- function( verbose=c(0,1,2) ){

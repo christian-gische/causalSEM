@@ -20,7 +20,7 @@
 #' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible
 #' framework for studying causal effects using linear models. Psychometrika
 #' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
-#' @keywords internal
+
 
 ## Function definition
 calculate_interventional_covariance_matrix <- function( C, Psi, x, SI, n, IN,
