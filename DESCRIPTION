@@ -1,12 +1,18 @@
 Package: causalSEM
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Analyze Causal Effects Using Interventional Distributions
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Authors@R: c(person("Christian Gische", email="christian.gische@hu-berlin.de", 
+role=c("aut","cre")), person("Manuel Arnold", email="arnoldmz@hu-berlin.de",
+role=c("aut")), person("Martin Hecht", email="martin.hecht@uni-tuebingen.de>",
+role=c("aut")))
+Author: Christian Gische [aut, cre],
+	Manuel Arnold [aut],
+	Martin Hecht [aut]
+Maintainer: Christian Gische <christian.gische@hu-berlin.de>
+Description: Calculate estimates of causal effects based on the interventional
+distribution. 
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 Imports: ggplot2, grDevices, lavaan, matrixcalc
