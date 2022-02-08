@@ -27,4 +27,3 @@ framework for studying causal effects using linear models. Psychometrika
 \seealso{
 \code{\link{calculate_jacobian_C}}
 }
-\keyword{internal}

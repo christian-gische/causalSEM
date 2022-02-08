@@ -2,16 +2,14 @@ Package: causalSEM
 Type: Package
 Title: Analyze Causal Effects Using Interventional Distributions
 Version: 0.1.0
-Authors@R: c(person("Christian Gische", email="christian.gische@hu-berlin.de", 
-role=c("aut","cre")), person("Manuel Arnold", email="arnoldmz@hu-berlin.de",
-role=c("aut")), person("Martin Hecht", email="martin.hecht@uni-tuebingen.de>",
-role=c("aut")))
+Authors@R: c(person("Christian Gische", email="christian.gische@hu-berlin.de", role=c("aut","cre")), 
+  person("Manuel Arnold", email="arnoldmz@hu-berlin.de", role=c("aut")), 
+  person("Martin Hecht", email="martin.hecht@uni-tuebingen.de>", role=c("aut")))
 Author: Christian Gische [aut, cre],
 	Manuel Arnold [aut],
 	Martin Hecht [aut]
 Maintainer: Christian Gische <christian.gische@hu-berlin.de>
-Description: Calculate estimates of causal effects based on the interventional
-distribution. 
+Description: Calculate estimates of causal effects based on the interventional distribution. 
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

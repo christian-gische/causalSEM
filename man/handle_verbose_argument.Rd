@@ -17,4 +17,3 @@ returns either the valid user input or 0 (no output) as default
 Internal function, checks whether the user-inputted verbose
    argument is valid
 }
-\keyword{internal}

@@ -89,4 +89,3 @@ framework for studying causal effects using linear models. Psychometrika
 \seealso{
 \code{\link{handle_verbose_argument}}
 }
-\keyword{internal}

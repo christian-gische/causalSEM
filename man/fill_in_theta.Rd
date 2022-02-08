@@ -43,4 +43,3 @@ framework for studying causal effects using linear models. Psychometrika
 \seealso{
 \code{\link{fill_in_Psi, fill_in_C}}
 }
-\keyword{internal}

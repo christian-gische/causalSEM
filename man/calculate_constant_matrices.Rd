@@ -40,4 +40,3 @@ studying causal effects using linear models. Psychometrika
 \code{\link{calculate_interventional_means, 
 calculate_interventional_variances}}
 }
-\keyword{internal}

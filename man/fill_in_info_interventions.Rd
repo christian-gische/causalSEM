@@ -38,4 +38,3 @@ studying causal effects using linear models. Psychometrika
 \seealso{
 \code{\link{populate_model_info}}
 }
-\keyword{internal}

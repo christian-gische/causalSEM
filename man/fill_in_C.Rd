@@ -29,4 +29,3 @@ framework for studying causal effects using linear models. Psychometrika
 \seealso{
 \code{\link{build_Psi}}
 }
-\keyword{internal}
