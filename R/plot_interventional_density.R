@@ -1,4 +1,6 @@
 ## Changelog:
+# MH 0.0.5 2022-02-11:
+#    -- added argument "scales.free" 
 # MH 0.0.4 2022-01-30:
 #    -- minor mod of y.breaks calculation
 #    -- lines all < 80 chars
@@ -15,8 +17,10 @@
 #' @description Function that generates density plots
 #' @param object The object returned from calling function
 #'     \code{intervention_effect}.
-#' @param plot logical, if TRUE plots are displayed
-#' @param plot directory, directory to save pdf plot files
+#' @param plot, logical, if TRUE plots are displayed
+#' @param plot, character, directory to save pdf plot files
+#' @param scales.free, logical, FALSE (default): all plots have the same
+#'        x-axis and y-axis ticks, TRUE: free x-axis and y-axis ticks
 #' @return \code{plot_interventional_density} returns ggplot2 code for
 #'     density plots
 #' @references
@@ -25,13 +29,14 @@
 #' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
 
 ## Function definition
-plot_interventional_density <- function( object, plot=TRUE, plot.dir=NULL ){
+plot_interventional_density <- function( object, plot=TRUE, plot.dir=NULL,
+														   scales.free=FALSE ){
 
 	# function name
 	fun.name <- "plot_interventional_density"
 
 	# function version
-	fun.version <- "0.0.3 2021-11-22"
+	fun.version <- "0.0.5 2022-02-11"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -239,18 +244,30 @@ MoreArgs=list(
 			p <- p + geom_line()
 			p <- p + geom_ribbon( aes( ymin=LL95, ymax=UL95, x=x ), alpha=0.2,
 												  color=NA, show.legend=FALSE )
+			# MH 0.0.5 2022-02-11
+			if( scales.free ){
+			p <- p + scale_x_continuous( expand = expansion(
+										 mult = c(0, 0), add=c(0, 0)))
+			} else {
 			p <- p + scale_x_continuous( limits=c(x.breaks[1],
 												  x.breaks[length(x.breaks)]),
 												  breaks=x.breaks,
 												  labels=x.labs,
 												  expand = expansion(
 												  mult = c(0, 0), add=c(0, 0)))
+			}
+			# MH 0.0.5 2022-02-11
+			if( scales.free ){
+			p <- p + scale_y_continuous( expand = expansion(
+										 mult = c(0, 0), add=c(0, 0)))
+			} else {
 			p <- p + scale_y_continuous( limits=c(y.breaks[1],
 												  y.breaks[length(y.breaks)]),
 												  breaks=y.breaks,
 												  labels=y.labs,
 												  expand = expansion(
 												  mult = c(0, 0), add=c(0, 0)))
+			}
 			p <- p + xlab( paste0( "\n", xname ) )
 			p <- p + ylab( "interventional pdf\n" )
 			p <- p + theme
@@ -336,7 +353,7 @@ MoreArgs=list(
 # object00 <- intervention_effect( model=o00_lavaan_test_object,
 									# intervention="x2",intervention_level=2)
 # p.l <- plot_interventional_density( object00,
-									# plot.dir="c:/users/martin/Desktop/plots")
+									# plot.dir="c:/users/martin/Desktop/plots", scales.free=FALSE)
 
 
 ## test object 01_lavaan_test_object
