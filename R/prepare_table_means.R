@@ -1,27 +1,28 @@
 ## Changelog:
-# MA 0.0.2 2022-02-08: changed formatting
-# MA 0.0.1 2022-01-13: initial programming
+# MA 0.0.1 2022-02-17: initial programming
 
 ## Documentation
-#' @title Printing a Causal SEM Object
-#' @description print method for class "causalSEM".
-#' @param x an object of class "causalSEM", usually, a result of a call to intervention_effect.
+#' @title Prepare Tables with Information About Interventional Means
+#' @description Internal helper function that creates a formatted table
+#' containing various information about the interventional means. Used in
+#' print.causalSEM and summary.causalSEM
+#' @param x an object of class "causalSEM", usually, a result of a call to
+#' intervention_effect.
 #' @param digit integer indicating the number of decimal places (round) or
 #' significant digits (signif) to be used.
-#' @return \code{print.causalSEM} returns a table with summary statistics.
+#' @return \code{prepare_table_means} returns a character vector.
 #' @references
 #' Gische, C. & Voelkle, M. C. (under review). Beyond the mean: A flexible framework for
 #'    studying causal effects using linear models. \url{https://www.researchgate.net/profile/Christian-Gische/publication/335030449_Gische_Voelkle_Causal_Inference_in_Linear_Models/links/6054eb6e299bf1736755110b/Gische-Voelkle-Causal-Inference-in-Linear-Models.pdf}
-#' @export
 
 ## Function definition
-print.causalSEM <- function(x, digits = 3){
+prepare_table_means <- function(x, digits = 3){
 
   # function name
-  fun_name <- "print.causalSEM"
+  fun_name <- "prepare_table_means"
 
   # function version
-  fun_version <- "0.0.2 2022-02-08"
+  fun_version <- "0.0.1 2022-02-17"
 
   # function name+version
   fun_name_version <- paste0(fun_name, " (", fun_version, ")")
@@ -47,7 +48,6 @@ print.causalSEM <- function(x, digits = 3){
   # Collapse infomation about the interventional variables into a single string
   info_variables <- paste0("Intervention: do(", info_variables, ")", collapse = "")
 
-
   # data.frame with means
   df_means <- data.frame(
     x$tables$interventional_means$Variable,
@@ -59,50 +59,21 @@ print.causalSEM <- function(x, digits = 3){
       round(x$tables$interventional_means$CI_upper, digits = digits),
       "]"))
 
-  # data.frame with variances
-  df_variances <- data.frame(
-    x$tables$interventional_means$Variable,
-    round(x$tables$interventional_variances[, 2:3], digits = digits),
-    paste0(
-      "[",
-      round(x$tables$interventional_variances$CI_lower, digits = digits),
-      ",",
-      round(x$tables$interventional_variances$CI_upper, digits = digits),
-      "]")
-  )
-
   # Add row with row names
   df_means <- rbind(
     c("Variable", "Est.", "Std. Err.", "95% CI"),
     df_means
   )
 
-  df_variances <- rbind(
-    c("Variable", "Est.", "Std. Err.", "95% CI"),
-    df_variances
-  )
-
   # Delete column names
-  colnames(df_means) <- colnames(df_variances) <- ""
+  colnames(df_means)  <- ""
 
   # Transform data.farme into strings
   df_means <- utils::capture.output(print(df_means, row.names = FALSE))
   df_means <- df_means[-1]
 
-  df_variances <- utils::capture.output(print(df_variances, row.names = FALSE))
-  df_variances <- df_variances[-1]
-
-  # Put everything together
-  output <- c(info_variables,
-              "",
-              "Interventional means:",
-              df_means,
-              "",
-              "Interventional variances:",
-              df_variances)
-
-  # Write table
-  writeLines(output)
+  # Return output
+  df_means
 
 }
 
