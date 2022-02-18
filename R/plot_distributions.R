@@ -16,10 +16,10 @@
 #'        x-axis and y-axis ticks, TRUE: free x-axis and y-axis ticks
 #' @return \code{plot_distributions} returns ggplot2 code
 #'         for density plots
-#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a
-#'             flexible framework for studying causal effects using linear
-#'             models. Psychometrika (advanced online publication).
-#'             https://doi.org/10.1007/s11336-021-09811-z
+#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
+#' framework for studying causal effects using linear models. Psychometrika 
+#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+
 
 ## Function definition
 plot_distributions <- function( object, plot=TRUE, plot.dir=NULL,
