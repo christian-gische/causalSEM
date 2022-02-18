@@ -4,13 +4,21 @@
 \alias{plot_interventional_density}
 \title{Plot density}
 \usage{
-plot_interventional_density(object, plot = TRUE, plot.dir = NULL)
+plot_interventional_density(
+  object,
+  plot = TRUE,
+  plot.dir = NULL,
+  scales.free = FALSE
+)
 }
 \arguments{
 \item{object}{The object returned from calling function
 \code{intervention_effect}.}
 
-\item{plot}{directory, directory to save pdf plot files}
+\item{plot, }{character, directory to save pdf plot files}
+
+\item{scales.free, }{logical, FALSE (default): all plots have the same
+x-axis and y-axis ticks, TRUE: free x-axis and y-axis ticks}
 }
 \value{
 \code{plot_interventional_density} returns ggplot2 code for
@@ -20,8 +28,6 @@ plot_interventional_density(object, plot = TRUE, plot.dir = NULL)
 Function that generates density plots
 }
 \references{
-
-
 Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
 framework for studying causal effects using linear models. Psychometrika 
 (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
