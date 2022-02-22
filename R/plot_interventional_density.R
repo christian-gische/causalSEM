@@ -1,4 +1,7 @@
 ## Changelog:
+# MH 0.0.6 2022-02-22:
+#    -- SE (and grid) now from
+#       object$interventional_distribution$density_function$ase
 # MH 0.0.5 2022-02-11:
 #    -- added argument "scales.free" 
 # MH 0.0.4 2022-01-30:
@@ -35,7 +38,7 @@ plot_interventional_density <- function( object, plot=TRUE, plot.dir=NULL,
 	fun.name <- "plot_interventional_density"
 
 	# function version
-	fun.version <- "0.0.5 2022-02-11"
+	fun.version <- "0.0.6 2022-02-22"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -63,19 +66,25 @@ plot_interventional_density <- function( object, plot=TRUE, plot.dir=NULL,
 	sds <- sqrt( diag( V ) )
 
 	# generate x values and calculate pdfs for each variable, return list
-	pdf <- mapply( function( mean, sd, outcome_names, intervention_names,
+	pdf <- mapply( function( mean, sd, outcome_name, intervention_names,
 	                                                                 verbose ){
 
-							# generate x-axis values
-							x <- seq( -3*sd, 3*sd, length.out=200 ) + mean
+							# get standard errors
+							# se <- rep( 0.001, length( x ) )
+							# MH 0.0.6 2022-02-22: now real SE
+							se.matr <- object$interventional_distribution$
+								density_function$ase[[outcome_name]]
+							se <- se.matr[,"ase"]
 
+							# generate x-axis values
+							# x <- seq( -3*sd, 3*sd, length.out=200 ) + mean
+							# MH 0.0.6 2022-02-22: grid is now defined by
+							#    se.matr (for consistency!)
+							x <- se.matr[,"x"]
+							
 							# get pdf values
 							pdf.values <- stats::dnorm( x, mean=mean, sd=sd )
-
-							# get standard errors
-							# TODO call se function
-							# TEST DUMMY
-							se <- rep( 0.001, length( x ) )
+							
 							
 							# MH 0.0.3 2021-11-22, 
 							#    calculate_ase_interventional_density crashes
@@ -102,12 +111,15 @@ plot_interventional_density <- function( object, plot=TRUE, plot.dir=NULL,
 							LL95 <- pdf.values - stats::qnorm(0.975)*se
 							UL95 <- pdf.values + stats::qnorm(0.975)*se
 
-							# return
-							as.matrix( data.frame( "x"=x,
+							# return object
+							ret <- as.matrix( data.frame( "x"=x,
 							                       "pdf.values"=pdf.values,
 												   "se"=se,
 												   "LL95"=LL95,
 												   "UL95"=UL95 ) )
+												   
+							# return
+							return( ret )
 
 					}, E[,1], sds, names(E[,1]), 
 MoreArgs=list(
@@ -352,7 +364,7 @@ MoreArgs=list(
 # object00 <- intervention_effect( model=o00_lavaan_test_object,
 									# intervention="x2",intervention_level=2)
 # p.l <- plot_interventional_density( object00,
-									# plot.dir="c:/users/martin/Desktop/plots", scales.free=FALSE)
+					# plot.dir="c:/users/martin/Desktop/plots",scales.free=FALSE)
 
 
 ## test object 01_lavaan_test_object

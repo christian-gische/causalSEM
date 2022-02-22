@@ -1,4 +1,9 @@
 ## Changelog:
+# MH 0.0.4 2022-02-22:
+#    -- if no meanstructure is present, use sample means for conditional stats
+#    -- added argument facets.color
+#    -- color shaded areas
+#    -- added argument shade.alpha
 # MH 0.0.3 2022-02-11:
 #    -- implemented conditional multivariate distribution
 #    -- added argument "scales.free" 
@@ -14,6 +19,10 @@
 #' @param plot, character, directory to save pdf plot files
 #' @param scales.free, logical, FALSE (default): all plots have the same
 #'        x-axis and y-axis ticks, TRUE: free x-axis and y-axis ticks
+#' @param facets.color, character, colors for sample, conditional, and causal
+#'        statistics
+#' @param shade.alpha, numeric, alpha value (opaqueness) for shaded areas, 
+#'        0 (transparent) ... 1 (opaque)
 #' @return \code{plot_distributions} returns ggplot2 code
 #'         for density plots
 #' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
@@ -22,14 +31,17 @@
 
 
 ## Function definition
-plot_distributions <- function( object, plot=TRUE, plot.dir=NULL,
-														   scales.free=FALSE ){
+plot_distributions <- function( object, plot=TRUE, plot.dir=NULL, 
+								scales.free=FALSE,
+								facets.color=c("#ed553b","#3caea3","#0568bf"),
+								shade.alpha=0.10
+								){
 
 	# function name
 	fun.name <- "plot_distributions"
 
 	# function version
-	fun.version <- "0.0.3 2022-02-11"
+	fun.version <- "0.0.4 2022-02-22"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -62,7 +74,7 @@ plot_distributions <- function( object, plot=TRUE, plot.dir=NULL,
 	
 	# get data (lavaan only!!)
 	d <- as.data.frame( lavInspect( object$fitted_object, "data" ) )
-	
+
 	# MH 0.0.3 2022-02-11
 	# get model implied covariance matrix (lavaan only!!)
 	fitted <- fitted( object$fitted_object )
@@ -78,17 +90,19 @@ plot_distributions <- function( object, plot=TRUE, plot.dir=NULL,
 			mu <- as.vector( mu.fitted )
 			names( mu ) <- names( mu.fitted )
 	} else {
-			mu <- rep( 0, dim( Sigma )[1] )
-			names( mu ) <- colnames( Sigma )
+			# mu <- rep( 0, dim( Sigma )[1] )
+			# names( mu ) <- colnames( Sigma )
+			# MH 0.0.4 2022-02-22 (discussed 2022-02-18)
+			# if no meanstructure is present, use sample means
+			mu <- sapply( d[,c(outvars,intvars)], mean )
+			names( mu ) <- c(outvars,intvars)
 	}
-	
-	
+
 	### sampling statistics
 	smplstat <- data.frame( "outvar"=outvars, 
 							"mean"=sapply( d[,outvars], mean ),
 							"sd"=sapply( d[,outvars], sd ),
 							"stat"="smpl" )
-	
 	
 	### conditional statistics
 	
@@ -200,7 +214,7 @@ plot_distributions <- function( object, plot=TRUE, plot.dir=NULL,
 
 							# data frame for distribution line
 							d <- data.frame( "outvar"=outvar, "stat"=stat,
-							            "x"=x, "pdf.values"=pdf.values )
+											 "x"=x, "pdf.values"=pdf.values )
 										
 							# data frame for shaded 95% area
 							s <- d[ d$x > ( stats::qnorm(0.025)*sd + mean ) &
@@ -384,7 +398,7 @@ plot_distributions <- function( object, plot=TRUE, plot.dir=NULL,
 			sd=stat$sd[stat$stat %in% "causal" & stat$outvar %in% outvar] )
 		
 		# line colors for means
-		line.colors.1 <- c( "#ed553b", "#3caea3", "#0568bf" )
+		line.colors.1 <- facets.color # MH 0.0.4 2022-02-22
 		line.colors.2 <- c( line.colors.1[2:3], line.colors.1[1] )
 		line.colors.3 <- c( line.colors.2[2:3], line.colors.2[1] )
 		line.colors <- c( line.colors.1, line.colors.2, line.colors.3 )
@@ -402,8 +416,17 @@ plot_distributions <- function( object, plot=TRUE, plot.dir=NULL,
 		p <- p + geom_segment(data=m.., aes(x=x, y=0, xend=x, yend=pdf.values,
 					color=line.colors, linetype=line.types), show.legend=FALSE)
 		p <- p + geom_line()
-		p <- p + geom_area( data=s95., fill = "#000000",
-													 color = NA, alpha = 0.20 )
+	
+		# p <- p + geom_area( data=s95., fill = "#000000",
+													 # color = NA, alpha = 0.20 )
+		# MH 0.0.4 2022-02-22: color shaded areas
+		p <- p + geom_area( data=s95.[s95.$stat %in% "smpl",],
+					fill = facets.color[1], color = NA, alpha = shade.alpha )
+		p <- p + geom_area( data=s95.[s95.$stat %in% "cond",],
+					fill = facets.color[2], color = NA, alpha = shade.alpha )
+		p <- p + geom_area( data=s95.[s95.$stat %in% "causal",],
+					fill = facets.color[3], color = NA, alpha = shade.alpha )
+		
 		p <- p + facet_wrap( ~ stat,
 							   ncol=1,
 							   nrow=3,
