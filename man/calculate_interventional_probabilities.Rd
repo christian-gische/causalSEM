@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculate_interventional_probabilities.R
 \name{calculate_interventional_probabilities}
 \alias{calculate_interventional_probabilities}
-\title{Calculate Probabilites of Interventional Events}
+\title{Calculate Probabilities of Interventional Events}
 \usage{
 calculate_interventional_probabilities(mean, sd, y_low, y_up, verbose)
 }
