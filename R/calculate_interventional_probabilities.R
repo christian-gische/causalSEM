@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.6 2022-03-08: changed argument check for upper and lower bound
 # CG 0.0.5 2022-01-13: changed structure of internal_list
 #                       cleaned up code (documentation, 80 char per line)
 #                       changed dot-case to snake-case
@@ -8,7 +9,7 @@
 # MH 0.0.1 2021-09-27: initial programming
 
 ## Documentation
-#' @title Calculate Probabilites of Interventional Events
+#' @title Calculate Probabilities of Interventional Events
 #' @description Calculates probabilities of interventional events, for example,
 #' the probabily that the outcome variable realizes within a critical range of
 #' values given an intervention on the exposure. 
@@ -32,7 +33,7 @@ calculate_interventional_probabilities <- function( mean, sd, y_low, y_up,
 	fun.name <- "calculate_interventional_probabilities"
 
 	# function version
-	fun.version <- "0.0.3 2021-11-22"
+	fun.version <- "0.0.6 2022-03-08"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -41,11 +42,22 @@ calculate_interventional_probabilities <- function( mean, sd, y_low, y_up,
 	if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ", 
 	                                Sys.time(), "\n" ) )
 
+	# CG 0.0.6 2022-03-08: argument check for upper and lower bound
+	if( length(y_low) == length(y_up) && length(y_low) == length(sd) ){
+	
 	# Eq. 22d, p. 22
 	p <- mapply( function( mean, sd, y_low, y_up ) { 
-	  stats::pnorm( ( y_up - mean ) / sd ) - stats::pnorm( ( y_low - mean ) / sd ) }, 
+	  stats::pnorm( ( y_up - mean ) / sd ) - 
+	    stats::pnorm( ( y_low - mean ) / sd ) }, 
 	  mean, sd, y_low, y_up, SIMPLIFY=TRUE )
 
 	# return p
 	return( p )
+	
+	} else {
+	  stop( paste0( fun.name.version, ": calculation of interventional 
+	  probabilities failed. Arguments y_low, y_up, sd, and mean need to be of 
+	  same length.") )
+	}
+	
 }

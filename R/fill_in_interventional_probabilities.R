@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.6 2022-03-08: allow for multivariate lower and upper bounds
 # CG 0.0.5 2022-01-13: changed structure of internal_list
 #                       cleaned up code (documentation, 80 char per line)
 #                       changed dot-case to snake-case
@@ -30,7 +31,7 @@ fill_in_interventional_probabilities <- function( internal_list ){
 	fun.name <- "fill_in_interventional_probabilities"
 
 	# function version
-	fun.version <- "0.0.5 2022-01-13"
+	fun.version <- "0.0.6 2022-03-08"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )

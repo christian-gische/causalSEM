@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.3 2022-03-08:  allow for multivariate lower and upper bounds
 # CG 0.0.2 2022-01-13:  changed structure of internal_list
 #                       cleaned up code (documentation, 80 char per line)
 #                       changed dot-case to snake-case
@@ -34,7 +35,7 @@ calculate_ase_interventional_probabilities <-
   fun_name <- "calculate_ase_interventional_probabilities"
 
   # function version
-  fun_version <- "0.0.2 2022-01-13"
+  fun_version <- "0.0.3 2022-03-08"
 
   # function name+version
   fun_name_version <- paste0(fun_name, " (", fun_version, ")")
@@ -47,89 +48,75 @@ calculate_ase_interventional_probabilities <-
     cat(paste0("start of function ", fun_name_version, " ", Sys.time(), "\n"))
   }
 
-  # TODO check if user argument model is the internal_list or
+  # TODO plausibility check of user argument "model": should be internal_list or
   # an object of class causalSEM
   # CURRENTLY, the function assumes that the input model is
   # of type internal_list. After allowing for objects of class causalSEM
   # the pathes starting with internal_list$ might need adjustment
-
+  
   # get variable names of interventional variables
   if (is.character(intervention_names) && 
       all(intervention_names %in% model$info_model$var_names)) {
-    x_labels <- intervention_names
+    intervention_names <- intervention_names
   } else {
-    x_labels <- model$info_interventions$intervention_names
+    stop( paste0( fun.name.version, ": Calculation of asymptotics of 
+    interventional probabilities failed. Argument intervention_names needs to 
+    be a character vector of variable names."  ) )
   }
   
   # get interventional levels
   if (is.numeric(x) && length (x) == length(intervention_names)) {
-    x_values <- x
+    x <- x
   } else {
-    x_values <- model$info_interventions$intervention_levels
+    stop( paste0( fun.name.version, ": Calculation of asymptotics of 
+    interventional probabilities failed. Argument x needs to be of same length
+    as argument intervention_names."  ) )
   }
   
-  # get variable names of outcome variables
+  
+  # CG 0.0.3 2022-03-08:  allow for multivariate lower and upper bounds
+  # plausibility check for argument outcome
   if( is.character( outcome_names ) && 
-      outcome_names %in% setdiff(model$info_model$var_names, 
-                                 x_labels) ){
-    y_labels <- outcome_names
+      all( outcome_names %in% model$info_model$var_names ) ){
+    # set in internal_list
+    outcome_names <- outcome_names
+  } else if ( is.null( outcome_names ) ){
+    outcome_names <- 
+      setdiff(model$info_model$var_names, 
+              model$info_interventions$intervention_names)
   } else {
-    stop( paste0( fun.name.version, ": Argument outcome_names needs to be the 
-                  a character string with the name of a non-interventional 
-                  variable."  ) )
+    stop( paste0( fun.name.version, ": Calculation of Jacobian of interventional
+    probabilities failed. Argument outcome_name needs to be a character vector 
+    of variable names."  ) )
   }
   
-  # get lower bound of outcome range 
-  # TODO: allow lower bounds to be multivariate
-  if( is.numeric( lower_bounds ) && length ( lower_bounds ) == 1 &&
-      model$info_interventions$n_outcome == 1 ){
+  # get number of outcome variables 
+  n_outcome <- length(outcome_names)
   
+   # get lower bound of outcome range 
+  if( is.numeric( lower_bounds ) && 
+      length ( lower_bounds ) == n_outcome)
+  {
+    # set in internal_list
     lower_bounds <- lower_bounds 
-    
-  } else if ( is.null( lower_bounds ) ){
-    # TODO: give warning / error if model$info_interventions$lower_bounds
-    # has no entry
-    
-    lower_bounds <- model$info_interventions$lower_bounds
-    
   } else {
-    
-    stop( paste0( fun.name.version, ": setting lower_bounds failed. Argument 
-                  lower_bounds needs to be a numeric scalar."  ) )
+    stop( paste0( fun.name.version, ": Calculation of Jacobian of interventional
+    probabilities failed. Argument lower_bounds needs to be numeric and of 
+    same length as the argument outcome_names."  ) )
   }
-  
-  
-  # TODO: option to provide same number of upper and lower bounds as 
-  # verbose: provide lower and upper bound in the same order as outcome 
-  # variable or as named vector; if no outcome variable is provided as argument 
-  # force user to name upper and lower bound which have to be the same 
-  # dimension as vector of non interventional variables 
-  # internally: always name upper and lower bound in internal list and bring in 
-  # same order as outcome names
-  # outcome variables of interest 
-  # caution: muliple upper bounds need to be in the same order as multivariate 
-  # outcome variable
-  # CAUTION: order of upper bounds in case outcome variable is not user 
-  # specified 
   
   # get upper bounds of outcome range 
-  # TODO: allow lower bounds to be multivariate
   
-  if( is.numeric(upper_bounds ) && length ( upper_bounds ) == 1 &&
-      model$info_interventions$n_outcome == 1 ){
-    
-    upper_bounds <- upper_bounds
-    
-  } else if ( is.null( upper_bounds ) ){
-    # TODO: give warning / error if model$info_interventions$lower_bounds
-    # has no entry
-    upper_bounds <- model$info_interventions$upper_bounds 
-    
+  if( is.numeric( upper_bounds ) && 
+      length ( upper_bounds ) == n_outcome)
+  {
+    # set in internal_list
+    upper_bounds <- upper_bounds 
   } else {
-    stop( paste0( fun.name.version, ": setting upper_bounds failed. Argument 
-                  lower_bounds needs to be a numeric scalar." ) )
+    stop( paste0( fun.name.version, ": Calculation of Jacobian of interventional
+    probabilities failed. Argument upper_bounds needs to be numeric and of 
+    same length as the argument outcome_names."  ) )
   }
-  
 
   # get total number of variables
   # get number of unique parameters
@@ -138,15 +125,16 @@ calculate_ase_interventional_probabilities <-
   n_unique <- model$info_model$param$n_par_unique
 
   # get intervential probability
-  
+  # TODO: To be consistent we would have to call the function 
+  # calcualte interventional means here
   gamma_4 <- model$interventional_distribution$probabilities$values
 
   # compute jacobian of the pdf
   jac_g4 <- calculate_jacobian_interventional_probabilities(
     model = model,
-    x = x_values,
-    intervention_names = x_labels,
-    outcome_names = y_labels,
+    x = x,
+    intervention_names = intervention_names,
+    outcome_names = outcome_names,
     lower_bounds = lower_bounds,
     upper_bounds = upper_bounds,
     verbose = verbose
@@ -156,10 +144,16 @@ calculate_ase_interventional_probabilities <-
   acov <- model$info_model$param$varcov_par_unique
 
   # compute asymptotic variance
-  acov_gamma_4 <- jac_g4 %*% acov %*% t(jac_g4)
-
-  # compute asymptotic standard errors
-  ase_gamma_4 <- sqrt(diag(acov_gamma_4))
+  acov_gamma_4 <- numeric(n_outcome)
+  
+  for (i in 1:n_outcome) {
+    
+    acov_gamma_4[i] <- jac_g4[[i]]%*% acov %*% t(jac_g4[[i]])
+    
+  }
+  
+   # compute asymptotic standard errors
+  ase_gamma_4 <- sqrt(acov_gamma_4)
 
   # compute approximate z-value
   z_gamma_4 <- gamma_4 / ase_gamma_4

@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.5 2022-03-08: changed argument check for upper and lower bound
 # CG 0.0.4 2022-01-13: changed structure of internal_list
 #                      cleaned up code (documentation, 80 char per line)
 #                      changed dot-case to snake-case
@@ -39,7 +40,7 @@ fill_in_info_interventions <- function(internal_list,
   fun.name <- "fill_in_info_interventions"
   
   # function version
-  fun.version <- "0.0.4 2022-01-13"
+  fun.version <- "0.0.5 2022-03-08"
   
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -121,47 +122,33 @@ fill_in_info_interventions <- function(internal_list,
     length(internal_list$info_interventions$outcome_names)
   
   # get lower bound of outcome range 
-  # TO DO: allow lower bounds to be multivariate
+  # CG 0.0.5: allow lower bounds to be multivariate
   if( is.numeric( lower_bound ) && 
-      length ( lower_bound ) == 1 && 
-      internal_list$info_interventions$n_outcome == 1 ){
+      length ( lower_bound ) == internal_list$info_interventions$n_outcome)
+    {
     # set in internal_list
     internal_list$info_interventions$lower_bounds <- lower_bound 
   } else if ( is.null( lower_bound ) ){
     internal_list$info_interventions$lower_bounds <- NULL 
   } else {
     stop( paste0( fun.name.version, ": setting lower_bound in internal list 
-                  failed. Argument lower_bound needs to be a numeric 
-                  scalar."  ) )
+                  failed. Argument lower_bound needs to be numeric and of 
+                  same length as the argument outcome."  ) )
   }
   
-  
-  # TODO: option to provide same number of upper and lower bounds as 
-  # verbose: provide lower and upper bound in the same order as outcome variable
-  # or as named vector; if no outcome variable is provided as argument force
-  # user to name upper and lower bound which have to be the same dimension as 
-  # vector of non interventional variables 
-  # internally: always name upper and lower bound in internal list and bring in
-  # same order as outcome names outcome variables of interest 
-  # caution: muliple upper bounds need to be in the same order as multivariate 
-  # outcome variable
-  # CAUTION: order of upper bounds in case outcome variable is not user 
-  # specified 
-  
 # get upper bounds of outcome range 
-# TO DO: allow lower bounds to be multivariate
+# CG 0.0.5: allow upper bounds to be multivariate
   
   if( is.numeric(upper_bound ) &&
-      length ( upper_bound ) == 1 && 
-      internal_list$info_interventions$n_outcome == 1 ){
+      length ( upper_bound ) == internal_list$info_interventions$n_outcome){
     # set in internal_list
     internal_list$info_interventions$upper_bounds <- upper_bound
   } else if ( is.null( upper_bound ) ){
     internal_list$info_interventions$upper_bounds <- NULL 
   } else {
     stop( paste0( fun.name.version, ": setting upper_bound in internal list 
-                  failed. Argument lower_bound needs to be a numeric 
-                  scalar."  ) )
+                  failed. Argument upper_bound needs to be numeric and of 
+                  same length as the argument outcome."  ) )
   }
   
   # console output

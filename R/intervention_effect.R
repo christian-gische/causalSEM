@@ -181,8 +181,8 @@ intervention_effect <- function(model, intervention, intervention_level,
   # internal_list <- interventional_probability( internal_list = internal_list )
   # MH 0.0.11 2021-11-22, call changed from interventional_probability to
   #   fill_in_interventional_probabilities
-  internal_list <- fill_in_interventional_probabilities( internal_list = 
-                                                        internal_list )
+   internal_list <- fill_in_interventional_probabilities( internal_list = 
+                                                         internal_list )
 
   #
   # CG 0.0.12 2021-11-24: add fill_in_asymptotics functions
@@ -237,9 +237,9 @@ intervention_effect <- function(model, intervention, intervention_level,
        # intervention = "x2", 
        # intervention_level = 2)
 
- # internal_list <- 
-   # fill_in_asymptotics_interventional_probabilities( internal_list = 
-                                                      # internal_list )
+  internal_list <- 
+   fill_in_asymptotics_interventional_probabilities( internal_list = 
+                                                     internal_list )
   
   
 
