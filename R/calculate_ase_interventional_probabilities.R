@@ -50,9 +50,6 @@ calculate_ase_interventional_probabilities <-
 
   # TODO plausibility check of user argument "model": should be internal_list or
   # an object of class causalSEM
-  # CURRENTLY, the function assumes that the input model is
-  # of type internal_list. After allowing for objects of class causalSEM
-  # the pathes starting with internal_list$ might need adjustment
   
   # get variable names of interventional variables
   if (is.character(intervention_names) && 
@@ -167,6 +164,7 @@ calculate_ase_interventional_probabilities <-
 
   # Output
   list(gamma_4 = gamma_4,
+       jacobian_gamma_4 = jac_g4,
        acov_gamma_4 = acov_gamma_4,
        ase_gamma_4 = ase_gamma_4,
        z_gamma_4 = z_gamma_4)
