@@ -7,12 +7,12 @@
 \usage{
 calculate_jacobian_interventional_probabilities(
   model,
-  x,
-  intervention_names,
-  outcome_names,
-  lower_bounds,
-  upper_bounds,
-  verbose
+  x = NULL,
+  intervention_names = NULL,
+  outcome_names = NULL,
+  lower_bounds = NULL,
+  upper_bounds = NULL,
+  verbose = NULL
 )
 }
 \arguments{
