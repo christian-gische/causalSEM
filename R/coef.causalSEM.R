@@ -1,4 +1,5 @@
 ## Changelog:
+# MA 0.0.2 2022-03-09: added varcov_matrix option
 # MA 0.0.1 2022-02-17: initial programming
 
 ## Documentation
@@ -7,11 +8,13 @@
 #' @param x an object of class "causalSEM", usually, a result of a call to intervention_effect.
 #' @param what string indicating what type of coefficients are to be returned.
 #' 'means' returns interventional means, 'var' returns interventional variances,
-#' and 'varcov' returns interventional variances and covariances.
-#' @return \code{coef.causalSEM} numeric vector.
+#' and 'varcov' returns interventional variances and covariances as numeric
+#' vectors. 'varcov_matrix' returns interventional variances and covariances
+#' as a matrix.
+#' @return \code{coef.causalSEM} numeric vector or matrix.
 #' @references
-#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-#' framework for studying causal effects using linear models. Psychometrika 
+#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible
+#' framework for studying causal effects using linear models. Psychometrika
 #' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
 #' @export
 
@@ -22,7 +25,7 @@ coef.causalSEM <- function(x, what = "means"){
   fun_name <- "coef.causalSEM"
 
   # function version
-  fun_version <- "0.0.1 2022-02-17"
+  fun_version <- "0.0.2 2022-03-09"
 
   # function name+version
   fun_name_version <- paste0(fun_name, " (", fun_version, ")")
@@ -50,9 +53,11 @@ coef.causalSEM <- function(x, what = "means"){
         counter <- counter + 1
       }
     }
+  } else if (what == "varcov_matrix") { # return variance-covariance matrix
+    varcov <- x$interventional_distribution$covariance_matrix$values
     return(varcov)
   } else {
-    stop("Unknwon argument. Use 'means', 'var', or 'varcov'.")
+    stop("Unknwon argument. Use 'means', 'var', 'varcov', or 'varcov_matrix'.")
   }
 
 }

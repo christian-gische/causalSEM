@@ -1,4 +1,6 @@
 ## Changelog:
+# MA 0.0.2 2022-03-14: interventional probabilites are given for multiple
+##                     outcomes and multiple interventions
 # MA 0.0.1 2022-02-17: initial programming
 
 ## Documentation
@@ -9,8 +11,8 @@
 #' significant digits (signif) to be used.
 #' @return \code{summary.causalSEM} prints a list of summary statistics.
 #' @references
-#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-#' framework for studying causal effects using linear models. Psychometrika 
+#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible
+#' framework for studying causal effects using linear models. Psychometrika
 #' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
 #' @export
 
@@ -21,7 +23,7 @@ summary.causalSEM <- function(x, digits = 3){
   fun_name <- "summary.causalSEM"
 
   # function version
-  fun_version <- "0.0.1 2022-02-17"
+  fun_version <- "0.0.2 2022-03-14"
 
   # function name+version
   fun_name_version <- paste0(fun_name, " (", fun_version, ")")
@@ -67,7 +69,7 @@ summary.causalSEM <- function(x, digits = 3){
           paste(
             round(x$info_interventions$intervention_levels, digits = digits),
             collapse = ", "
-            )
+          )
     ),
     paste("effect type:", x$info_interventions$effect_type),
     "",
@@ -87,39 +89,47 @@ summary.causalSEM <- function(x, digits = 3){
     prepare_table_variances(x, digits = digits))
 
 
-  # Add interventional probability (if possible)
+  # Add interventional probability if bounds are specified
 
-  # if (all(c(length(x$info_interventions$lower_bounds) == 1,
-  #           length(x$info_interventions$upper_bounds) == 1,
-  #           x$info_interventions$n_outcome == 1,
-  #           x$info_interventions$n_intervention == 1))) {
-  #
-  #   probability <- calculate_interventional_probabilities(
-  #     mean = x$interventional_distribution$means$values[x$info_interventions$intervention_names, ],
-  #     sd = x$interventional_distribution$covariance_matrix$values[x$info_interventions$intervention_names, x$info_interventions$intervention_names],
-  #     y_low = x$info_interventions$lower_bounds,
-  #     y_up = x$info_interventions$upper_bounds,
-  #     verbose = FALSE
-  #   )
-  #
-  #   probability <- paste0(
-  #     "Interventional probability P(",
-  #     round(x$info_interventions$lower_bounds, digits = digits),
-  #     "<",
-  #     x$info_interventions$outcome_names,
-  #     "<",
-  #     round(x$info_interventions$upper_bounds, digits = digits),
-  #     "|do(",
-  #     x$info_interventions$intervention_names,
-  #     "=",
-  #     round(x$interventional_distribution$means$values[x$info_interventions$intervention_names, ], digits = digits),
-  #     "))=",
-  #     round(probability, digits = digits)
-  #   )
-  #
-  #   output <- c(output, "", probability)
-  #
-  # }
+  if (all(c(!is.null(x$info_interventions$lower_bounds),
+            !is.null(x$info_interventions$upper_bounds)))) {
+
+    probabilities <- calculate_interventional_probabilities(
+      mean = x$interventional_distribution$means$values[
+        x$info_interventions$outcome_names, ],
+      sd = sqrt(diag(x$interventional_distribution$covariance_matrix$values[
+        x$info_interventions$outcome_names,
+        x$info_interventions$outcome_names])),
+      y_low = x$info_interventions$lower_bounds,
+      y_up = x$info_interventions$upper_bounds,
+      verbose = FALSE
+    )
+
+    probabilities_string <- c("Interventional probabilities:",
+                              rep("", times = x$info_interventions$n_outcome))
+
+    do_operator <- paste0("|do(",
+                          paste0(x$info_interventions$intervention_names, "=",
+                                 round(x$info_interventions$intervention_levels,
+                                       digits = 3),
+                                 collapse = ","), "))")
+
+    for (i in seq_len(x$info_interventions$n_outcome)) {
+      probabilities_string[i + 1] <- paste0(
+        "P(",
+        round(x$info_interventions$lower_bounds[i], digits = digits),
+        "<",
+        x$info_interventions$outcome_names[i],
+        "<",
+        round(x$info_interventions$upper_bounds[i], digits = digits),
+        do_operator,
+        "=",
+        round(probabilities[i], digits = digits))
+    }
+
+    output <- c(output, "", probabilities_string)
+
+  }
 
   # Write table
   writeLines(output)

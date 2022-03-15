@@ -1,4 +1,6 @@
 ## Changelog:
+# MA 0.0.2 2022-03-15: added causal.var.type and inserted NAs for interventional
+##                     variables
 # MA 0.0.1 2022-02-17: initial programming
 
 ## Documentation
@@ -11,8 +13,8 @@
 #' @param digit integer indicating the number of decimal places (round) or
 #' significant digits (signif) to be used.
 #' @return \code{prepare_table_means} returns a character vector.
-#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-#' framework for studying causal effects using linear models. Psychometrika 
+#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible
+#' framework for studying causal effects using linear models. Psychometrika
 #' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
 
 ## Function definition
@@ -22,7 +24,7 @@ prepare_table_means <- function(x, digits = 3){
   fun_name <- "prepare_table_means"
 
   # function version
-  fun_version <- "0.0.1 2022-02-17"
+  fun_version <- "0.0.2 2022-03-15"
 
   # function name+version
   fun_name_version <- paste0(fun_name, " (", fun_version, ")")
@@ -48,6 +50,13 @@ prepare_table_means <- function(x, digits = 3){
   # Collapse infomation about the interventional variables into a single string
   info_variables <- paste0("Intervention: do(", info_variables, ")", collapse = "")
 
+  # Determine causal variable type
+  interventions <- rowSums(x$constant_matrices$select_intervention)
+
+  causal_var_type <- ifelse(test = interventions == 1,
+                            yes = "interv.",
+                            no = "pre/post interv.")
+
   # data.frame with means
   df_means <- data.frame(
     x$tables$interventional_means$Variable,
@@ -57,16 +66,20 @@ prepare_table_means <- function(x, digits = 3){
       round(x$tables$interventional_means$CI_lower, digits = digits),
       ",",
       round(x$tables$interventional_means$CI_upper, digits = digits),
-      "]"))
+      "]"),
+    causal_var_type)
 
   # Add row with row names
   df_means <- rbind(
-    c("Variable", "Est.", "Std. Err.", "95% CI"),
+    c("Variable", "Est.", "Std. Err.", "95% CI", "Causal. Var. Type"),
     df_means
   )
 
   # Delete column names
   colnames(df_means)  <- ""
+
+  # Insert NAs for interventions
+  df_means[df_means[, 5] == "interv.", c(3, 4)] <- "NA"
 
   # Transform data.farme into strings
   df_means <- utils::capture.output(print(df_means, row.names = FALSE))
