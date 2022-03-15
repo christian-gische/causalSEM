@@ -2,7 +2,7 @@
 % Please edit documentation in R/fill_in_info_interventions.R
 \name{fill_in_info_interventions}
 \alias{fill_in_info_interventions}
-\title{Extracts Interventional Information From the Arguments of the 
+\title{Extracts Interventional Information From the Arguments of the
 intervention_effect() function.}
 \usage{
 fill_in_info_interventions(
@@ -23,16 +23,16 @@ model.}
 Returns the inputted internal_list with slots
    \code{n_intervention}, \code{intervention_names},
    \code{intervention_levels},
-   \code{effect_type}, \code{n_outcome}, \code{outcome_names},  
+   \code{effect_type}, \code{n_outcome}, \code{outcome_names},
    \code{lower_bounds}, and \code{upper_bounds} filled in.
 }
 \description{
-Extract interventional information from the arguments 
+Extract interventional information from the arguments
    of the intervention_effect() function.
 }
 \references{
 Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible framework for
-studying causal effects using linear models. Psychometrika 
+studying causal effects using linear models. Psychometrika
 (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
 }
 \seealso{

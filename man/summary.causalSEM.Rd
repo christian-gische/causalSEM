@@ -21,7 +21,7 @@ summary method for class "causalSEM".
 \references{
 
 
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-framework for studying causal effects using linear models. Psychometrika 
+Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible
+framework for studying causal effects using linear models. Psychometrika
 (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
 }

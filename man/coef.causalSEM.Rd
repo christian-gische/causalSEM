@@ -4,17 +4,19 @@
 \alias{coef.causalSEM}
 \title{Extract Causal Coefficients}
 \usage{
-\method{coef}{causalSEM}(x, what = "means")
+coef.causalSEM(x, what = "means")
 }
 \arguments{
 \item{x}{an object of class "causalSEM", usually, a result of a call to intervention_effect.}
 
 \item{what}{string indicating what type of coefficients are to be returned.
 'means' returns interventional means, 'var' returns interventional variances,
-and 'varcov' returns interventional variances and covariances.}
+and 'varcov' returns interventional variances and covariances as numeric
+vectors. 'varcov_matrix' returns interventional variances and covariances
+as a matrix.}
 }
 \value{
-\code{coef.causalSEM} numeric vector.
+\code{coef.causalSEM} numeric vector or matrix.
 }
 \description{
 coef method for class "causalSEM".
@@ -22,7 +24,7 @@ coef method for class "causalSEM".
 \references{
 
 
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-framework for studying causal effects using linear models. Psychometrika 
+Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible
+framework for studying causal effects using linear models. Psychometrika
 (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
 }

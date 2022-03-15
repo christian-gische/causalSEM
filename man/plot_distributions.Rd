@@ -4,7 +4,14 @@
 \alias{plot_distributions}
 \title{Plot distributions}
 \usage{
-plot_distributions(object, plot = TRUE, plot.dir = NULL, scales.free = FALSE)
+plot_distributions(
+  object,
+  plot = TRUE,
+  plot.dir = NULL,
+  scales.free = FALSE,
+  facets.color = c("#ed553b", "#3caea3", "#0568bf"),
+  shade.alpha = 0.1
+)
 }
 \arguments{
 \item{object}{The object returned from calling
@@ -14,6 +21,12 @@ function \code{intervention_effect}.}
 
 \item{scales.free, }{logical, FALSE (default): all plots have the same
 x-axis and y-axis ticks, TRUE: free x-axis and y-axis ticks}
+
+\item{facets.color, }{character, colors for sample, conditional, and causal
+statistics}
+
+\item{shade.alpha, }{numeric, alpha value (opaqueness) for shaded areas, 
+0 (transparent) ... 1 (opaque)}
 }
 \value{
 \code{plot_distributions} returns ggplot2 code
