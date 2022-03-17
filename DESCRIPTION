@@ -13,5 +13,5 @@ Description: Calculate estimates of causal effects based on the interventional d
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: ggplot2, grDevices, lavaan, matrixcalc
+Imports: ggplot2, grDevices, lavaan, matrixcalc, gridExtra
 RoxygenNote: 7.1.2

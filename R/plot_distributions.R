@@ -1,4 +1,7 @@
 ## Changelog:
+# MH 0.0.5 2022-03-17:
+#    -- fixed ordering of facet.color
+#    -- removed "require", solves NOTE in package checking
 # MH 0.0.4 2022-02-22:
 #    -- if no meanstructure is present, use sample means for conditional stats
 #    -- added argument facets.color
@@ -41,7 +44,7 @@ plot_distributions <- function( object, plot=TRUE, plot.dir=NULL,
 	fun.name <- "plot_distributions"
 
 	# function version
-	fun.version <- "0.0.4 2022-02-22"
+	fun.version <- "0.0.5 2022-03-17"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -54,9 +57,9 @@ plot_distributions <- function( object, plot=TRUE, plot.dir=NULL,
 							" ", Sys.time(), "\n" ) )
 
 	# packages
-	require( reshape2 )
-	require( ggplot2 )
-	require( gridExtra )
+	# requireNamespace( "reshape2" )
+	# requireNamespace( "ggplot2" )
+	# requireNamespace( "gridExtra" )
 
 	
 	### declarations
@@ -73,7 +76,7 @@ plot_distributions <- function( object, plot=TRUE, plot.dir=NULL,
 	intlevels.cv <- matrix( intlevels, nrow=1 )
 	
 	# get data (lavaan only!!)
-	d <- as.data.frame( lavInspect( object$fitted_object, "data" ) )
+	d <- as.data.frame( lavaan::lavInspect( object$fitted_object, "data" ) )
 
 	# MH 0.0.3 2022-02-11
 	# get model implied covariance matrix (lavaan only!!)
@@ -398,7 +401,13 @@ plot_distributions <- function( object, plot=TRUE, plot.dir=NULL,
 			sd=stat$sd[stat$stat %in% "causal" & stat$outvar %in% outvar] )
 		
 		# line colors for means
-		line.colors.1 <- facets.color # MH 0.0.4 2022-02-22
+		line.colors.1 <- rev(facets.color)	# MH 0.0.4 2022-02-22
+											# MH 0.0.5 2022-03-17: reversed
+											#                      color order
+											#                      makes it
+											#					   the user
+											#                      specified
+											#                      order
 		line.colors.2 <- c( line.colors.1[2:3], line.colors.1[1] )
 		line.colors.3 <- c( line.colors.2[2:3], line.colors.2[1] )
 		line.colors <- c( line.colors.1, line.colors.2, line.colors.3 )
@@ -418,7 +427,7 @@ plot_distributions <- function( object, plot=TRUE, plot.dir=NULL,
 		p <- p + geom_line()
 	
 		# p <- p + geom_area( data=s95., fill = "#000000",
-													 # color = NA, alpha = 0.20 )
+												 # color = NA, alpha = 0.20 )
 		# MH 0.0.4 2022-02-22: color shaded areas
 		p <- p + geom_area( data=s95.[s95.$stat %in% "smpl",],
 					fill = facets.color[1], color = NA, alpha = shade.alpha )
@@ -492,7 +501,7 @@ plot_distributions <- function( object, plot=TRUE, plot.dir=NULL,
 		}
 
 		# all single plots in one plot 
-		plots <- arrangeGrob( grobs=p.l,ncol=1 )
+		plots <- gridExtra::arrangeGrob( grobs=p.l,ncol=1 )
 		if( !plot ) grDevices::dev.off()
 		plot.path2 <- file.path( plot.dir, paste0( "distribution_plot_",
 		                        paste( names( p.l ), collapse="_" ), ".pdf" ) )
@@ -518,7 +527,11 @@ plot_distributions <- function( object, plot=TRUE, plot.dir=NULL,
 # for( Rfile in Rfiles ){
 	# source( file.path( Rfiles.folder, Rfile ) )
 # }
-
+# require( lavaan )
+# require( reshape2 )
+# require( ggplot2 )
+# require( gridExtra )
+# require( causalSEM )
 
 ## test object 00_lavaan_test_object
 # load( file.path( user.profile, 

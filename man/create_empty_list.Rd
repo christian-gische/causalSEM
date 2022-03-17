@@ -13,7 +13,7 @@ set by function \code{\link{handle_verbose_argument}}}
 }
 \value{
 \code{create_empty_list} returns an empty internal list with structure:\cr
- \code{\tabular{lll}{
+ \tabular{lll}{
     List of 5\cr
     $ fitted_object      : NULL           \tab \tab \cr
     $ fitted_object_class: NULL           \tab \tab \cr
@@ -75,7 +75,7 @@ set by function \code{\link{handle_verbose_argument}}}
      .. .. $ z_values: num[0, 0]  \tab \tab z-value of the interventional probabilities \cr
     $ control            : List of 1      \tab \tab \cr
      ..$ verbose: num(0)                   \tab \tab verbosity of console output\cr
- }}
+ }
 }
 \description{
 Internal function that builds an empty internal list;

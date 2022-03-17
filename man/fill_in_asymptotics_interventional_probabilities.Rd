@@ -33,6 +33,3 @@ framework for studying causal effects using linear models. Psychometrika
    ..$ase
    ..$z_values
 }
-\seealso{
-\code{\link{}}
-}
