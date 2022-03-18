@@ -1,4 +1,5 @@
 ## Changelog:
+# MH 0.0.10 2022-03-17: removed "require", solves NOTE in package checking
 # CG 0.0.9 2022-01-13: changed structure of internal_list
 #                       cleaned up code (documentation, 80 char per line)
 #                       changed dot-case to snake-case
@@ -43,7 +44,7 @@ fill_in_C <- function( internal_list ){
 	fun.name <- "fill_in_C"
 
 	# function version
-	fun.version <- "0.0.9 2022-01-13"
+	fun.version <- "0.0.10 2022-03-17"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -71,7 +72,7 @@ fill_in_C <- function( internal_list ){
 	                paste( supported.fit.objects, collapse=", " ) ) )
 
 	# require package
-	if( fit.class %in% "lavaan" ) require( lavaan )
+	# if( fit.class %in% "lavaan" ) requireNamespace( "lavaan" )
 
 	# model representation must be "LISREL"
 	model.rep <- fit@Model@representation

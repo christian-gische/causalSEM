@@ -1,4 +1,6 @@
 ## Changelog:
+# MH 0.0.11 2022-03-17: removed "\code" from "\code{\tabular{lll}..."
+#                       solve WARNING in package checking 
 # CG 0.0.10 2022-01-13: changed structure of internal_list 
 #                       cleaned up code (documentation, 80 char per line)
 #                       changed dot-case to snake-case
@@ -26,7 +28,7 @@
 #'    2...debugging-relevant messages. Valid default is
 #'    set by function \code{\link{handle_verbose_argument}}
 #' @return \code{create_empty_list} returns an empty internal list with structure:\cr
-#'  \code{\tabular{lll}{
+#'  \tabular{lll}{
 #'     List of 5\cr
 #'     $ fitted_object      : NULL           \tab \tab \cr
 #'     $ fitted_object_class: NULL           \tab \tab \cr
@@ -88,7 +90,7 @@
 #'      .. .. $ z_values: num[0, 0]  \tab \tab z-value of the interventional probabilities \cr
 #'     $ control            : List of 1      \tab \tab \cr
 #'      ..$ verbose: num(0)                   \tab \tab verbosity of console output\cr
-#'  }}
+#'  }
 #'  
 #'  
 #' @seealso \code{\link{handle_verbose_argument}}
@@ -104,7 +106,7 @@ create_empty_list <- function( verbose=NULL ){
 	fun.name <- "create_empty_list"
 
 	# function version
-	fun.version <- "0.0.9 2021-11-30"
+	fun.version <- "0.0.11 2022-03-17"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )

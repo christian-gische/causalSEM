@@ -1,4 +1,5 @@
 ## Changelog:
+# MH 0.0.3 2022-03-17: removed "seealso", solves NOTE in package checking
 # CG 0.0.2 2022-01-13: changed name from fill_in_constant_matrices
 #                       to fill_in_constant matrices
 #                       changed structure of internal_list
@@ -20,7 +21,6 @@
 #'    ..$duplication_matrix
 #'    ..$elimination_matrix
 #'    ..$commutation_matrix
-#' @seealso \code{\link{}}
 #' @references
 #' Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible framework for 
 #' studying causal effects using linear models. Psychometrika 
@@ -34,7 +34,7 @@ fill_in_constant_matrices <- function( internal_list ){
   fun.name <- "fill_in_constant_matrices"
   
   # function version
-  fun.version <- "0.0.2 2022-01-13"
+  fun.version <- "0.0.3 2022-03-17"
   
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )

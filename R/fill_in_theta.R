@@ -1,4 +1,5 @@
 ## Changelog:
+# MH 0.0.6 2022-03-17: removed "require", solves NOTE in package checking
 # CG 0.0.5 2022-01-13: changed structure of internal_list
 #                       cleaned up code (documentation, 80 char per line)
 #                       changed dot-case to snake-case
@@ -48,7 +49,7 @@ fill_in_theta <- function( internal_list ){
   fun.name <- "fill_in_theta"
 
   # function version
-  fun.version <- "0.0.5 2022-01-13"
+  fun.version <- "0.0.6 2022-03-17"
 
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -76,7 +77,7 @@ fill_in_theta <- function( internal_list ){
                   paste( supported.fit.objects, collapse=", " ) ) )
 
   # require package
-  if( fit.class %in% "lavaan" ) require( lavaan )
+  # if( fit.class %in% "lavaan" ) requireNamespace( "lavaan" )
 
   # model representation must be "LISREL"
   model.rep <- fit@Model@representation
@@ -96,13 +97,13 @@ fill_in_theta <- function( internal_list ){
   # (might contain duplicates due to symmetry or equality constraints).
 
   # structural coefficients from the C matrix (rowwise)
-  coef_c<-as.vector(t(lavInspect(internal_list$fitted_object, 
+  coef_c<-as.vector(t(lavaan::lavInspect(internal_list$fitted_object, 
                                  what = "free")$beta))
   coef_c<-coef_c[coef_c != 0]
 
   # variance covariance parameters from the Psi matrix (rowwise)
 
-  coef_psi<-as.vector(t(lavInspect(internal_list$fitted_object, 
+  coef_psi<-as.vector(t(lavaan::lavInspect(internal_list$fitted_object, 
                                    what = "free")$psi))
   coef_psi<-coef_psi[coef_psi != 0]
 

@@ -1,4 +1,5 @@
 ## Changelog:
+# MH 0.0.7 2022-03-17: removed "require", solves NOTE in package checking
 # CG 0.0.6 2022-01-13: changed structure of internal_list
 #                      cleaned up code (documentation, 80 char per line)
 #                      changed dot-case to snake-case
@@ -31,7 +32,7 @@ fill_in_info_model <- function(internal_list, model){
 	fun.name <- "fill_in_info_model"
 
 	# function version
-	fun.version <- "0.0.6 2022-01-13"
+	fun.version <- "0.0.7 2022-03-17"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -62,7 +63,7 @@ fill_in_info_model <- function(internal_list, model){
 	  )
 
 	# require package
-	if( fit_class %in% "lavaan" ) require( lavaan )
+	# if( fit_class %in% "lavaan" ) requireNamespace( "lavaan" )
 
 	# model representation must be "LISREL"
 	model.rep <- fit@Model@representation

@@ -1,4 +1,7 @@
 ## Changelog:
+# MH 0.0.7 2022-03-17:
+#    -- pdf.values now from the object (not self-calculated)
+#    -- removed "require", solves NOTE in package checking
 # MH 0.0.6 2022-02-22:
 #    -- SE (and grid) now from
 #       object$interventional_distribution$density_function$ase
@@ -38,7 +41,7 @@ plot_interventional_density <- function( object, plot=TRUE, plot.dir=NULL,
 	fun.name <- "plot_interventional_density"
 
 	# function version
-	fun.version <- "0.0.6 2022-02-22"
+	fun.version <- "0.0.7 2022-03-17"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -51,8 +54,8 @@ plot_interventional_density <- function( object, plot=TRUE, plot.dir=NULL,
 	                                                  " ", Sys.time(), "\n" ) )
 	
 	# packages
-	require( ggplot2 )
-	require( gridExtra )
+	# requireNamespace( "ggplot2" )
+	# requireNamespace( "gridExtra" )
 		
 	###########################################################################
 	# MH 0.0.3 2021-11-22, moved grid calculation from
@@ -66,25 +69,41 @@ plot_interventional_density <- function( object, plot=TRUE, plot.dir=NULL,
 	sds <- sqrt( diag( V ) )
 
 	# generate x values and calculate pdfs for each variable, return list
-	pdf <- mapply( function( mean, sd, outcome_name, intervention_names,
-	                                                                 verbose ){
+	# pdf <- mapply( function( mean, sd, outcome_name, intervention_names,
+	pdf <- mapply( function( outcome_name, intervention_names, verbose ){
+
+							# MH 0.0.7 2022-03-17: get pdf values from list
+							#                      (instead of calculation)
+							pdf.values <- object$interventional_distribution$
+										density_function$
+										values[[outcome_name]][,"pdf.values"]
 
 							# get standard errors
 							# se <- rep( 0.001, length( x ) )
 							# MH 0.0.6 2022-02-22: now real SE
-							se.matr <- object$interventional_distribution$
-								density_function$ase[[outcome_name]]
-							se <- se.matr[,"ase"]
+							se <- object$interventional_distribution$
+								density_function$ase[[outcome_name]][,"ase"]
 
+							# MH 0.0.7 2022-03-17: check whether x values of
+							#    pdf.values and se are identical
+							if( !identical( object$interventional_distribution$
+										density_function$
+										values[[outcome_name]][,"x"],
+									   x <- object$interventional_distribution$
+										density_function$
+										ase[[outcome_name]][,"x"] ) ){
+								stop( paste0( "grid values x of pdf.values and
+											   of se are not identical" ) )
+							}
+							
 							# generate x-axis values
 							# x <- seq( -3*sd, 3*sd, length.out=200 ) + mean
 							# MH 0.0.6 2022-02-22: grid is now defined by
 							#    se.matr (for consistency!)
-							x <- se.matr[,"x"]
+							# x <- se.matr[,"x"]
 							
 							# get pdf values
-							pdf.values <- stats::dnorm( x, mean=mean, sd=sd )
-							
+							# pdf.values <- stats::dnorm( x, mean=mean, sd=sd )
 							
 							# MH 0.0.3 2021-11-22, 
 							#    calculate_ase_interventional_density crashes
@@ -121,7 +140,8 @@ plot_interventional_density <- function( object, plot=TRUE, plot.dir=NULL,
 							# return
 							return( ret )
 
-					}, E[,1], sds, names(E[,1]), 
+					# }, E[,1], sds, names(E[,1]), 
+					}, names(E[,1]), 
 MoreArgs=list(
 "intervention_names"=object$info_interventions$intervention_names,
                                            "verbose"=verbose), SIMPLIFY=FALSE )	
@@ -317,7 +337,7 @@ MoreArgs=list(
 			}
 
 			# all single plots in one plot 
-			plots <- arrangeGrob( grobs=p.l,ncol=1 )
+			plots <- gridExtra::arrangeGrob( grobs=p.l,ncol=1 )
 			if( !plot ) grDevices::dev.off()
 			plot.path2 <- file.path( plot.dir, paste0( "density_plot_",
 								paste( names( p.l ), collapse="_" ), ".pdf" ) )
@@ -369,10 +389,10 @@ MoreArgs=list(
 
 ## test object 01_lavaan_test_object
 # load( file.path( shell( "echo %USERPROFILE%", intern=TRUE ), 
-	  # "Dropbox/causalSEM_R_Package/test_object/01_lavaan_test_object.Rdata"))
-# object01 <- intervention_effect( model=o01_lavaan_test_object,
+	  # "Dropbox/causalSEM_R_Package/test_object/03_lavaan_test_object.Rdata"))
+# object03 <- intervention_effect( model=o03_lavaan_test_object,
 									# intervention="x2",intervention_level=2)
-# p.l <- plot_interventional_density( object01,
+# p.l <- plot_interventional_density( object03,
 									# plot.dir="c:/users/martin/Desktop/plots")
 
 
