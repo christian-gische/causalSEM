@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.7 2022-03-18: added lavaan:: before calling the coef()-function
 # MH 0.0.6 2022-03-17: removed "require", solves NOTE in package checking
 # CG 0.0.5 2022-01-13: changed structure of internal_list
 #                       cleaned up code (documentation, 80 char per line)
@@ -49,7 +50,7 @@ fill_in_theta <- function( internal_list ){
   fun.name <- "fill_in_theta"
 
   # function version
-  fun.version <- "0.0.6 2022-03-17"
+  fun.version <- "0.0.7 2022-03-18"
 
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -112,8 +113,9 @@ fill_in_theta <- function( internal_list ){
   coef_joint<-c(coef_c,coef_psi)
 
   # get parameter labels of all parameters in C and Psi
+  # CG 0.0.7 2022-03-18: replaced coef() by lavaan::coef()
 
-  par_names <- names(coef(internal_list$fitted_object))[coef_joint]
+  par_names <- names(lavaan::coef(internal_list$fitted_object))[coef_joint]
 
   # get parameter labels of uniquely labelled parameters in C and Psi
   # (remove duplicates due to symmetry or equality constraints)
@@ -131,16 +133,19 @@ fill_in_theta <- function( internal_list ){
 
   # get numeric values of uniquely labelled parameters in C and Psi
   # (remove duplicates due to symmetry or equality constratins)
+  # CG 0.0.7 2022-03-18: replaced coef() by lavaan::coef()
 
-  values_par_unique <- coef(internal_list$fitted_object)[labels_par_unique]
+  values_par_unique <- 
+    lavaan::coef(internal_list$fitted_object)[labels_par_unique]
 
   # todo: CHECK if result is identical to reading the slots
   # internal_list$info_model$C and internal_list$info_model$Psi, respectively
 
   # get variance covariance matrices of estimator of uniquely labelled
   # parameters in C and Psi
+  # CG 0.0.7 2022-03-18: replaced vcov() by lavaan::vcov()
 
-  varcov_par_unique <- vcov(internal_list$fitted_object)
+  varcov_par_unique <- lavaan::vcov(internal_list$fitted_object)
   varcov_par_unique_r <- varcov_par_unique[labels_par_unique, ]
   varcov_par_unique <- varcov_par_unique_r[, labels_par_unique]
 

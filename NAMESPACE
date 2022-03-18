@@ -4,7 +4,3 @@ S3method(coef,causalSEM)
 S3method(print,causalSEM)
 S3method(summary,causalSEM)
 export(intervention_effect)
-export(plot_distributions)
-export(plot_interventional_density)
-import("ggplot2","lavaan","gridExtra")
-
