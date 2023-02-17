@@ -93,11 +93,11 @@ fill_in_Psi <- function(internal_list) {
   internal_list$info_model$Psi$labels <- labels
 
   # console output
-  if(verbose >= 1) {
+  if(verbose >= 2) {
     cat(paste0("  end of function ", fun_name_version, " ", Sys.time(), "\n" ))
   }
 
   # return updated internal list
-  internal_list
+  return(internal_list)
 
 }

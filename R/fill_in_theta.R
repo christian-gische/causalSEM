@@ -167,7 +167,7 @@ fill_in_theta <- function( internal_list ){
   internal_list$info_model$param <- theta.list
 
   # console output
-  if( verbose >= 1 ) cat( paste0( "  end of function ", fun.name.version, " ", 
+  if( verbose >= 2 ) cat( paste0( "  end of function ", fun.name.version, " ", 
                                   Sys.time(), "\n" ) )
 
   # return internal_list
