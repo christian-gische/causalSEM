@@ -2,13 +2,12 @@
 % Please edit documentation in R/intervention_effect.R
 \name{intervention_effect}
 \alias{intervention_effect}
-\title{Calculate Estimates of Causal Effects Based on the Interventional 
-Distribution.}
+\title{Calculate Estimates of Causal Effects}
 \usage{
 intervention_effect(
-  model,
-  intervention,
-  intervention_level,
+  model = NULL,
+  intervention = NULL,
+  intervention_level = NULL,
   outcome = NULL,
   effect_type = NULL,
   lower_bound = NULL,
@@ -29,19 +28,18 @@ Same length and order as argument intervention. Default: vector of ones.}
 \item{outcome}{Character vector. Variable names of outcome variables.
 Default: all non-interventional variables.}
 
-\item{effect_type}{Character vector. Parts of the interventional 
-distribution the user is interested in. Admissible values are 
+\item{effect_type}{Character vector. Features of the interventional 
+distribution to be analyzed. Admissible values are 
 "mean", "variance", "density", and "probability". 
-Default: "mean". Argument "probability" only admissible if outcome 
-is univariate.}
+Default: "mean".}
 
-\item{lower_bound}{Single number, numeric. Lower bound of critical range 
-of univariate outcome variable.}
+\item{lower_bound}{Numeric vector. Same length and order as argument outcome.
+Lower bounds of critical range of outcome variables.}
 
-\item{upper_bound}{Single number, numeric. Upper bound of critical range 
-of univariate outcome variable.}
+\item{upper_bound}{Numeric vector. Same length and order as argument outcome.
+Lower bounds of critical range of outcome variables.}
 
-\item{verbose}{A single number, integer. 0...no output (default), 
+\item{verbose}{Single number, integer. 0...no output (default), 
 1...user messages, 2...debugging-relevant messages.}
 }
 \value{
@@ -49,12 +47,12 @@ An object of class causalSEM, for which several methods
 are available, including a summary method.
 }
 \description{
-Calculate estimates of causal effects defined based on the 
+Calculate estimates of causal effects based on the 
 interventional distribution.
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-framework for studying causal effects using linear models. Psychometrika 
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }
-\keyword{extenal}
+\keyword{external}
