@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.18 2023-02-20: changes to preamble to print documentation
 # MH 0.0.17 2022-01-29: disabled fill_in_asymptotics_interventional_
 #                       probabilities (crashes)
 # CG 0.0.16 2022-01-13: changed structure of internal_list
@@ -44,9 +45,8 @@
 # CG 0.0.1 2021-07-20: initial programming
 
 ## Documentation
-#' @title Calculate Estimates of Causal Effects Based on the Interventional 
-#' Distribution.
-#' @description Calculate estimates of causal effects defined based on the 
+#' @title Calculate Estimates of Causal Effects
+#' @description Calculate estimates of causal effects based on the 
 #' interventional distribution.
 #' @param model Fitted model. The fitted model can be of class lavaan.
 #' @param intervention Character vector. Variable names of interventional 
@@ -55,29 +55,33 @@
 #' Same length and order as argument intervention. Default: vector of ones.
 #' @param outcome Character vector. Variable names of outcome variables.
 #' Default: all non-interventional variables.
-#' @param effect_type Character vector. Parts of the interventional 
-#' distribution the user is interested in. Admissible values are 
+#' @param effect_type Character vector. Features of the interventional 
+#' distribution to be analyzed. Admissible values are 
 #' "mean", "variance", "density", and "probability". 
-#' Default: "mean". Argument "probability" only admissible if outcome 
-#' is univariate.
-#' @param lower_bound Single number, numeric. Lower bound of critical range 
-#' of univariate outcome variable.
-#' @param upper_bound Single number, numeric. Upper bound of critical range 
-#' of univariate outcome variable.
-#' @param verbose A single number, integer. 0...no output (default), 
+#' Default: "mean".
+#' @param lower_bound Numeric vector. Same length and order as argument outcome.
+#' Lower bounds of critical range of outcome variables.
+#' @param upper_bound Numeric vector. Same length and order as argument outcome.
+#' Lower bounds of critical range of outcome variables.
+#' @param verbose Single number, integer. 0...no output (default), 
 #' 1...user messages, 2...debugging-relevant messages.
 #' @return An object of class causalSEM, for which several methods 
 #' are available, including a summary method.
-#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-#' framework for studying causal effects using linear models. Psychometrika 
-#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
-#' @keywords extenal
+#' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+#' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+#' 868–901. https://doi.org/10.1007/s11336-021-09811-z
+#' @keywords external
 #' @export
 
-intervention_effect <- function(model, intervention, intervention_level, 
-                                outcome = NULL, effect_type = NULL, 
-                                lower_bound = NULL, upper_bound = NULL, 
-                                verbose = 0, ...){
+intervention_effect <- function(model = NULL, 
+                                intervention = NULL,
+                                intervention_level = NULL, 
+                                outcome = NULL,
+                                effect_type = NULL, 
+                                lower_bound = NULL,
+                                upper_bound = NULL, 
+                                verbose = 0, 
+                                ...){
 
 
   # function name
@@ -103,7 +107,6 @@ intervention_effect <- function(model, intervention, intervention_level,
   # lower_bound, upper_bound, verbose ...)
 
   # creates empty list
-  # internal_list <- make_empty_list( verbose=verbose )
   # MH 0.0.11 2021-11-22, changed to create_empty_list
   internal_list <- create_empty_list( verbose=verbose )
 
@@ -114,10 +117,6 @@ intervention_effect <- function(model, intervention, intervention_level,
   if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, "
                                   ", Sys.time(), "\n" ) )
 
-  # populate model info
-  # fills (some) slots in info_model and fitted_object/class
-  # internal_list <- populate_model_info( internal_list = internal_list,
-                                        # model = model )
   # MH 0.0.11 2021-11-22, call of populate_model_info 
   # changed to fill_in_info_model
   internal_list <- fill_in_info_model( internal_list = internal_list,
@@ -134,8 +133,7 @@ intervention_effect <- function(model, intervention, intervention_level,
     upper_bound = upper_bound)
 
   # fill in zero one matrices to compute interventional distribution
-  # CG 0.0.10 2021-11-22: replaced build_constant_matrix function by
-  #                       fill_in_constant_matrices
+  
   internal_list <- fill_in_constant_matrices( internal_list = internal_list )
 
   # build matrix of structural coefficients
