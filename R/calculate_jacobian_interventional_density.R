@@ -67,7 +67,7 @@ calculate_jacobian_interventional_density <-
   # get variable name of outcome variable
   # TODO allow calculation only for NON interventional variables 
 #  if( is.character( outcome_names ) && 
-#  outcome_names %in% setdiff(model$info_model$var_names, x_labels) ){
+#  all( outcome_names %in% setdiff(model$info_model$var_names, x_labels) )){
 #    y_labels <- outcome_names
 #  } else {
 #    stop( paste0( fun.name.version, ": Argument outcome_names needs to be the a 

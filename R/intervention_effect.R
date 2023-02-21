@@ -1,5 +1,8 @@
 ## Changelog:
 # CG 0.0.18 2023-02-20: changes to preamble to print documentation
+#                       run create_causalSEM_s3_object() function
+#                       right after creating the internal_list
+#                       call function handle_verbose_argument
 # MH 0.0.17 2022-01-29: disabled fill_in_asymptotics_interventional_
 #                       probabilities (crashes)
 # CG 0.0.16 2022-01-13: changed structure of internal_list
@@ -88,7 +91,7 @@ intervention_effect <- function(model = NULL,
   fun.name <- "intervention_effect"
 
   # function version
-  fun.version <- "0.0.16 2022-01-13"
+  fun.version <- "0.0.18 2023-02-20"
 
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -105,13 +108,19 @@ intervention_effect <- function(model = NULL,
   # intervention_effect function
   # check_arguments(model, intervention, outcome, levels, effect_type,
   # lower_bound, upper_bound, verbose ...)
-
+  
+  # CG 0.0.18 2023-02-20: call function handle_verbose_argument 
+  verbose <- handle_verbose_argument( verbose = verbose )
+  
   # creates empty list
   # MH 0.0.11 2021-11-22, changed to create_empty_list
-  internal_list <- create_empty_list( verbose=verbose )
-
-  # get verbose argument
-  verbose <- internal_list$control$verbose
+  internal_list <- create_empty_list( verbose = verbose )
+  
+  # CG 0.0.18 2023-02-20: run create_causalSEM_s3_object() function
+  # right after creating the internal_list 
+  # Assign class causalSEM to internal list
+  # MH 0.0.14 2021-11-30
+  internal_list <- create_causalSEM_s3_object( internal_list )
 
   # console output
   if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, "
@@ -245,10 +254,8 @@ intervention_effect <- function(model = NULL,
   # MA
   internal_list$tables <- fill_in_print_table(internal_list = internal_list)
 
-  # Assign class causalSEM to internal list
-  # MH 0.0.14 2021-11-30
-  causalSEM_object <- create_causalSEM_s3_object( internal_list )
-
+  # prepare output
+  causalSEM_object <- internal_list
 
   # create output
   # internal list

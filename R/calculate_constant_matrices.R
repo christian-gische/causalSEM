@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.4 2023-02-20: changes to preamble to print documentation
 # CG 0.0.3 2022-01-13: changed name from calculate_constant_matrices
 #                       to calculate_constant_matrices
 #                       changed structure of internal_list
@@ -11,43 +12,43 @@
 
 
 ## Documentation
-#' @title Calculate Constant Matrices for the Computation of the 
-#' Interventional Distribution
-#' @description Calculates constant matrices used in the computation
+#' @title Calculate Zero-One Matrices
+#' @description Calculates zero-one matrices used in the computation
 #' of the interventional distribution 
-#' (see for example Definition 1 in Gische and Voelkle, 2021).  
-#' @param model internal_list or object of class  causalSEM
-#' @param intervention_names names of interventional variables
-#' @param outcome_names name of outcome variable
-#' @param verbose verbosity of console outputs
-#' @return \code{calculate_constant_matrices} returns a list with the following
-#'  elements:
-#'    ..$select_intervention
-#'    ..$select_non_intervention
-#'    ..$eliminate_intervention
-#'    ..$duplication_matrix
-#'    ..$elimination_matrix
-#'    ..$commutation_matrix
-#' @seealso \code{\link{calculate_interventional_means, 
-#' calculate_interventional_variances}}
-#' @references
-#' Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible framework for 
-#' studying causal effects using linear models. Psychometrika 
-#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+#' (see for example Definition 1 in Gische and Voelkle, 2022).  
+#' @param model Object of class causalSEM
+#' @param intervention_names Names of interventional variables
+#' @param outcome_names Names of outcome variables
+#' @param verbose Verbosity of console outputs
+#' @return List with several zero-one matrices.\cr
+#'\tabular{ll}{
+#' \tab    List of 7  \cr
+#' \tab   $ select_intervention \cr
+#' \tab   $ select_non_intervention \cr
+#' \tab   $ select_outcome \cr
+#' \tab   $ eliminate_intervention \cr
+#' \tab   $ duplication_matrix \cr
+#' \tab   $ elimination_matrix \cr
+#' \tab   $ commutation_matrix
+#' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+#' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+#' 868–901. https://doi.org/10.1007/s11336-021-09811-z
 
 
 # TODO if at one point we get runtime problems we might consider using
 # the function Matrix which uses sparsity information
 
 # Function definition
-calculate_constant_matrices <- function( model, intervention_names, 
-                                         outcome_names, verbose ){
+calculate_constant_matrices <- function( model = NULL,
+                                         intervention_names = NULL, 
+                                         outcome_names = NULL, 
+                                         verbose = NULL ){
 
   # function name
   fun.name <- "calculate_constant_matrices"
 
   # function version
-  fun.version <- "0.0.2 2021-11-19"
+  fun.version <- "0.0.4 2023-02-20"
 
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -64,6 +65,23 @@ calculate_constant_matrices <- function( model, intervention_names,
   # CURRENTLY, the function assumes that the input model is
   # of type internal_list. After allowing for objects of class causalSEM
   # the pathes starting with internal_list$ might need adjustment
+  
+  
+  # get class of fit object
+  model_class <- class(model)
+  
+  # supported fit objects
+  supported_model_classes <- c( "causalSEM" )
+  
+  # check if supported
+  if(!any(model_class %in% supported_model_classes)) stop(
+    paste0(
+      fun.name.version, ": model of class ", model_class,
+      " not supported. Supported fit objects are: ",
+      paste(supported_model_classes, collapse = ", ")
+    )
+  )
+  
 
   # get variable names of interventional variables
   if( is.character( intervention_names ) && 
@@ -78,7 +96,7 @@ calculate_constant_matrices <- function( model, intervention_names,
   # TODO think of allowing calculation only for NON interventional variables 
   # according to the following code
   #  if( is.character( outcome_names ) && 
-  #  outcome_names %in% setdiff(model$info_model$var_names, x_labels) ){
+  #  all( outcome_names %in% setdiff(model$info_model$var_names, x_labels) )){
   #    outcome_labels <- outcome_names
   #  } else {
   #    stop( paste0( fun.name.version, ": Argument outcome_names needs to be the a 

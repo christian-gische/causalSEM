@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.12 2023-02-21: changes in preamble and comments 
 # MH 0.0.11 2022-03-17: removed "\code" from "\code{\tabular{lll}..."
 #                       solve WARNING in package checking 
 # CG 0.0.10 2022-01-13: changed structure of internal_list 
@@ -86,10 +87,10 @@
 #'      for entries that are intervened on \cr
 #'      .. .. $ select_non_intervention: num[0, 0] \tab \tab selection matrix 
 #'      for entries that are NOT intervened on \cr
-#'      .. .. $ eliminate_intervention: num[0, 0]  \tab \tab matrix that 
-#'      replaces entries that are intervened on by zero \cr
 #'      .. .. $ select_outcome: num[0, 0]          \tab \tab selection matrix 
 #'      for outcomes of interest \cr
+#'      .. .. $ eliminate_intervention: num[0, 0]  \tab \tab matrix that 
+#'      replaces entries that are intervened on by zero \cr
 #'      .. .. $ duplication_matrix: num[0, 0]      \tab \tab maps vech(A) onto 
 #'      vec(A) for symmetric A \cr
 #'      .. .. $ elimination_matrix: num[0, 0]      \tab \tab maps vec(A) onto 
@@ -148,7 +149,7 @@ create_empty_list <- function( verbose = NULL ){
 	fun.name <- "create_empty_list"
 
 	# function version
-	fun.version <- "0.0.11 2022-03-17"
+	fun.version <- "0.0.12 2023-02-21"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -161,8 +162,6 @@ create_empty_list <- function( verbose = NULL ){
 	                                Sys.time(), "\n" ) )
 
 	# internal list
-	# as of ...\Dropbox\causalSEM_R_Package\list_hardcoded_for_example_in_
-	# Gische_Voelkle_2020.R (2021-09-01)
 	
 	internal_list <- list(
 
@@ -186,7 +185,7 @@ create_empty_list <- function( verbose = NULL ){
 			# names of observed variables
 			# character vector of length(n_ov)
 			# general: using all-y LISREL notation
-			# here: using the notation from Gische and Voelkle (2021).
+			# here: using the notation from Gische and Voelkle (2022).
 			"var_names" = character(0),
 
 			# C list
@@ -200,7 +199,7 @@ create_empty_list <- function( verbose = NULL ){
 			# character matrix of dimension n_ov * n_ov
 			# same labels display equality constraints
 			# general: using all-y LISREL notation
-			# here: using the notation from Gische and Voelkle (2021)
+			# here: using the notation from Gische and Voelkle (2022)
 			"labels" = matrix(character(0))[-1,-1],
 
 			# Partial derivative of the vectorized C matrix with respect
@@ -220,7 +219,7 @@ create_empty_list <- function( verbose = NULL ){
 			# character matrix of dimension n_ov * n_ov
 			# same labels display equality constraints
 			# general: using all-y LISREL notation
-			# here: using the notation from Gische and Voelkle (2021)
+			# here: using the notation from Gische and Voelkle (2022)
 			"labels" = matrix(character(0))[-1,-1],
 
 			# Partial derivative of the vectorized Psi matrix with respect
@@ -292,22 +291,18 @@ create_empty_list <- function( verbose = NULL ){
 
 			# parts of the interventional distribution the user is interested in
 			# character vector
-			# arguments "probability" only admissible
-			# if n_outcome == 1
 			# if "probability" is specified, user specified values of
 			# lower_bound and upper_bound required
 			# default: "mean"
-			# possible values: c("mean", "varcov", "density", "probability")
+			# possible values: c("mean", "variance", "density", "probability")
 			"effect_type" = character(0),
 
-			# lower bound of critical range of univariate outcome variable
-			# single number, numeric
-			# only admissible if n_outcome==1
+			# lower bound of critical range of outcome variables
+			# numeric vector
 			"lower_bounds" = numeric(0),
 
-			# upper bound of critical range of univariate outcome variable
-			# single number, numeric
-			# only admissible if n_outcome==1
+			# upper bound of critical range of outcome variables
+			# numeric vector
 			"upper_bounds" = numeric(0)
 
 		), # end of info_interventions list
@@ -316,17 +311,17 @@ create_empty_list <- function( verbose = NULL ){
 		constant_matrices = list(
 		    
 		    # selection matrix for entries that are intervened on
-		    # see Definition 1 point 3 in Gische and Voelkle (2021)
+		    # see Definition 1 point 3 in Gische and Voelkle (2022)
 		    # numeric matrix of dimension n_ov x n_intervention
 		    "select_intervention" = matrix(numeric(0))[-1,-1],  
 		    
 		    # selection matrix for entries that are NOT intervened on
-		    # see Definition 1 point 3 in Gische and Voelkle (2021)
+		    # see Definition 1 point 3 in Gische and Voelkle (2022)
 		    # numeric matrix of dimension n_ov x (n_ov-n_intervention)
 		    "select_non_intervention" = matrix(numeric(0))[-1,-1],
 		    
 		    # matrix that replaces entries that are intervened on by zero
-		    # see Definition 1 point 4 in Gische and Voelkle (2021)
+		    # see Definition 1 point 4 in Gische and Voelkle (2022)
 		    # numeric matrix of dimension n_ov x n_ov
 		    "eliminate_intervention" = matrix(numeric(0))[-1,-1],
 		    
@@ -358,7 +353,7 @@ create_empty_list <- function( verbose = NULL ){
 		means = list(
 		
 		    # mean vector of the interventional distribution 
-		    # see Equation (6a) in Gische and Voelkle (2021)
+		    # see Equation (6a) in Gische and Voelkle (2022)
 		    # numeric vector of length n_ov 
 		    "values" = numeric(0),
 		    
@@ -383,7 +378,7 @@ create_empty_list <- function( verbose = NULL ){
 	    covariance_matrix = list(
 		
 		  # covariance matrix of the interventional distribution
-		  # see Equation (6b) in Gische and Voelkle (2021)
+		  # see Equation (6b) in Gische and Voelkle (2022)
 		  # numeric matrix of dimension n_ov x n_ov
 		  "values" = matrix(numeric(0))[-1,-1],
 		  
@@ -410,7 +405,7 @@ create_empty_list <- function( verbose = NULL ){
 		  density_function = list(
 		  
 		    # probability density function (pdf) of the interventional distribution
-		    # see Equation (9) in Gische and Voelkle (2021)
+		    # see Equation (9) in Gische and Voelkle (2022)
 		    # numeric matrix of with two columns 
 		    # 1 column: grid that captures the range of the outcome variable
 		    # 2 column: values of the pdf
@@ -441,7 +436,7 @@ create_empty_list <- function( verbose = NULL ){
 		  probabilities = list(
 		  
 		    # probabilities of interventional events
-		    # see Equation (10) in Gische and Voelkle (2021)
+		    # see Equation (10) in Gische and Voelkle (2022)
 		    # numeric vector of length n_outcomes 
 		    "values" = numeric(0),
 		    

@@ -69,8 +69,8 @@ calculate_ase_interventional_means <- function(model, x, intervention_names,
   # get variable name of outcome variable
   # TODO: Rethink setting a default here
   if( is.character( outcome_names ) &&
-      outcome_names %in% setdiff(model$info_model$var_names, x_labels) 
-      ){
+      all( outcome_names %in% setdiff(model$info_model$var_names, x_labels) 
+      )){
     y_labels <- outcome_names
   } else {
     stop( paste0( fun.name.version, ": Argument outcome_names needs to be the a

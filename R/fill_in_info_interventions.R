@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.6 2023-02-21: changes in preamble and comments
 # CG 0.0.5 2022-03-08: changed argument check for upper and lower bound
 # CG 0.0.4 2022-01-13: changed structure of internal_list
 #                      cleaned up code (documentation, 80 char per line)
@@ -9,38 +10,35 @@
 # CG 0.0.1 2021-10-01: initial programming
 
 ## Documentation
-#' @title Extracts Interventional Information From the Arguments of the
-#' intervention_effect() function.
+#' @title Processes Arguments of the \code{intervention_effect}() Function.
 #' @description Extract interventional information from the arguments
-#'    of the intervention_effect() function.
+#' of the \code{intervention_effect}() function.
 #' @param internal_list A list with various information extracted from the
 #'    model.
-#' @return Returns the inputted internal_list with slots
+#' @return Returns the inputted list with slots
 #'    \code{n_intervention}, \code{intervention_names},
 #'    \code{intervention_levels},
 #'    \code{effect_type}, \code{n_outcome}, \code{outcome_names},
 #'    \code{lower_bounds}, and \code{upper_bounds} filled in.
-#' @seealso \code{\link{populate_model_info}}
-#' @references
-#' Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible framework for
-#' studying causal effects using linear models. Psychometrika
-#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+#' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+#' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+#' 868–901. https://doi.org/10.1007/s11336-021-09811-z
 
 
 ## Function definition
-fill_in_info_interventions <- function(internal_list,
-                                       intervention,
-                                       outcome,
-                                       intervention_level,
-                                       effect_type,
-                                       lower_bound,
-                                       upper_bound){
+fill_in_info_interventions <- function(internal_list = NULL,
+                                       intervention = NULL,
+                                       outcome = NULL,
+                                       intervention_level = NULL,
+                                       effect_type = NULL,
+                                       lower_bound = NULL,
+                                       upper_bound = NULL){
 
   # function name
   fun.name <- "fill_in_info_interventions"
 
   # function version
-  fun.version <- "0.0.5 2022-03-08"
+  fun.version <- "0.0.6 2023-02-21"
 
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )

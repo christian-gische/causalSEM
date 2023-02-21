@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.8 2023-02-20: changes to preamble to print documentation
 # MH 0.0.7 2022-03-17: removed "require", solves NOTE in package checking
 # CG 0.0.6 2022-01-13: changed structure of internal_list
 #                      cleaned up code (documentation, 80 char per line)
@@ -10,29 +11,29 @@
 # MH 0.0.1 2021-09-01: initial programming
 
 ## Documentation
-#' @title Extract Information From a Fitted Structural Equation Model Object
+#' @title Extract Information From Fitted Model
 #' @description Extract number of observations, number of manifest
 #'    variables, and names of observed variables from a fitted
-#'    structural equation model. Supported fitted objects: lavaan.
+#'    structural equation model. Fitted model can be of class \code{lavaan}.
 #' @param internal_list A list with various information extracted from the
 #'    model.
-#' @param model Fitted model. The fitted model can be of class lavaan.
-#' @return The inputted internal_list with slots
+#' @param model Fitted model. The fitted model can be of class \code{lavaan}.
+#' @return The inputted list with slots
 #'    \code{n_obs}, \code{n_ov}, and \code{var_names} filled in.
-#' @seealso \code{\link{build_C}} \code{\link{build_Psi}}
-#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-#' framework for studying causal effects using linear models. Psychometrika 
-#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+#' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+#' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+#' 868–901. https://doi.org/10.1007/s11336-021-09811-z
 
 
 ## Function definition
-fill_in_info_model <- function(internal_list, model){
+fill_in_info_model <- function(internal_list = NULL,
+                               model = NULL){
 
 	# function name
 	fun.name <- "fill_in_info_model"
 
 	# function version
-	fun.version <- "0.0.7 2022-03-17"
+	fun.version <- "0.0.8 2023-02-20"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -54,13 +55,24 @@ fill_in_info_model <- function(internal_list, model){
 	supported_fit_objects <- fit_class <- c( "lavaan" )
 
 	# check if supported
-	if(!any(supported_fit_objects %in% supported_fit_objects)) stop(
+	# CG 0.0.8 2023-02-20 changed first appearance of supported_fit_object 
+	# in if(!any(supported_fit_objects %in% supported_fit_objects))
+	# to internal_list$fitted_object_class
+	# if(!any(supported_fit_objects %in% supported_fit_objects)) stop(
+	  # paste0(
+	   # fun.name.version, ": fit object of class ", fit_class,
+	  #  " not supported. Supported fit objects are: ",
+	  #  paste(supported_fit_objects, collapse = ", ")
+	  #  )
+	 # )
+	
+	if(!any(internal_list$fitted_object_class %in% supported_fit_objects)) stop(
 	  paste0(
 	    fun.name.version, ": fit object of class ", fit_class,
 	    " not supported. Supported fit objects are: ",
 	    paste(supported_fit_objects, collapse = ", ")
-	    )
 	  )
+	)
 
 	# require package
 	# if( fit_class %in% "lavaan" ) requireNamespace( "lavaan" )
