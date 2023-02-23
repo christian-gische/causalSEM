@@ -1,7 +1,8 @@
 ## Changelog:
 # CG 0.0.4 2023-02-20: changes to preamble to print documentation
 #                      changed argument to verbose = NULL
-# MH 0.0.3 2021-11-22: renamed from verbose_argument_handling to handle_verbose_argument
+# MH 0.0.3 2021-11-22: renamed from verbose_argument_handling to 
+#                      handle_verbose_argument
 # MH 0.0.2 2021-07-30: added documentation
 # MH 0.0.1 2021-07-20: initial programming
 

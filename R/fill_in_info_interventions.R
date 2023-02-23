@@ -109,9 +109,10 @@ fill_in_info_interventions <- function(internal_list = NULL,
       setdiff(internal_list$info_model$var_names,
               internal_list$info_interventions$intervention_names)
   } else {
-    stop( paste0( fun.name.version, ": setting outcome_names in internal list
+    stop( paste0( fun.name.version, ": Setting outcome_names in internal list
                   failed. Argument outcome needs to be a character vector of
-                  variable names."  ) )
+                  variable names of variables that are not subject to 
+                  intervention."  ) )
   }
 
   # get number of interventional variables

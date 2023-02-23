@@ -2,41 +2,34 @@
 % Please edit documentation in R/calculate_constant_matrices.R
 \name{calculate_constant_matrices}
 \alias{calculate_constant_matrices}
-\title{Calculate Constant Matrices for the Computation of the 
-Interventional Distribution}
+\title{Calculate Zero-One Matrices}
 \usage{
-calculate_constant_matrices(model, intervention_names, outcome_names, verbose)
+calculate_constant_matrices(
+  model = NULL,
+  intervention_names = NULL,
+  outcome_names = NULL,
+  verbose = NULL
+)
 }
 \arguments{
-\item{model}{internal_list or object of class  causalSEM}
+\item{model}{Object of class causalSEM}
 
-\item{intervention_names}{names of interventional variables}
+\item{intervention_names}{Names of interventional variables}
 
-\item{outcome_names}{name of outcome variable}
+\item{outcome_names}{Names of outcome variables}
 
-\item{verbose}{verbosity of console outputs}
+\item{verbose}{Verbosity of console outputs}
 }
 \value{
-\code{calculate_constant_matrices} returns a list with the following
- elements:
-   ..$select_intervention
-   ..$select_non_intervention
-   ..$eliminate_intervention
-   ..$duplication_matrix
-   ..$elimination_matrix
-   ..$commutation_matrix
+
 }
 \description{
-Calculates constant matrices used in the computation
+Calculates zero-one matrices used in the computation
 of the interventional distribution 
-(see for example Definition 1 in Gische and Voelkle, 2021).
+(see for example Definition 1 in Gische and Voelkle, 2022).
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible framework for 
-studying causal effects using linear models. Psychometrika 
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
-}
-\seealso{
-\code{\link{calculate_interventional_means, 
-calculate_interventional_variances}}
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }

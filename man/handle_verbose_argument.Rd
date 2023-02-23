@@ -2,18 +2,20 @@
 % Please edit documentation in R/handle_verbose_argument.R
 \name{handle_verbose_argument}
 \alias{handle_verbose_argument}
-\title{Checks and potentially "repairs" the verbose argument}
+\title{Handles the Verbose Argument}
 \usage{
-handle_verbose_argument(verbose = c(0, 1, 2))
+handle_verbose_argument(verbose = NULL)
 }
 \arguments{
-\item{verbose}{A number, 0...no output (default), 1...user messages,
+\item{verbose}{A single number, integer. 
+0...no output (default); 
+1...user messages;
 2...debugging-relevant messages.}
 }
 \value{
-returns either the valid user input or 0 (no output) as default
+Returns verbose setting.
 }
 \description{
-Internal function, checks whether the user-inputted verbose
-   argument is valid
+Reads the user-inputted verbose
+   argument checks if it is valid.
 }

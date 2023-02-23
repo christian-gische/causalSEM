@@ -2,30 +2,27 @@
 % Please edit documentation in R/fill_in_info_model.R
 \name{fill_in_info_model}
 \alias{fill_in_info_model}
-\title{Extract Information From a Fitted Structural Equation Model Object}
+\title{Extract Information From Fitted Model}
 \usage{
-fill_in_info_model(internal_list, model)
+fill_in_info_model(internal_list = NULL, model = NULL)
 }
 \arguments{
 \item{internal_list}{A list with various information extracted from the
 model.}
 
-\item{model}{Fitted model. The fitted model can be of class lavaan.}
+\item{model}{Fitted model. The fitted model can be of class \code{lavaan}.}
 }
 \value{
-The inputted internal_list with slots
+The inputted list with slots
    \code{n_obs}, \code{n_ov}, and \code{var_names} filled in.
 }
 \description{
 Extract number of observations, number of manifest
    variables, and names of observed variables from a fitted
-   structural equation model. Supported fitted objects: lavaan.
+   structural equation model. Fitted model can be of class \code{lavaan}.
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-framework for studying causal effects using linear models. Psychometrika 
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
-}
-\seealso{
-\code{\link{build_C}} \code{\link{build_Psi}}
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }

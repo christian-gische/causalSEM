@@ -1,4 +1,6 @@
 ## Changelog:
+# CG 0.0.5 2023-02-23: set use_model_values argument in 
+#                      calculate_constant_matrices function
 # CG 0.0.4 2023-02-21: changes in preamble and comments
 # MH 0.0.3 2022-03-17: removed "seealso", solves NOTE in package checking
 # CG 0.0.2 2022-01-13: changed name from fill_in_constant_matrices
@@ -37,7 +39,7 @@ fill_in_constant_matrices <- function( internal_list = NULL ){
   fun.name <- "fill_in_constant_matrices"
   
   # function version
-  fun.version <- "0.0.4 2023-02-21"
+  fun.version <- "0.0.5 2023-02-23"
   
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -50,11 +52,9 @@ fill_in_constant_matrices <- function( internal_list = NULL ){
                                   Sys.time(), "\n" ) )
   
   
-  constant_matrices_list <- calculate_constant_matrices( 
-    model = internal_list, 
-    intervention_names = internal_list$info_interventions$intervention_names, 
-    outcome_names = internal_list$info_interventions$outcome_names, 
-    verbose = internal_list$control$verbose )
+  constant_matrices_list <- calculate_constant_matrices(model = internal_list,
+                                                        use_model_values = TRUE)
+    
   
   
   # fill in slots of ..$constant_matrices

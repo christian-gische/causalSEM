@@ -1,6 +1,4 @@
 ## Changelog:
-# CG 0.0.5 2023-02-23: include argument use_model_values and change 
-#                       checks of user-specified arguments accordingly
 # CG 0.0.4 2023-02-20: changes to preamble to print documentation
 # CG 0.0.3 2022-01-13: changed name from calculate_constant_matrices
 #                       to calculate_constant_matrices
@@ -40,41 +38,42 @@
 # TODO if at one point we get runtime problems we might consider using
 # the function Matrix which uses sparsity information
 
-# CG 0.0.5 2023-02-23: include argument use_model_values and change 
-#                      checks of user-specified arguments accordingly
 # Function definition
-calculate_constant_matrices <- function(model = NULL,
-                                        intervention_names = NULL,
-                                        outcome_names = NULL,
-                                        verbose = NULL,
-                                        use_model_values = FALSE){
+calculate_constant_matrices <- function( model = NULL,
+                                         intervention_names = NULL, 
+                                         outcome_names = NULL, 
+                                         verbose = NULL ){
 
   # function name
   fun.name <- "calculate_constant_matrices"
 
   # function version
-  fun.version <- "0.0.5 2023-02-23"
+  fun.version <- "0.0.4 2023-02-20"
 
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
 
   # get verbose argument
-  verbose <- handle_verbose_argument(verbose)
+  verbose <- model$control$verbose
 
   # console output
   if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ",
                                   Sys.time(), "\n" ) )
+
+  # TODO check if user argument model is the internal_list or
+  # an object of class causalSEM
+  # CURRENTLY, the function assumes that the input model is
+  # of type internal_list. After allowing for objects of class causalSEM
+  # the pathes starting with internal_list$ might need adjustment
   
-  # CG 0.0.5 2023-02-23: include argument use_model_values and change 
-  #                      checks of user-specified arguments accordingly
   
-  # get class of model object
+  # get class of fit object
   model_class <- class(model)
   
-  # set supported classes of model objects
+  # supported fit objects
   supported_model_classes <- c( "causalSEM" )
   
-  # check if argument model is supported
+  # check if supported
   if(!any(model_class %in% supported_model_classes)) stop(
     paste0(
       fun.name.version, ": model of class ", model_class,
@@ -83,54 +82,34 @@ calculate_constant_matrices <- function(model = NULL,
     )
   )
   
-  # CG 0.0.5 2023-02-23: include argument use_model_values and change 
-  #                      checks of user-specified arguments accordingly
-  
-  # check if model values of should be used; if not, use user specified 
-  # arguments (after checking if they are admissible)
-  if(use_model_values == TRUE) {
-    intervention_labels <- model$info_interventions$intervention_names
-    outcome_labels <- model$info_interventions$outcome_names
-    verbose <- model$control$verbose
-  } else {
-  
-  # CG 0.0.5 2023-02-23: include argument use_model_values and change 
-  #                      checks of user-specified arguments accordingly  
-    
-  # get intervention_names and check if admissible
+
+  # get variable names of interventional variables
   if( is.character( intervention_names ) && 
-      all( intervention_names %in% model$info_model$var_names )){
-    # set intervention_names
+      all( intervention_names %in% model$info_model$var_names ) ){
     intervention_labels <- intervention_names
-  } else if ( is.null( intervention_names ) ){
+  } else {
     intervention_labels <- model$info_interventions$intervention_names
-  } else {
-    stop( paste0( fun.name.version, ": Argument intervention_names needs to be 
-    a character vector of variable names." ))
   }
-    
-  #TODO: 
-  # 1) set use_model_values = TRUE/FALSE in all calls of the
-  # compute_constant_matrices function
-  # 2) remove the else if parts in the statements
-  # 3) allow outcome names to take NON interventional values only
+
+ 
+  # get variable name of outcome variable
+  # TODO think of allowing calculation only for NON interventional variables 
+  # according to the following code
+  #  if( is.character( outcome_names ) && 
+  #  all( outcome_names %in% setdiff(model$info_model$var_names, x_labels) )){
+  #    outcome_labels <- outcome_names
+  #  } else {
+  #    stop( paste0( fun.name.version, ": Argument outcome_names needs to be the a 
+  #                  character string with the name of a non-interventional 
+  #                  variable."  ) )
+  #  }
   
-  # CG 0.0.5 2023-02-23: include argument use_model_values and change 
-  #                      checks of user-specified arguments accordingly
-    
-  # get outcome_names and check if admissible
   if( is.character( outcome_names ) && 
-      all( outcome_names %in% model$info_model$var_names))
-    {
-    # set in internal_list
+      all ( outcome_names %in% model$info_model$var_names ) ){
     outcome_labels <- outcome_names
-  } else if ( is.null( outcome_names ) ){
-    outcome_labels <- model$info_interventions$outcome_names
   } else {
-    stop( paste0( fun.name.version, ": Argument outcome needs to be a character 
-    vector of variable names of variables that are not subject to intervention."
-                  ))
-  }
+    stop( paste0( fun.name.version, ": Argument outcome_names needs to be a 
+                  character string with the name of an observed variable."  ) )
   }
 
   # number of interventions

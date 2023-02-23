@@ -2,17 +2,16 @@
 % Please edit documentation in R/fill_in_info_interventions.R
 \name{fill_in_info_interventions}
 \alias{fill_in_info_interventions}
-\title{Extracts Interventional Information From the Arguments of the
-intervention_effect() function.}
+\title{Processes Arguments of the \code{intervention_effect}() Function.}
 \usage{
 fill_in_info_interventions(
-  internal_list,
-  intervention,
-  outcome,
-  intervention_level,
-  effect_type,
-  lower_bound,
-  upper_bound
+  internal_list = NULL,
+  intervention = NULL,
+  outcome = NULL,
+  intervention_level = NULL,
+  effect_type = NULL,
+  lower_bound = NULL,
+  upper_bound = NULL
 )
 }
 \arguments{
@@ -20,7 +19,7 @@ fill_in_info_interventions(
 model.}
 }
 \value{
-Returns the inputted internal_list with slots
+Returns the inputted list with slots
    \code{n_intervention}, \code{intervention_names},
    \code{intervention_levels},
    \code{effect_type}, \code{n_outcome}, \code{outcome_names},
@@ -28,13 +27,10 @@ Returns the inputted internal_list with slots
 }
 \description{
 Extract interventional information from the arguments
-   of the intervention_effect() function.
+of the \code{intervention_effect}() function.
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible framework for
-studying causal effects using linear models. Psychometrika
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
-}
-\seealso{
-\code{\link{populate_model_info}}
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }

@@ -4,20 +4,13 @@
 \alias{fill_in_constant_matrices}
 \title{Fill in Constant Matrices Used for Compuations to the Internal List}
 \usage{
-fill_in_constant_matrices(internal_list)
+fill_in_constant_matrices(internal_list = NULL)
 }
 \arguments{
 \item{internal_list}{A list with information extracted from the model.}
 }
 \value{
-The inputted internal_list 
-with several slots in ..$constant_matrices filled. 
-   ..$select_intervention 
-   ..$select_non_intervention
-   ..$eliminate_intervention
-   ..$duplication_matrix
-   ..$elimination_matrix
-   ..$commutation_matrix
+
 }
 \description{
 Fill in constant matrices used for the computation of the 
@@ -25,7 +18,7 @@ interventional distribution into the internal list.
 (see for example Definition 1 in Gische and Voelkle, 2021)
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible framework for 
-studying causal effects using linear models. Psychometrika 
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }

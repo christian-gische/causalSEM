@@ -72,10 +72,10 @@ following structure:\cr
      for entries that are intervened on \cr
      .. .. $ select_non_intervention: num[0, 0] \tab \tab selection matrix 
      for entries that are NOT intervened on \cr
-     .. .. $ eliminate_intervention: num[0, 0]  \tab \tab matrix that 
-     replaces entries that are intervened on by zero \cr
      .. .. $ select_outcome: num[0, 0]          \tab \tab selection matrix 
      for outcomes of interest \cr
+     .. .. $ eliminate_intervention: num[0, 0]  \tab \tab matrix that 
+     replaces entries that are intervened on by zero \cr
      .. .. $ duplication_matrix: num[0, 0]      \tab \tab maps vech(A) onto 
      vec(A) for symmetric A \cr
      .. .. $ elimination_matrix: num[0, 0]      \tab \tab maps vec(A) onto 
