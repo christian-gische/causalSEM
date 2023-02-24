@@ -22,16 +22,16 @@
 #' @param intervention_names Names of interventional variables
 #' @param outcome_names Names of outcome variables
 #' @param verbose Verbosity of console outputs
-#' @return List with several zero-one matrices.\cr
-#'\tabular{ll}{
-#' \tab    List of 7  \cr
-#' \tab   $ select_intervention \cr
-#' \tab   $ select_non_intervention \cr
-#' \tab   $ select_outcome \cr
-#' \tab   $ eliminate_intervention \cr
-#' \tab   $ duplication_matrix \cr
-#' \tab   $ elimination_matrix \cr
-#' \tab   $ commutation_matrix
+#' @return List with several zero-one matrices:\cr
+#' \tabular{ll}{
+#' List of 7 \tab \cr
+#' \tab   \code{$select_intervention} \cr
+#' \tab   \code{$select_non_intervention} \cr
+#' \tab   \code{$select_outcome} \cr
+#' \tab   \code{$eliminate_intervention} \cr
+#' \tab   \code{$duplication_matrix} \cr
+#' \tab   \code{$elimination_matrix} \cr
+#' \tab   \code{$commutation_matrix}}
 #' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
 #' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
 #' 868–901. https://doi.org/10.1007/s11336-021-09811-z

@@ -2,27 +2,26 @@
 % Please edit documentation in R/prepare_table_variances.R
 \name{prepare_table_variances}
 \alias{prepare_table_variances}
-\title{Prepare Tables with Information About Interventional Variances}
+\title{Prepare Table for Interventional Variances}
 \usage{
 prepare_table_variances(x, digits = 3)
 }
 \arguments{
-\item{x}{an object of class "causalSEM", usually, a result of a call to
-intervention_effect.}
+\item{x}{An object of class \code{causalSEM}.}
 
-\item{digit}{integer indicating the number of decimal places (round) or
-significant digits (signif) to be used.}
+\item{digit}{Single number, integer. Indicating the number of decimal places
+(round) or significant digits (signif) to be used.}
 }
 \value{
-\code{prepare_table_variances} returns a character vector.
+A character vector with information about interventional variances.
 }
 \description{
-Internal helper function that creates a formatted table
-containing various information about the interventional variances. Used in
-print.causalSEM and summary.causalSEM
+Create a formatted table containing information 
+about interventional variances. Used in \code{print.causalSEM} and 
+\code{summary.causalSEM}.
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible
-framework for studying causal effects using linear models. Psychometrika
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }

@@ -10,7 +10,17 @@ fill_in_constant_matrices(internal_list = NULL)
 \item{internal_list}{A list with information extracted from the model.}
 }
 \value{
-
+The inputted list with several slots in ..$constant_matrices 
+filled.\cr
+\tabular{ll}{
+\tab    List of 7  \cr
+\tab   $ select_intervention \cr
+\tab   $ select_non_intervention \cr
+\tab   $ select_outcome \cr
+\tab   $ eliminate_intervention \cr
+\tab   $ duplication_matrix \cr
+\tab   $ elimination_matrix \cr
+\tab   $ commutation_matrix}
 }
 \description{
 Fill in constant matrices used for the computation of the 

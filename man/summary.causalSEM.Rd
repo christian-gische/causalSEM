@@ -2,24 +2,25 @@
 % Please edit documentation in R/summary.causalSEM.R
 \name{summary.causalSEM}
 \alias{summary.causalSEM}
-\title{Summarizing a Causal SEM Object}
+\title{Summary of Object of Class \code{causalSEM}}
 \usage{
 \method{summary}{causalSEM}(x, digits = 3)
 }
 \arguments{
-\item{x}{an object of class "causalSEM", usually, a result of a call to intervention_effect.}
+\item{x}{An object of class \code{causalSEM}.}
 
-\item{digit}{integer indicating the number of decimal places (round) or
-significant digits (signif) to be used.}
+\item{digit}{Single number, integer. Indicating the number of decimal places
+(round) or significant digits (signif) to be used.}
 }
 \value{
-\code{summary.causalSEM} prints a list of summary statistics.
+A list summarizing selected information and statistics from an object 
+of class \code{causalSEM}.
 }
 \description{
-summary method for class "causalSEM".
+Summary method for objects of class \code{causalSEM}.
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible
-framework for studying causal effects using linear models. Psychometrika
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }

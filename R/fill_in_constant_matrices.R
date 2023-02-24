@@ -26,7 +26,7 @@
 #' \tab   $ eliminate_intervention \cr
 #' \tab   $ duplication_matrix \cr
 #' \tab   $ elimination_matrix \cr
-#' \tab   $ commutation_matrix
+#' \tab   $ commutation_matrix}
 #' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
 #' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
 #' 868–901. https://doi.org/10.1007/s11336-021-09811-z

@@ -4,19 +4,18 @@
 # MA 0.0.1 2022-02-17: initial programming
 
 ## Documentation
-#' @title Prepare Tables with Information About Interventional Variances
-#' @description Internal helper function that creates a formatted table
-#' containing various information about the interventional variances. Used in
-#' print.causalSEM and summary.causalSEM
-#' @param x an object of class "causalSEM", usually, a result of a call to
-#' intervention_effect.
-#' @param digit integer indicating the number of decimal places (round) or
-#' significant digits (signif) to be used.
-#' @return \code{prepare_table_variances} returns a character vector.
-#' @references
-#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible
-#' framework for studying causal effects using linear models. Psychometrika
-#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+#' @title Prepare Table for Interventional Variances
+#' @description Create a formatted table containing information 
+#' about interventional variances. Used in \code{print.causalSEM} and 
+#' \code{summary.causalSEM}.
+#' @param x An object of class \code{causalSEM}.
+#' @param digit Single number, integer. Indicating the number of decimal places
+#' (round) or significant digits (signif) to be used.
+#' @return A character vector with information about interventional variances.
+#' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+#' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+#' 868–901. https://doi.org/10.1007/s11336-021-09811-z
+#' @export
 
 
 ## Function definition

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fill_in_info_interventions.R
 \name{fill_in_info_interventions}
 \alias{fill_in_info_interventions}
-\title{Processes Arguments of the \code{intervention_effect}() Function.}
+\title{Process Arguments of the \code{intervention_effect}() Function}
 \usage{
 fill_in_info_interventions(
   internal_list = NULL,
@@ -19,15 +19,21 @@ fill_in_info_interventions(
 model.}
 }
 \value{
-Returns the inputted list with slots
-   \code{n_intervention}, \code{intervention_names},
-   \code{intervention_levels},
-   \code{effect_type}, \code{n_outcome}, \code{outcome_names},
-   \code{lower_bounds}, and \code{upper_bounds} filled in.
+The inputted list with the following slots filled in:
+\tabular{ll}{
+List of 7 \tab \cr
+\tab   \code{n_intervention} \cr
+\tab   \code{intervention_names} \cr
+\tab   \code{intervention_levels} \cr
+\tab   \code{effect_type} \cr
+\tab   \code{n_outcome} \cr
+\tab   \code{outcome_names} \cr
+\tab   \code{lower_bounds}\cr
+\tab   \code{upper_bounds}}
 }
 \description{
-Extract interventional information from the arguments
-of the \code{intervention_effect}() function.
+Extract information about the intervention to be analyzed 
+from the arguments of the \code{intervention_effect}() function.
 }
 \references{
 Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 

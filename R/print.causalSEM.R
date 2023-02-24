@@ -3,16 +3,16 @@
 # MA 0.0.1 2022-01-13: initial programming
 
 ## Documentation
-#' @title Printing a Causal SEM Object
-#' @description print method for class "causalSEM".
-#' @param x an object of class "causalSEM", usually, a result of a call to intervention_effect.
-#' @param digit integer indicating the number of decimal places (round) or
-#' significant digits (signif) to be used.
-#' @return \code{print.causalSEM} returns a table with summary statistics.
-#' @references
-#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-#' framework for studying causal effects using linear models. Psychometrika 
-#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+#' @title Print Object of Class \code{causalSEM}
+#' @description Print method for objects of class \code{causalSEM}.
+#' @param x An object of class \code{causalSEM}.
+#' @param digit Single number, integer. Indicating the number of decimal places
+#' (round) or significant digits (signif) to be used.
+#' @return A table summarizing selected information and statistics from an 
+#' object of class \code{causalSEM}.
+#' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+#' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+#' 868–901. https://doi.org/10.1007/s11336-021-09811-z
 #' @export
 
 ## Function definition

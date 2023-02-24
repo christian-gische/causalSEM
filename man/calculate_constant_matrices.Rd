@@ -8,7 +8,8 @@ calculate_constant_matrices(
   model = NULL,
   intervention_names = NULL,
   outcome_names = NULL,
-  verbose = NULL
+  verbose = NULL,
+  use_model_values = FALSE
 )
 }
 \arguments{
@@ -21,7 +22,16 @@ calculate_constant_matrices(
 \item{verbose}{Verbosity of console outputs}
 }
 \value{
-
+List with several zero-one matrices:\cr
+\tabular{ll}{
+List of 7 \tab \cr
+\tab   \code{$select_intervention} \cr
+\tab   \code{$select_non_intervention} \cr
+\tab   \code{$select_outcome} \cr
+\tab   \code{$eliminate_intervention} \cr
+\tab   \code{$duplication_matrix} \cr
+\tab   \code{$elimination_matrix} \cr
+\tab   \code{$commutation_matrix}}
 }
 \description{
 Calculates zero-one matrices used in the computation

@@ -22,7 +22,7 @@ as a matrix.}
 coef method for class "causalSEM".
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible
-framework for studying causal effects using linear models. Psychometrika
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }
