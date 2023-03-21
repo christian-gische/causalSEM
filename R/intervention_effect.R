@@ -60,8 +60,7 @@
 #' Default: all non-interventional variables.
 #' @param effect_type Character vector. Features of the interventional 
 #' distribution to be analyzed. Admissible values are 
-#' "mean", "variance", "density", and "probability". 
-#' Default: "mean".
+#' "mean", "variance", "density", and "probability". Default: "mean".
 #' @param lower_bound Numeric vector. Same length and order as argument outcome.
 #' Lower bounds of critical range of outcome variables.
 #' @param upper_bound Numeric vector. Same length and order as argument outcome.

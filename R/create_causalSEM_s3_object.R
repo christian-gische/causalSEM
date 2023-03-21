@@ -4,10 +4,10 @@
 
 ## Documentation
 #' @title causalSEM S3 object
-#' @description Assign class causalSEM to internal list
+#' @description Assign class causalSEM to internal list.
 #' @param internal_list A list with various information extracted from the
 #'    model.
-#' @return Object of class causalSEM
+#' @return Object of class causalSEM.
 #' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
 #' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
 #' 868–901. https://doi.org/10.1007/s11336-021-09811-z

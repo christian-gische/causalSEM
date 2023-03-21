@@ -18,10 +18,10 @@
 #' @description Calculates zero-one matrices used in the computation
 #' of the interventional distribution 
 #' (see for example Definition 1 in Gische and Voelkle, 2022).  
-#' @param model Object of class causalSEM
-#' @param intervention_names Names of interventional variables
-#' @param outcome_names Names of outcome variables
-#' @param verbose Verbosity of console outputs
+#' @param model Object of class causalSEM.
+#' @param intervention_names Names of interventional variables.
+#' @param outcome_names Names of outcome variables.
+#' @param verbose Verbosity of console output.
 #' @return List with several zero-one matrices:\cr
 #' \tabular{ll}{
 #' List of 7 \tab \cr

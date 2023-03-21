@@ -7,7 +7,7 @@
 # MH 0.0.1 2021-07-20: initial programming
 
 ## Documentation
-#' @title Handles the Verbose Argument
+#' @title Handling of Verbose Argument
 #' @description Reads the user-inputted verbose
 #'    argument checks if it is valid.
 #' @param verbose A single number, integer. 

@@ -11,10 +11,10 @@
 # CG 0.0.1 2021-11-22: initial programming
 
 ## Documentation
-#' @title Fill in Constant Matrices Used for Compuations to the Internal List
+#' @title Fill in Constant Matrices to the Internal List
 #' @description Fill in constant matrices used for the computation of the 
-#' interventional distribution into the internal list.
-#' (see for example Definition 1 in Gische and Voelkle, 2021)
+#' interventional distribution into the internal list (see for example 
+#' Definition 1 in Gische and Voelkle, 2022).
 #' @param internal_list A list with information extracted from the model.
 #' @return The inputted list with several slots in ..$constant_matrices 
 #' filled.\cr

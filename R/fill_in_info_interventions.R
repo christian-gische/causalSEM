@@ -11,8 +11,9 @@
 
 ## Documentation
 #' @title Process Arguments of the \code{intervention_effect}() Function
-#' @description Extract information about the intervention to be analyzed 
-#' from the arguments of the \code{intervention_effect}() function.
+#' @description Extract information about the intervention from the arguments
+#'  of the \code{intervention_effect}() function and check if they are 
+#'  admissible.
 #' @param internal_list A list with various information extracted from the
 #'    model.
 #' @return The inputted list with the following slots filled in:
