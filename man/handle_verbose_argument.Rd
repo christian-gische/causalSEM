@@ -2,7 +2,7 @@
 % Please edit documentation in R/handle_verbose_argument.R
 \name{handle_verbose_argument}
 \alias{handle_verbose_argument}
-\title{Handles the Verbose Argument}
+\title{Handling of Verbose Argument}
 \usage{
 handle_verbose_argument(verbose = NULL)
 }

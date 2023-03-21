@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.7 2023-03-21: changed check argument for outcome 
 # CG 0.0.6 2023-02-21: changes in preamble and comments
 # CG 0.0.5 2022-03-08: changed argument check for upper and lower bound
 # CG 0.0.4 2022-01-13: changed structure of internal_list
@@ -63,9 +64,7 @@ fill_in_info_interventions <- function(internal_list = NULL,
     # set in internal_list
     internal_list$info_interventions$intervention_names <- intervention
   } else {
-    stop( paste0( fun.name.version, ": setting intervention_names in internal
-                  list failed. Argument intervention needs to be a character
-                  vector of variable names.")  )
+    stop( paste0( fun.name.version, ": setting intervention_names in internal list failed. Argument intervention needs to be a character vector of variable names."))
   }
 
   # get number of interventional variables
@@ -83,14 +82,12 @@ fill_in_info_interventions <- function(internal_list = NULL,
     internal_list$info_interventions$intervention_levels <-
       rep( 1 , internal_list$info_interventions$n_intervention )
   } else {
-    stop( paste0( fun.name.version, ": setting intervention_level in internal
-                  list failed. Argument intervention_level needs to be a
-                  numeric vector of same length as intervention."  ) )
+    stop( paste0( fun.name.version, ": setting intervention_level in internal list failed. Argument intervention_level needs to be a numeric vector of same length as intervention."))
   }
 
   # get effect type from input of intervention_effect function
 
-  supported_effect_types <- c( "mean" , "variance" , "density" , "probability" )
+  supported_effect_types <- c("mean" , "variance" , "density" , "probability")
 
   if( is.character( effect_type ) &&
       all( effect_type %in% supported_effect_types ) ){
@@ -99,16 +96,18 @@ fill_in_info_interventions <- function(internal_list = NULL,
   } else if ( is.null( effect_type ) ){
     internal_list$info_interventions$effect_type <- c("mean")
   } else {
-    stop( paste0( fun.name.version, ": setting effect_type in internal list
-                  failed. Argument effect_type needs to be a character vector
-                  with entries 'mean', 'variance', 'density',
-                  or 'probability'." )  )
+    stop( paste0( fun.name.version, ": setting effect_type in internal list failed. Argument effect_type needs to be a character vector with entries 'mean', 'variance', 'density', or 'probability'." ))
   }
-
-
+  
   # get variable names of outcome variables
+  # CG 0.0.7 2023-03-21: Old version: outcome was allowed to be as subset of 
+  # variable names. New version: outcome needs to be a subset of 
+  # NON-INTERVENTIONAL  variables
+  
   if( is.character( outcome ) &&
-      all( outcome %in% internal_list$info_model$var_names ) ){
+      all( outcome %in% 
+           setdiff(internal_list$info_model$var_names, 
+                   internal_list$info_interventions$intervention_names) ) ){
     # set in internal_list
     internal_list$info_interventions$outcome_names <- outcome
   } else if ( is.null( outcome ) ){
@@ -116,11 +115,21 @@ fill_in_info_interventions <- function(internal_list = NULL,
       setdiff(internal_list$info_model$var_names,
               internal_list$info_interventions$intervention_names)
   } else {
-    stop( paste0( fun.name.version, ": Setting outcome_names in internal list
-                  failed. Argument outcome needs to be a character vector of
-                  variable names of variables that are not subject to 
-                  intervention."  ) )
+    stop( paste0( fun.name.version, ": setting outcome_names in internal list failed. Argument outcome needs to be a vector of names of NON-INTERVENTIONAL variables."))
   }
+
+
+  #if( is.character( outcome ) &&
+  #    all( outcome %in% internal_list$info_model$var_names ) ){
+  #  # set in internal_list
+  #  internal_list$info_interventions$outcome_names <- outcome
+  #} else if ( is.null( outcome ) ){
+  #  internal_list$info_interventions$outcome_names <-
+  #    setdiff(internal_list$info_model$var_names,
+  #            internal_list$info_interventions$intervention_names)
+  #} else {
+  #  stop( paste0( fun.name.version, ": Setting outcome_names in internal list failed. Argument outcome needs to be a character vector of variable names of variables that are not subject to intervention."))
+  #}
 
   # get number of interventional variables
   # set in internal_list
@@ -137,9 +146,7 @@ fill_in_info_interventions <- function(internal_list = NULL,
   } else if ( is.null( lower_bound ) ){
     internal_list$info_interventions$lower_bounds <- NULL
   } else {
-    stop( paste0( fun.name.version, ": setting lower_bound in internal list
-                  failed. Argument lower_bound needs to be numeric and of
-                  same length as the argument outcome."  ) )
+    stop( paste0( fun.name.version, ": setting lower_bound in internal list failed. Argument lower_bound needs to be numeric and of same length as the argument outcome."))
   }
 
 # get upper bounds of outcome range
@@ -152,9 +159,7 @@ fill_in_info_interventions <- function(internal_list = NULL,
   } else if ( is.null( upper_bound ) ){
     internal_list$info_interventions$upper_bounds <- NULL
   } else {
-    stop( paste0( fun.name.version, ": setting upper_bound in internal list
-                  failed. Argument upper_bound needs to be numeric and of
-                  same length as the argument outcome."  ) )
+    stop( paste0( fun.name.version, ": setting upper_bound in internal list failed. Argument upper_bound needs to be numeric and of same length as the argument outcome."))
   }
 
   # console output

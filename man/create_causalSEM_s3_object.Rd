@@ -11,10 +11,10 @@ create_causalSEM_s3_object(internal_list)
 model.}
 }
 \value{
-Object of class causalSEM
+Object of class causalSEM.
 }
 \description{
-Assign class causalSEM to internal list
+Assign class causalSEM to internal list.
 }
 \references{
 Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 

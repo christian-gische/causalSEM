@@ -13,13 +13,13 @@ calculate_constant_matrices(
 )
 }
 \arguments{
-\item{model}{Object of class causalSEM}
+\item{model}{Object of class causalSEM.}
 
-\item{intervention_names}{Names of interventional variables}
+\item{intervention_names}{Names of interventional variables.}
 
-\item{outcome_names}{Names of outcome variables}
+\item{outcome_names}{Names of outcome variables.}
 
-\item{verbose}{Verbosity of console outputs}
+\item{verbose}{Verbosity of console output.}
 }
 \value{
 List with several zero-one matrices:\cr

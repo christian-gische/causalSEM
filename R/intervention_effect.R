@@ -119,7 +119,7 @@ intervention_effect <- function(model = NULL,
   # right after creating the internal_list 
   # Assign class causalSEM to internal list
   # MH 0.0.14 2021-11-30
-  internal_list <- create_causalSEM_s3_object( internal_list )
+  internal_list <- create_causalSEM_s3_object( internal_list = internal_list )
 
   # console output
   if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, "

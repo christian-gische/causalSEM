@@ -32,8 +32,9 @@ List of 7 \tab \cr
 \tab   \code{upper_bounds}}
 }
 \description{
-Extract information about the intervention to be analyzed 
-from the arguments of the \code{intervention_effect}() function.
+Extract information about the intervention from the arguments
+ of the \code{intervention_effect}() function and check if they are 
+ admissible.
 }
 \references{
 Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 

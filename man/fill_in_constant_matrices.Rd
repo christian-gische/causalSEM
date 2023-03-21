@@ -2,7 +2,7 @@
 % Please edit documentation in R/fill_in_constant_matrices.R
 \name{fill_in_constant_matrices}
 \alias{fill_in_constant_matrices}
-\title{Fill in Constant Matrices Used for Compuations to the Internal List}
+\title{Fill in Constant Matrices to the Internal List}
 \usage{
 fill_in_constant_matrices(internal_list = NULL)
 }
@@ -24,8 +24,8 @@ filled.\cr
 }
 \description{
 Fill in constant matrices used for the computation of the 
-interventional distribution into the internal list.
-(see for example Definition 1 in Gische and Voelkle, 2021)
+interventional distribution into the internal list (see for example 
+Definition 1 in Gische and Voelkle, 2022).
 }
 \references{
 Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 

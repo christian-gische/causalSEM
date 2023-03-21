@@ -4,7 +4,7 @@
 \alias{coef.causalSEM}
 \title{Extract Causal Coefficients}
 \usage{
-\method{coef}{causalSEM}(x, what = "means")
+coef.causalSEM(x, what = "means")
 }
 \arguments{
 \item{x}{an object of class "causalSEM", usually, a result of a call to intervention_effect.}
