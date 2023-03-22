@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.11 2023-03-22: removed check if representation is of type LISREL
 # MH 0.0.10 2022-03-17: removed "require", solves NOTE in package checking
 # CG 0.0.9 2022-01-13: changed structure of internal_list
 #                       cleaned up code (documentation, 80 char per line)
@@ -21,20 +22,23 @@
 # MH 0.0.1 2021-07-20: initial programming
 
 ## Documentation
-#' @title Extracts the Structural Coefficient Matrix from a Fitted SEM Object
+#' @title Extract Matrix of Structural Coefficients 
 #' @description Extracts the structural coefficient matrix from a fitted
-#'    structural equation model. Supported fitted objects: lavaan.
+#'    structural equation model. Supported objects types: lavaan.
 #' @param internal_list A list with various information extracted from the
 #'    model.
 #' @return The inputted internal_list with two slot in the sublist 
-#'    C filled in: slot "values" is a numeric matrix containing the structural 
-#'    coefficients (if available with row- and column names); slot "labels" is 
-#'    a character matrix containing parameter labels (NA for unlabeled 
-#'    parameters), NULL if labels are not extractable.
-#' @seealso \code{\link{build_Psi}}
-#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-#' framework for studying causal effects using linear models. Psychometrika 
-#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+#'    C filled in:\cr
+#' \tabular{lll}{
+#'.. $info_model$C:          \tab \tab \cr
+#'      .. ..$ values: num[0, 0]   \tab \tab numeric matrix containing 
+#'      parameter values of matrix of structural coefficients\cr
+#'      .. ..$ labels: chr[0, 0]   \tab \tab character matrix containing 
+#'      parameter labels of matrix of structural coefficients (NA for unlabeled 
+#'    parameters, NULL if labels can not be extracted.)\cr
+#' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+#' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+#' 868–901. https://doi.org/10.1007/s11336-021-09811-z
 
 
 ## Function definition
@@ -73,13 +77,18 @@ fill_in_C <- function( internal_list ){
 
 	# require package
 	# if( fit.class %in% "lavaan" ) requireNamespace( "lavaan" )
+	
+	# CG 0.0.11 2023-03-22: removed check if representation is of type LISREL
+	# the LISREL check is redundant, since the input to the fill_in_C function is 
+	# the internal list and it has already been checked by the fill_in_model_info
+	# function
 
 	# model representation must be "LISREL"
-	model.rep <- fit@Model@representation
-	if( !model.rep %in% "LISREL" ) 
-	  stop( paste0( fun.name.version, ": model representation as defined in 
-	                fit@Model@representation must be LISREL, 
-	                but it is ", paste( model.rep, collapse=", " ) ) )
+	# model.rep <- fit@Model@representation
+	# if( !model.rep %in% "LISREL" ) 
+	#  stop( paste0( fun.name.version, ": model representation as defined in 
+	#                fit@Model@representation must be LISREL, 
+	#                but it is ", paste( model.rep, collapse=", " ) ) )
 
 	# check whether beta is present in fit object
 	GLIST.names <- names( fit@Model@GLIST )
@@ -123,7 +132,7 @@ fill_in_C <- function( internal_list ){
 		# parameter table
 		# partab <- parTable( fit )
 		# MH 0.0.4 2021-09-08 call of lav_parTable_fill_labels
-		# CG 0.0.7 2021-11-18: changed name of called funtion 
+		# CG 0.0.7 2021-11-18: changed name of called function 
 		# to add_labels_in_lavaan_parTable 
 		partab <- add_labels_in_lavaan_parTable( internal_list )
 

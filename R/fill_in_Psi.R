@@ -6,19 +6,24 @@
 # MA 0.0.3 2021-11-26: changed function name from "build_Psi" to "fill_in_Psi"
 # MA 0.0.2 2021-10-31: fixed some variables names related to verbosity
 
-#' @title Extracts the Psi matrix from a SEM
-#' @description Extracts the Psi matrix from a lavaan
-#' model. Currently, this function will only work if all variance parameters
-#' are stored in lavaan's psi matrix (covariance of the latent errors) and the
-#' theta matrix (covariance of the manifest errors) is empty.
-#' @param internal_list a list with various information extracted from the
+#' @title Extract Covariance Matrix
+#' @description Extracts the variance covariance matrix (Psi-matrix) 
+#' from a fitted SEM model. Currently, this function will only work if all 
+#' variance parameters are stored in lavaan's psi matrix (covariance of the 
+#' latent errors) and the theta matrix (covariance of the manifest errors) is 
+#' empty.
+#' @param internal_list A list with various information extracted from the
 #' model.
-#' @return \code{build_psi} returns a list with various information extracted
-#' from the model. \code{build_psi} with changed 'values' and 'labels' slots 
-#' of Psi.
-#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-#' framework for studying causal effects using linear models. Psychometrika 
-#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+#' The inputted internal_list with two slot in the sublist Psi filled in:\cr
+#' \tabular{lll}{
+#'.. $info_model$Psi:          \tab \tab \cr
+#'      .. ..$values: num[0, 0]   \tab \tab numeric matrix containing 
+#'      parameter values of covariance matrix.\cr
+#'      .. ..$labels: chr[0, 0]   \tab \tab character matrix containing 
+#'      parameter labels of covariance matrix.\cr
+#' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+#' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+#' 868–901. https://doi.org/10.1007/s11336-021-09811-z
 
 fill_in_Psi <- function(internal_list) {
 

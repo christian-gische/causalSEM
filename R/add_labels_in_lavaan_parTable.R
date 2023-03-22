@@ -12,15 +12,15 @@
 #' @description Fills in default labels from the lavaan model 
 #' syntax into empty slots (i.e., parameters that do not have a user
 #' specified label) of the lavaan parTable object.
-#' @param internal_list a list with various information extracted 
+#' @param internal_list A list with various information extracted 
 #' from the model.
 #' @return A lavaan parTable object where empty slots (i.e., parameters 
 #' that do not have a user specified label) in the original 
 #' parTable object have been filled in with default labels from 
 #' the lavaan model syntax.
-#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-#' framework for studying causal effects using linear models. Psychometrika 
-#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+#' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+#' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+#' 868–901. https://doi.org/10.1007/s11336-021-09811-z
 
 add_labels_in_lavaan_parTable <- function(internal_list) {
   
