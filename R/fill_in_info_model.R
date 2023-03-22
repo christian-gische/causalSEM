@@ -18,8 +18,14 @@
 #' @param internal_list A list with various information extracted from the
 #'    model.
 #' @param model Fitted model. The fitted model can be of class \code{lavaan}.
-#' @return The inputted list with slots
-#'    \code{n_obs}, \code{n_ov}, and \code{var_names} filled in.
+#' @return The inputted internal_list with several slots filled in:
+#' \tabular{lll}{
+#'..$fitted_object   \tab \tab object containing fitted SEM model\cr
+#'..$info_model$n_obs  \tab \tab single integer; number of observations 
+#'(sample size)\cr
+#'..$info_model$n_ov   \tab \tab single integer; number of observed 
+#'(manifest) variables \cr
+#'..$info_model$var_names \tab \tab character vector with variable names}
 #' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
 #' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
 #' 868–901. https://doi.org/10.1007/s11336-021-09811-z

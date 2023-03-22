@@ -14,13 +14,12 @@
 #' empty.
 #' @param internal_list A list with various information extracted from the
 #' model.
-#' The inputted internal_list with two slot in the sublist Psi filled in:\cr
+#' The inputted internal_list with two slot in the sublist ..$Psi filled in:\cr
 #' \tabular{lll}{
-#'.. $info_model$Psi:          \tab \tab \cr
-#'      .. ..$values: num[0, 0]   \tab \tab numeric matrix containing 
+#' .. ..$values: num[0, 0]   \tab \tab numeric matrix containing 
 #'      parameter values of covariance matrix.\cr
-#'      .. ..$labels: chr[0, 0]   \tab \tab character matrix containing 
-#'      parameter labels of covariance matrix.\cr
+#' .. ..$labels: chr[0, 0]   \tab \tab character matrix containing 
+#'      parameter labels of covariance matrix.}
 #' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
 #' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
 #' 868–901. https://doi.org/10.1007/s11336-021-09811-z

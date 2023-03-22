@@ -8,7 +8,7 @@
 # CG 0.0.1 2021-09-04: initial programing
 
 ## Documentation
-#' @title Fill in Labels in lavaan parTable Object
+#' @title Add Labels to lavaan parTable
 #' @description Fills in default labels from the lavaan model 
 #' syntax into empty slots (i.e., parameters that do not have a user
 #' specified label) of the lavaan parTable object.

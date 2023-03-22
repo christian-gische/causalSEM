@@ -2,12 +2,12 @@
 % Please edit documentation in R/add_labels_in_lavaan_parTable.R
 \name{add_labels_in_lavaan_parTable}
 \alias{add_labels_in_lavaan_parTable}
-\title{Fill in Labels in lavaan parTable Object}
+\title{Add Labels to lavaan parTable}
 \usage{
 add_labels_in_lavaan_parTable(internal_list)
 }
 \arguments{
-\item{internal_list}{a list with various information extracted 
+\item{internal_list}{A list with various information extracted 
 from the model.}
 }
 \value{
@@ -22,7 +22,7 @@ syntax into empty slots (i.e., parameters that do not have a user
 specified label) of the lavaan parTable object.
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-framework for studying causal effects using linear models. Psychometrika 
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fill_in_C.R
 \name{fill_in_C}
 \alias{fill_in_C}
-\title{Extracts the Structural Coefficient Matrix from a Fitted SEM Object}
+\title{Extract Matrix of Structural Coefficients}
 \usage{
 fill_in_C(internal_list)
 }
@@ -11,21 +11,22 @@ fill_in_C(internal_list)
 model.}
 }
 \value{
-The inputted internal_list with two slot in the sublist 
-   C filled in: slot "values" is a numeric matrix containing the structural 
-   coefficients (if available with row- and column names); slot "labels" is 
-   a character matrix containing parameter labels (NA for unlabeled 
-   parameters), NULL if labels are not extractable.
+The inputted internal_list with slots in the sublist 
+   ..$C filled in:
+\tabular{lll}{
+     .. ..$values: num[0, 0]   \tab \tab numeric matrix containing 
+     parameter values of matrix of structural coefficients\cr
+     .. ..$labels: chr[0, 0]   \tab \tab character matrix containing 
+     parameter labels of matrix of structural coefficients\cr
+     \tab \tab (NA for unlabeled parameters, NULL if labels can not 
+     be extracted.)}
 }
 \description{
 Extracts the structural coefficient matrix from a fitted
-   structural equation model. Supported fitted objects: lavaan.
+   structural equation model. Supported objects types: lavaan.
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-framework for studying causal effects using linear models. Psychometrika 
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
-}
-\seealso{
-\code{\link{build_Psi}}
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }

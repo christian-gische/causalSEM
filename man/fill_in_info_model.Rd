@@ -13,8 +13,14 @@ model.}
 \item{model}{Fitted model. The fitted model can be of class \code{lavaan}.}
 }
 \value{
-The inputted list with slots
-   \code{n_obs}, \code{n_ov}, and \code{var_names} filled in.
+The inputted internal_list with several slots filled in:
+\tabular{lll}{
+..$fitted_object   \tab \tab object containing fitted SEM model\cr
+..$info_model$n_obs  \tab \tab single integer; number of observations 
+(sample size)\cr
+..$info_model$n_ov   \tab \tab single integer; number of observed 
+(manifest) variables \cr
+..$info_model$var_names \tab \tab character vector with variable names}
 }
 \description{
 Extract number of observations, number of manifest

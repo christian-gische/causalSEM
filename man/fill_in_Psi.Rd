@@ -2,27 +2,29 @@
 % Please edit documentation in R/fill_in_Psi.R
 \name{fill_in_Psi}
 \alias{fill_in_Psi}
-\title{Extracts the Psi matrix from a SEM}
+\title{Extract Covariance Matrix}
 \usage{
 fill_in_Psi(internal_list)
 }
 \arguments{
-\item{internal_list}{a list with various information extracted from the
-model.}
-}
-\value{
-\code{build_psi} returns a list with various information extracted
-from the model. \code{build_psi} with changed 'values' and 'labels' slots 
-of Psi.
+\item{internal_list}{A list with various information extracted from the
+model.
+The inputted internal_list with two slot in the sublist ..$Psi filled in:\cr
+\tabular{lll}{
+.. ..$values: num[0, 0]   \tab \tab numeric matrix containing 
+     parameter values of covariance matrix.\cr
+.. ..$labels: chr[0, 0]   \tab \tab character matrix containing 
+     parameter labels of covariance matrix.}}
 }
 \description{
-Extracts the Psi matrix from a lavaan
-model. Currently, this function will only work if all variance parameters
-are stored in lavaan's psi matrix (covariance of the latent errors) and the
-theta matrix (covariance of the manifest errors) is empty.
+Extracts the variance covariance matrix (Psi-matrix) 
+from a fitted SEM model. Currently, this function will only work if all 
+variance parameters are stored in lavaan's psi matrix (covariance of the 
+latent errors) and the theta matrix (covariance of the manifest errors) is 
+empty.
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-framework for studying causal effects using linear models. Psychometrika 
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }

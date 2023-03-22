@@ -27,15 +27,15 @@
 #'    structural equation model. Supported objects types: lavaan.
 #' @param internal_list A list with various information extracted from the
 #'    model.
-#' @return The inputted internal_list with two slot in the sublist 
-#'    C filled in:\cr
+#' @return The inputted internal_list with slots in the sublist 
+#'    ..$C filled in:
 #' \tabular{lll}{
-#'.. $info_model$C:          \tab \tab \cr
-#'      .. ..$ values: num[0, 0]   \tab \tab numeric matrix containing 
+#'      .. ..$values: num[0, 0]   \tab \tab numeric matrix containing 
 #'      parameter values of matrix of structural coefficients\cr
-#'      .. ..$ labels: chr[0, 0]   \tab \tab character matrix containing 
-#'      parameter labels of matrix of structural coefficients (NA for unlabeled 
-#'    parameters, NULL if labels can not be extracted.)\cr
+#'      .. ..$labels: chr[0, 0]   \tab \tab character matrix containing 
+#'      parameter labels of matrix of structural coefficients\cr
+#'      \tab \tab (NA for unlabeled parameters, NULL if labels can not 
+#'      be extracted.)}
 #' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
 #' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
 #' 868–901. https://doi.org/10.1007/s11336-021-09811-z

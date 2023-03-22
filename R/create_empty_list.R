@@ -32,109 +32,109 @@
 #' following structure:\cr
 #'  \tabular{lll}{
 #'     List of 5\cr
-#'     $ fitted_object: NULL       \tab \tab \cr
-#'     $ fitted_object_class: NULL \tab \tab \cr
-#'     $ info_model: List of 6     \tab \tab \cr
-#'      ..$ n_obs: int 0           \tab \tab number of observations\cr
-#'      ..$ n_ov: int 0            \tab \tab number of manifest variables\cr
-#'      ..$ var_names: chr(0)      \tab \tab names of observed variables\cr
-#'      ..$ C: List of 3           \tab \tab \cr
-#'      .. ..$ values: num[0, 0]   \tab \tab parameter values of matrix of 
+#'     $fitted_object: NULL       \tab \tab \cr
+#'     $fitted_object_class: NULL \tab \tab \cr
+#'     $info_model: List of 6     \tab \tab \cr
+#'      ..$n_obs: int 0           \tab \tab number of observations\cr
+#'      ..$n_ov: int 0            \tab \tab number of manifest variables\cr
+#'      ..$var_names: chr(0)      \tab \tab names of observed variables\cr
+#'      ..$C: List of 3           \tab \tab \cr
+#'      .. ..$values: num[0, 0]   \tab \tab parameter values of matrix of 
 #'      structural coefficients\cr
-#'      .. ..$ labels: chr[0, 0]   \tab \tab parameter labels of matrix of 
+#'      .. ..$labels: chr[0, 0]   \tab \tab parameter labels of matrix of 
 #'      structural coefficients\cr
-#'      .. ..$ derivative: chr[0, 0]  \tab \tab partial derivative of the 
+#'      .. ..$derivative: chr[0, 0]  \tab \tab partial derivative of the 
 #'      vectorized C matrix with respect\cr
 #'                                 \tab \tab   to the parameters\cr
 #'      ..$ Psi: List of 3         \tab \tab \cr
-#'      .. ..$ values: num[0, 0]   \tab \tab parameter values of model implied 
+#'      .. ..$values: num[0, 0]   \tab \tab parameter values of model implied 
 #'      covariance matrix\cr
-#'      .. ..$ labels: chr[0, 0]   \tab \tab parameter lables of model implied 
+#'      .. ..$labels: chr[0, 0]   \tab \tab parameter lables of model implied 
 #'      covariance matrix\cr
-#'      .. ..$ derivative: chr[0, 0]  \tab \tab partial derivative of the 
+#'      .. ..$derivative: chr[0, 0]  \tab \tab partial derivative of the 
 #'      vectorized Psi matrix with respect \cr
 #'                                 \tab \tab to the parameters\cr
-#'      ..$ param: List of 5       \tab \tab \cr
-#'      .. ..$ n_par: int 0        \tab \tab total number of estimated 
+#'      ..$param: List of 5       \tab \tab \cr
+#'      .. ..$n_par: int 0        \tab \tab total number of estimated 
 #'      parameters\cr
-#'      .. ..$ n_par_unique: int 0 \tab \tab number of distinct and 
+#'      .. ..$n_par_unique: int 0 \tab \tab number of distinct and 
 #'      functionally\cr
 #'                                        \tab \tab unrelated parameters\cr
-#'      .. ..$ labels_par_unique: chr(0)  \tab \tab labels of distinct and 
+#'      .. ..$labels_par_unique: chr(0)  \tab \tab labels of distinct and 
 #'      functionally unrelated parameters\cr
-#'      .. ..$ values_par_unique: num(0)  \tab \tab parameter values of distinct
+#'      .. ..$values_par_unique: num(0)  \tab \tab parameter values of distinct
 #'       and functionally unrelated parameters\cr
-#'      .. ..$ varcov_par_unique: num[0, 0] \tab \tab variance-covariance matrix
+#'      .. ..$varcov_par_unique: num[0, 0] \tab \tab variance-covariance matrix
 #'       of the estimator of distinct\cr
 #'                                          \tab \tab and functionally unrelated
 #'                                           parameters\cr
-#'     $ info_interventions: List of 8      \tab \tab \cr
-#'      ..$ n_intervention: int 0       \tab \tab number of interventional 
+#'     $info_interventions: List of 8      \tab \tab \cr
+#'      ..$n_intervention: int 0       \tab \tab number of interventional 
 #'      variables\cr
-#'      ..$ intervention_names: chr(0)  \tab \tab names of interventional 
+#'      ..$intervention_names: chr(0)  \tab \tab names of interventional 
 #'      variables\cr
-#'      ..$ n_outcome: int 0            \tab \tab number of outcome variables\cr
-#'      ..$ outcome_names: chr(0)       \tab \tab names of outcome variables\cr
-#'      ..$ intervention_levels: num(0) \tab \tab interventional levels\cr
-#'      ..$ effect_type: chr(0)         \tab \tab parts of the interventional 
+#'      ..$n_outcome: int 0            \tab \tab number of outcome variables\cr
+#'      ..$outcome_names: chr(0)       \tab \tab names of outcome variables\cr
+#'      ..$intervention_levels: num(0) \tab \tab interventional levels\cr
+#'      ..$effect_type: chr(0)         \tab \tab parts of the interventional 
 #'      distribution to be analyzed\cr
-#'      ..$ lower_bound: num(0)         \tab \tab lower bound of critical range 
+#'      ..$lower_bound: num(0)         \tab \tab lower bound of critical range 
 #'      of univariate outcome variable\cr
-#'      ..$ upper_bound: num(0)         \tab \tab upper bound of critical range
+#'      ..$upper_bound: num(0)         \tab \tab upper bound of critical range
 #'       of univariate outcome variable\cr
-#'     $ matrices_constant: List of 7   \tab \tab \cr
-#'      .. .. $ select_intervention: num[0, 0]     \tab \tab selection matrix 
+#'     $matrices_constant: List of 7   \tab \tab \cr
+#'      .. .. $select_intervention: num[0, 0]     \tab \tab selection matrix 
 #'      for entries that are intervened on \cr
-#'      .. .. $ select_non_intervention: num[0, 0] \tab \tab selection matrix 
+#'      .. .. $select_non_intervention: num[0, 0] \tab \tab selection matrix 
 #'      for entries that are NOT intervened on \cr
-#'      .. .. $ select_outcome: num[0, 0]          \tab \tab selection matrix 
+#'      .. .. $select_outcome: num[0, 0]          \tab \tab selection matrix 
 #'      for outcomes of interest \cr
-#'      .. .. $ eliminate_intervention: num[0, 0]  \tab \tab matrix that 
+#'      .. .. $eliminate_intervention: num[0, 0]  \tab \tab matrix that 
 #'      replaces entries that are intervened on by zero \cr
-#'      .. .. $ duplication_matrix: num[0, 0]      \tab \tab maps vech(A) onto 
+#'      .. .. $duplication_matrix: num[0, 0]      \tab \tab maps vech(A) onto 
 #'      vec(A) for symmetric A \cr
-#'      .. .. $ elimination_matrix: num[0, 0]      \tab \tab maps vec(A) onto 
+#'      .. .. $elimination_matrix: num[0, 0]      \tab \tab maps vec(A) onto 
 #'      vech(A) \cr
-#'      .. .. $ commutation_matrix: num[0, 0]      \tab \tab maps vech(A) onto 
+#'      .. .. $commutation_matrix: num[0, 0]      \tab \tab maps vech(A) onto 
 #'      vec(A') \cr
-#'     $ interventional_distribution : List of 4   \tab \tab \cr
-#'      ..$ means: List of 4        \tab \tab \cr
-#'      .. .. $ values: num(0)      \tab \tab mean vector of the interventional 
+#'     $interventional_distribution : List of 4   \tab \tab \cr
+#'      ..$means: List of 4        \tab \tab \cr
+#'      .. .. $values: num(0)      \tab \tab mean vector of the interventional 
 #'      distribution  \cr
-#'      .. .. $ jacobian: num[0, 0] \tab \tab jacobian of interventinoal mean 
+#'      .. .. $jacobian: num[0, 0] \tab \tab jacobian of interventinoal mean 
 #'      vector \cr
-#'      .. .. $ ase: num(0)         \tab \tab asymptotic standard errors of 
+#'      .. .. $ase: num(0)         \tab \tab asymptotic standard errors of 
 #'      interventional means  \cr
-#'      .. .. $ z_values: num[0, 0] \tab \tab z-values of interventional 
+#'      .. .. $z_values: num[0, 0] \tab \tab z-values of interventional 
 #'      means\cr
-#'      ..$ covariance_matrix: List of 4    \tab \tab \cr
-#'      .. .. $ values: num(0)      \tab \tab covariance matrix of the 
+#'      ..$covariance_matrix: List of 4    \tab \tab \cr
+#'      .. .. $values: num(0)      \tab \tab covariance matrix of the 
 #'      interventional distribution  \cr
-#'      .. .. $ jacobian: num[0, 0] \tab \tab jacobian of VECTORIZED 
+#'      .. .. $jacobian: num[0, 0] \tab \tab jacobian of VECTORIZED 
 #'      interventional covariance matrix \cr
-#'      .. .. $ ase: num(0)         \tab \tab asymptotic standard errors of 
+#'      .. .. $ase: num(0)         \tab \tab asymptotic standard errors of 
 #'      interventional (co)variances  \cr
-#'      .. .. $ z_values: num[0, 0] \tab \tab z-values of interventional 
+#'      .. .. $z_values: num[0, 0] \tab \tab z-values of interventional 
 #'      interventional (co)variances \cr
-#'      ..$ density_function: List of 4    \tab \tab \cr
-#'      .. .. $ values: num(0)      \tab \tab probability density function 
+#'      ..$density_function: List of 4    \tab \tab \cr
+#'      .. .. $values: num(0)      \tab \tab probability density function 
 #'      (pdf) of the interventional distribution  \cr
-#'      .. .. $ jacobian: num[0, 0] \tab \tab jacobian of the pdf of 
+#'      .. .. $jacobian: num[0, 0] \tab \tab jacobian of the pdf of 
 #'      interventional distribution\cr
-#'      .. .. $ ase: num(0)         \tab \tab asymptotic standard errors of 
+#'      .. .. $ase: num(0)         \tab \tab asymptotic standard errors of 
 #'      interventional pdf   \cr
-#'      .. .. $ z_values: num[0, 0] \tab \tab z-values of interventional pdf \cr
-#'      ..$ probabilities: List of 4  \tab \tab \cr
-#'      .. .. $ values: num(0)      \tab \tab probabilities of interventional 
+#'      .. .. $z_values: num[0, 0] \tab \tab z-values of interventional pdf \cr
+#'      ..$probabilities: List of 4  \tab \tab \cr
+#'      .. .. $values: num(0)      \tab \tab probabilities of interventional 
 #'      events \cr
-#'      .. .. $ jacobian: num[0, 0] \tab \tab jacobian of interventional 
+#'      .. .. $jacobian: num[0, 0] \tab \tab jacobian of interventional 
 #'      probabilities \cr
-#'      .. .. $ ase: num(0)         \tab \tab asymptotic standard error of 
+#'      .. .. $ase: num(0)         \tab \tab asymptotic standard error of 
 #'      interventional probabilities  \cr
-#'      .. .. $ z_values: num[0, 0] \tab \tab z-value of the interventional 
+#'      .. .. $z_values: num[0, 0] \tab \tab z-value of the interventional 
 #'      probabilities \cr
-#'     $ control: List of 1         \tab \tab \cr
-#'      ..$ verbose: num(0)         \tab \tab verbosity of console output\cr
+#'     $control: List of 1         \tab \tab \cr
+#'      ..$verbose: num(0)         \tab \tab verbosity of console output\cr
 #'  }
 #'  
 #' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
