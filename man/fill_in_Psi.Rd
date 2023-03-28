@@ -8,13 +8,16 @@ fill_in_Psi(internal_list)
 }
 \arguments{
 \item{internal_list}{A list with various information extracted from the
-model.
-The inputted internal_list with two slot in the sublist ..$Psi filled in:\cr
+model.}
+}
+\value{
+The inputted list with slots in the sublist \code{..$Psi} 
+filled in:
 \tabular{lll}{
 .. ..$values: num[0, 0]   \tab \tab numeric matrix containing 
      parameter values of covariance matrix.\cr
 .. ..$labels: chr[0, 0]   \tab \tab character matrix containing 
-     parameter labels of covariance matrix.}}
+     parameter labels of covariance matrix.}
 }
 \description{
 Extracts the variance covariance matrix (Psi-matrix) 

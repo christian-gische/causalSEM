@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.6 2023-02-28: check if argument is of class causalSEM 
 # CG 0.0.5 2023-02-23: set use_model_values argument in 
 #                      calculate_constant_matrices function
 # CG 0.0.4 2023-02-21: changes in preamble and comments
@@ -11,22 +12,21 @@
 # CG 0.0.1 2021-11-22: initial programming
 
 ## Documentation
-#' @title Fill in Constant Matrices to the Internal List
-#' @description Fill in constant matrices used for the computation of the 
-#' interventional distribution into the internal list (see for example 
+#' @title Fill in Zero-One Matrices to List
+#' @description Fill in constant zero-one matrices used for the computation of 
+#' the interventional distribution into the internal list (see, for example, 
 #' Definition 1 in Gische and Voelkle, 2022).
 #' @param internal_list A list with information extracted from the model.
-#' @return The inputted list with several slots in ..$constant_matrices 
-#' filled.\cr
+#' @return The inputted list with several slots in \code{..$constant_matrices} 
+#' filled in.\cr
 #'\tabular{ll}{
-#' \tab    List of 7  \cr
-#' \tab   $ select_intervention \cr
-#' \tab   $ select_non_intervention \cr
-#' \tab   $ select_outcome \cr
-#' \tab   $ eliminate_intervention \cr
-#' \tab   $ duplication_matrix \cr
-#' \tab   $ elimination_matrix \cr
-#' \tab   $ commutation_matrix}
+#' \tab   \code{$select_intervention} \cr
+#' \tab   \code{$select_non_intervention} \cr
+#' \tab   \code{$select_outcome} \cr
+#' \tab   \code{$eliminate_intervention} \cr
+#' \tab   \code{$duplication_matrix} \cr
+#' \tab   \code{$elimination_matrix} \cr
+#' \tab   \code{$commutation_matrix}}
 #' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
 #' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
 #' 868–901. https://doi.org/10.1007/s11336-021-09811-z
@@ -39,10 +39,27 @@ fill_in_constant_matrices <- function( internal_list = NULL ){
   fun.name <- "fill_in_constant_matrices"
   
   # function version
-  fun.version <- "0.0.5 2023-02-23"
+  fun.version <- "0.0.6 2023-02-28"
   
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
+  
+  # CG 0.0.6 2023-02-28: check if argument is of class causalSEM 
+  # check function arguments 
+  ## get class of model object
+  model_class <- class(model)
+  
+  ## set supported classes of model objects
+  supported_model_classes <- c( "causalSEM" )
+  
+  ## check if argument model is supported
+  if(!any(model_class %in% supported_model_classes)) stop(
+    paste0(
+      fun.name.version, ": model of class ", model_class,
+      " not supported. Supported fit objects are: ",
+      paste(supported_model_classes, collapse = ", ")
+    )
+  )
   
   # get verbose argument
   verbose <- internal_list$control$verbose

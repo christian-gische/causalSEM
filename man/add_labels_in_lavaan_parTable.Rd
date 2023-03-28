@@ -2,7 +2,7 @@
 % Please edit documentation in R/add_labels_in_lavaan_parTable.R
 \name{add_labels_in_lavaan_parTable}
 \alias{add_labels_in_lavaan_parTable}
-\title{Add Labels to lavaan parTable}
+\title{Add Labels to \code{lavaan} \code{parTable}}
 \usage{
 add_labels_in_lavaan_parTable(internal_list)
 }
@@ -11,13 +11,13 @@ add_labels_in_lavaan_parTable(internal_list)
 from the model.}
 }
 \value{
-A lavaan parTable object where empty slots (i.e., parameters 
-that do not have a user specified label) in the original 
-parTable object have been filled in with default labels from 
-the lavaan model syntax.
+A \code{lavaan} \code{parTable} object where empty slots (i.e., 
+parameters that do not have a user specified label) in the original 
+\code{parTable} object have been filled in with default labels from 
+the \code{lavaan} model syntax.
 }
 \description{
-Fills in default labels from the lavaan model 
+Fills in default labels from the \code{lavaan} model 
 syntax into empty slots (i.e., parameters that do not have a user
 specified label) of the lavaan parTable object.
 }

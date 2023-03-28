@@ -2,20 +2,22 @@
 % Please edit documentation in R/handle_verbose_argument.R
 \name{handle_verbose_argument}
 \alias{handle_verbose_argument}
-\title{Handling of Verbose Argument}
+\title{Set Verbosity}
 \usage{
 handle_verbose_argument(verbose = NULL)
 }
 \arguments{
-\item{verbose}{A single number, integer. 
-0...no output (default); 
-1...user messages;
-2...debugging-relevant messages.}
+\item{verbose}{An integer number from the following range: 
+\tabular{ll}{
+0 \tab No output (default).\cr
+1 \tab User messages.\cr
+2 \tab Debugging-relevant messages.}}
 }
 \value{
-Returns verbose setting.
+An integer number describing the verbose setting of console output.
 }
 \description{
-Reads the user-inputted verbose
-   argument checks if it is valid.
+Reads the value of the argument \code{verbose} from the user 
+input to the \code{\link{intervention_effect}} function and checks if it is 
+valid.
 }

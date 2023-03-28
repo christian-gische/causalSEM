@@ -7,14 +7,16 @@
 # MH 0.0.1 2021-07-20: initial programming
 
 ## Documentation
-#' @title Handling of Verbose Argument
-#' @description Reads the user-inputted verbose
-#'    argument checks if it is valid.
-#' @param verbose A single number, integer. 
-#' 0...no output (default); 
-#' 1...user messages;
-#' 2...debugging-relevant messages. 
-#' @return Returns verbose setting.
+#' @title Set Verbosity
+#' @description Reads the value of the argument \code{verbose} from the user 
+#' input to the \code{\link{intervention_effect}} function and checks if it is 
+#' valid.
+#' @param verbose An integer number from the following range: 
+#' \tabular{ll}{
+#' 0 \tab No output (default).\cr
+#' 1 \tab User messages.\cr
+#' 2 \tab Debugging-relevant messages.}
+#' @return An integer number describing the verbose setting of console output.
 
 
 # Function definition

@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_causalSEM_s3_object.R
 \name{create_causalSEM_s3_object}
 \alias{create_causalSEM_s3_object}
-\title{causalSEM S3 object}
+\title{causalSEM S3 Object}
 \usage{
 create_causalSEM_s3_object(internal_list)
 }
@@ -11,10 +11,10 @@ create_causalSEM_s3_object(internal_list)
 model.}
 }
 \value{
-Object of class causalSEM.
+Object of class \code{causalSEM}.
 }
 \description{
-Assign class causalSEM to internal list.
+Assign class \code{causalSEM} to internal list.
 }
 \references{
 Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 

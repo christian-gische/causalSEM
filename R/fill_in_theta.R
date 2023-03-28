@@ -12,8 +12,8 @@
 
 
 ## Documentation
-#' @title Extracts Distinct and Functionally Unrelated SEM model Parameters
-#' @description Rxtracts the numeric values and
+#' @title Extract Model Parameters
+#' @description Extracts the numeric values and
 #'   labels of distinct and functionally unrelated parameters from a
 #'   fitted structural equation model (i.e., all uniquely labelled
 #'   coefficients in C and Psi matrix. Duplicates due to symmetry or
@@ -22,25 +22,28 @@
 #'   First: structural coefficients from the C matrix are added rowwise.
 #'   Second: variance covariance parameters from the Psi matrix are added 
 #'   rowwise.
-#'   Supported fitted objects: lavaan.
+#'   Supported class of fitted objects: \code{lavaan}.
 #' @param internal_list A list with various information extracted from the
 #'    model.
-#' @return The inputted internal_list with slot ..$param filled in:
-#'  "n_par" is an integer indicating the total number of estimated parameters
-#'  (potential duplicates due to symmetry or equality constraints are counted).
-#'  "n_par_unique" is an integer indicating the number of distinct and 
-#'  functionally unrelated parameters.
-#'  "labels_par_unique" is a character vector containing the labels of distinct
-#'  and functionally unrelated parameters.
-#'  "values_par_unique" is a numeric vector containing the parameter values
-#'  (estimates) of distinct and functionally unrelated parameters.
-#'  "varcov_par_unique" is a the (numeric) covariance
-#'  matrix of the estimator of distinct and functionally unrelated parameters.
-#'  
-#' @seealso \code{\link{fill_in_Psi, fill_in_C}}
-#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-#' framework for studying causal effects using linear models. Psychometrika 
-#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+#' @return The inputted internal_list with slots in the sublist \code{..$param}
+#' filled in:
+#' \tabular{lll}{
+#' .. ..$n_par: \tab \tab Integer number indicating the total number of 
+#' estimated parameters.\cr
+#' \tab \tab Duplicates due to symmetry or equality constraints are counted.\cr
+#' .. ..$n_par_unique  \tab \tab Integer number indicating the number of 
+#' distinct and functionally unrelated parameters.\cr
+#' .. ..$labels_par_unique  \tab \tab Character vector containing the labels of
+#'  distinct and functionally unrelated parameters.\cr
+#' .. ..$values_par_unique  \tab \tab Numeric vector containing the parameter 
+#' values (estimates) of distinct and functionally\cr
+#' \tab \tab unrelated parameters.\cr
+#' .. ..$varcov_par_unique  \tab \tab Numeric matrix containing the 
+#' (co-) variances of the estimator of distinct and\cr
+#'  functionally unrelated parameters.}
+#' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+#' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+#' 868–901. https://doi.org/10.1007/s11336-021-09811-z
 
 
 # function definition

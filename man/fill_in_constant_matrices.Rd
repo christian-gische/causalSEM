@@ -2,7 +2,7 @@
 % Please edit documentation in R/fill_in_constant_matrices.R
 \name{fill_in_constant_matrices}
 \alias{fill_in_constant_matrices}
-\title{Fill in Constant Matrices to the Internal List}
+\title{Fill in Zero-One Matrices to List}
 \usage{
 fill_in_constant_matrices(internal_list = NULL)
 }
@@ -10,21 +10,20 @@ fill_in_constant_matrices(internal_list = NULL)
 \item{internal_list}{A list with information extracted from the model.}
 }
 \value{
-The inputted list with several slots in ..$constant_matrices 
-filled.\cr
+The inputted list with several slots in \code{..$constant_matrices} 
+filled in.\cr
 \tabular{ll}{
-\tab    List of 7  \cr
-\tab   $ select_intervention \cr
-\tab   $ select_non_intervention \cr
-\tab   $ select_outcome \cr
-\tab   $ eliminate_intervention \cr
-\tab   $ duplication_matrix \cr
-\tab   $ elimination_matrix \cr
-\tab   $ commutation_matrix}
+\tab   \code{$select_intervention} \cr
+\tab   \code{$select_non_intervention} \cr
+\tab   \code{$select_outcome} \cr
+\tab   \code{$eliminate_intervention} \cr
+\tab   \code{$duplication_matrix} \cr
+\tab   \code{$elimination_matrix} \cr
+\tab   \code{$commutation_matrix}}
 }
 \description{
-Fill in constant matrices used for the computation of the 
-interventional distribution into the internal list (see for example 
+Fill in constant zero-one matrices used for the computation of 
+the interventional distribution into the internal list (see, for example, 
 Definition 1 in Gische and Voelkle, 2022).
 }
 \references{

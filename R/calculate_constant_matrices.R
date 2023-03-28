@@ -17,28 +17,27 @@
 #' @title Calculate Zero-One Matrices
 #' @description Calculates zero-one matrices used in the computation
 #' of the interventional distribution 
-#' (see for example Definition 1 in Gische and Voelkle, 2022).  
-#' @param model Object of class causalSEM.
+#' (see, for example, Definition 1 in Gische and Voelkle, 2022).  
+#' @param model Object of class \code{causalSEM}.
 #' @param intervention_names Names of interventional variables.
 #' @param outcome_names Names of outcome variables.
 #' @param verbose Verbosity of console output.
-#' @return List with several zero-one matrices:\cr
-#' \tabular{ll}{
-#' List of 7 \tab \cr
-#' \tab   \code{$select_intervention} \cr
-#' \tab   \code{$select_non_intervention} \cr
-#' \tab   \code{$select_outcome} \cr
-#' \tab   \code{$eliminate_intervention} \cr
-#' \tab   \code{$duplication_matrix} \cr
-#' \tab   \code{$elimination_matrix} \cr
-#' \tab   \code{$commutation_matrix}}
+#' @return List with several zero-one matrices:
+#' \tabular{lll}{
+#' \tab   \code{$select_intervention} \tab   \cr
+#' \tab   \code{$select_non_intervention} \tab \cr
+#' \tab   \code{$select_outcome} \tab \cr
+#' \tab   \code{$eliminate_intervention} \tab \cr
+#' \tab   \code{$duplication_matrix} \tab \cr
+#' \tab   \code{$elimination_matrix} \tab \cr
+#' \tab   \code{$commutation_matrix} \tab}
 #' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
 #' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
 #' 868–901. https://doi.org/10.1007/s11336-021-09811-z
 
 
 # TODO if at one point we get runtime problems we might consider using
-# the function Matrix which uses sparsity information
+# the function Matrix (capital M) which might be faster
 
 # CG 0.0.5 2023-02-23: include argument use_model_values and change 
 #                      checks of user-specified arguments accordingly
@@ -185,7 +184,6 @@ calculate_constant_matrices <- function(model = NULL,
 
   # Elimination, duplication, and commutation matrices
   # CG 0.0.2 2021-11-09: added elimination, duplication, and commutation matrix
-  # TODO compute the following three matrices by a different function?
   
   elimination_matrix <- 
     matrixcalc::elimination.matrix(n = model$info_model$n_ov)

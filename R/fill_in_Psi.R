@@ -14,7 +14,8 @@
 #' empty.
 #' @param internal_list A list with various information extracted from the
 #' model.
-#' The inputted internal_list with two slot in the sublist ..$Psi filled in:\cr
+#' @return The inputted list with slots in the sublist \code{..$Psi} 
+#' filled in:
 #' \tabular{lll}{
 #' .. ..$values: num[0, 0]   \tab \tab numeric matrix containing 
 #'      parameter values of covariance matrix.\cr

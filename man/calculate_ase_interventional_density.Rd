@@ -2,8 +2,7 @@
 % Please edit documentation in R/calculate_ase_interventional_density.R
 \name{calculate_ase_interventional_density}
 \alias{calculate_ase_interventional_density}
-\title{Calculate Asymptotics of the Interventional Probability Density 
-Function}
+\title{Calculate Asymptotics of the Interventional pdf}
 \usage{
 calculate_ase_interventional_density(
   model,
@@ -38,8 +37,9 @@ value in the range of the outcome variable.
 \description{
 Calculates the asysmptotic variance,
 the aysmptotic standard error, and the approximate z-value of the  
-interventional probability density function for a specific interventional 
-level and a specific value in the range of a univariate outcome variable.
+interventional probability density function (pdf) for a specific 
+interventional level and a specific value in the range of a univariate 
+outcome variable.
 }
 \references{
 Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 

@@ -12,38 +12,42 @@ intervention_effect(
   effect_type = NULL,
   lower_bound = NULL,
   upper_bound = NULL,
-  verbose = 0,
+  verbose = NULL,
   ...
 )
 }
 \arguments{
-\item{model}{Fitted model. The fitted model can be of class lavaan.}
+\item{model}{Fitted model. The fitted model can be of class \code{lavaan}.}
 
-\item{intervention}{Character vector. Variable names of interventional 
-variables. Default: empty vector (no intervention).}
+\item{intervention}{Character vector of names of interventional 
+variables.}
 
-\item{intervention_level}{Numeric vector. Interventional levels. 
-Same length and order as argument intervention. Default: vector of ones.}
+\item{intervention_level}{Numeric vector of interventional levels. 
+Same length and order as argument \code{intervention}. 
+Default: vector of ones.}
 
-\item{outcome}{Character vector. Variable names of outcome variables.
+\item{outcome}{Character vector of variable names of outcome variables.
 Default: all non-interventional variables.}
 
-\item{effect_type}{Character vector. Features of the interventional 
-distribution to be analyzed. Admissible values are 
-"mean", "variance", "density", and "probability". Default: "mean".}
+\item{effect_type}{Character string describing the features of the 
+interventional distribution to be analyzed. Admissible values are 
+\code{mean} (default), \code{variance}, \code{density}, and 
+\code{probability}.}
 
-\item{lower_bound}{Numeric vector. Same length and order as argument outcome.
-Lower bounds of critical range of outcome variables.}
+\item{lower_bound}{Numeric vector of same length and order as argument 
+\code{outcome}. Lower bounds of critical range of outcome variables.}
 
-\item{upper_bound}{Numeric vector. Same length and order as argument outcome.
-Lower bounds of critical range of outcome variables.}
+\item{upper_bound}{Numeric vector of same length and order as argument
+\code{outcome}. Upper bounds of critical range of outcome variables.}
 
-\item{verbose}{Single number, integer. 0...no output (default), 
-1...user messages, 2...debugging-relevant messages.}
+\item{verbose}{Integer number decribing the verbosity of console output.
+Admissible values: 0: no output (default), 1: user messages, 
+2: debugging-relevant messages.}
 }
 \value{
-An object of class causalSEM, for which several methods 
-are available, including a summary method.
+An object of class \code{causalSEM} for which several methods 
+are available including \code{\link{summary.causalSEM}} and 
+\code{\link{print.causalSEM}}.
 }
 \description{
 Calculate estimates of causal effects based on the 

@@ -1,4 +1,6 @@
 ## Changelog:
+# CG 0.0.19 2023-03-23: changes to preamble to print documentation
+#                       changed all arguments to = NULL
 # CG 0.0.18 2023-02-20: changes to preamble to print documentation
 #                       run create_causalSEM_s3_object() function
 #                       right after creating the internal_list
@@ -51,24 +53,28 @@
 #' @title Calculate Estimates of Causal Effects
 #' @description Calculate estimates of causal effects based on the 
 #' interventional distribution.
-#' @param model Fitted model. The fitted model can be of class lavaan.
-#' @param intervention Character vector. Variable names of interventional 
-#' variables. Default: empty vector (no intervention).
-#' @param intervention_level Numeric vector. Interventional levels. 
-#' Same length and order as argument intervention. Default: vector of ones.
-#' @param outcome Character vector. Variable names of outcome variables.
+#' @param model Fitted model. The fitted model can be of class \code{lavaan}.
+#' @param intervention Character vector of names of interventional 
+#' variables.
+#' @param intervention_level Numeric vector of interventional levels. 
+#' Same length and order as argument \code{intervention}. 
+#' Default: vector of ones.
+#' @param outcome Character vector of variable names of outcome variables.
 #' Default: all non-interventional variables.
-#' @param effect_type Character vector. Features of the interventional 
-#' distribution to be analyzed. Admissible values are 
-#' "mean", "variance", "density", and "probability". Default: "mean".
-#' @param lower_bound Numeric vector. Same length and order as argument outcome.
-#' Lower bounds of critical range of outcome variables.
-#' @param upper_bound Numeric vector. Same length and order as argument outcome.
-#' Lower bounds of critical range of outcome variables.
-#' @param verbose Single number, integer. 0...no output (default), 
-#' 1...user messages, 2...debugging-relevant messages.
-#' @return An object of class causalSEM, for which several methods 
-#' are available, including a summary method.
+#' @param effect_type Character string describing the features of the 
+#' interventional distribution to be analyzed. Admissible values are 
+#' \code{mean} (default), \code{variance}, \code{density}, and 
+#' \code{probability}.
+#' @param lower_bound Numeric vector of same length and order as argument 
+#' \code{outcome}. Lower bounds of critical range of outcome variables.
+#' @param upper_bound Numeric vector of same length and order as argument
+#' \code{outcome}. Upper bounds of critical range of outcome variables.
+#' @param verbose Integer number decribing the verbosity of console output.
+#' Admissible values: 0: no output (default), 1: user messages, 
+#' 2: debugging-relevant messages.
+#' @return An object of class \code{causalSEM} for which several methods 
+#' are available including \code{\link{summary.causalSEM}} and 
+#' \code{\link{print.causalSEM}}.
 #' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
 #' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
 #' 868–901. https://doi.org/10.1007/s11336-021-09811-z
@@ -82,7 +88,7 @@ intervention_effect <- function(model = NULL,
                                 effect_type = NULL, 
                                 lower_bound = NULL,
                                 upper_bound = NULL, 
-                                verbose = 0, 
+                                verbose = NULL, 
                                 ...){
 
 
@@ -96,17 +102,8 @@ intervention_effect <- function(model = NULL,
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
 
   # TODO
-  # check if arguments are well-specified FORMALLY;
-  # give warnings, error, etc.
-  # later task
-  # Check of supported class
   # Check if all variables are "manifest"
-  # Check of verbosity argument
-  # using (or merging) the handle_verbose_argument function
-  # allow object of class causalSEM as input to the
-  # intervention_effect function
-  # check_arguments(model, intervention, outcome, levels, effect_type,
-  # lower_bound, upper_bound, verbose ...)
+  # allow object of class causalSEM as input to the intervention_effect function
   
   # CG 0.0.18 2023-02-20: call function handle_verbose_argument 
   verbose <- handle_verbose_argument( verbose = verbose )

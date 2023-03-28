@@ -9,12 +9,12 @@
 # CG 0.0.1 2021-11-11: initial programming
 
 ## Documentation
-#' @title Calculate Asymptotics of the Interventional Probability Density 
-#' Function
+#' @title Calculate Asymptotics of the Interventional pdf 
 #' @description Calculates the asysmptotic variance,
 #' the aysmptotic standard error, and the approximate z-value of the  
-#' interventional probability density function for a specific interventional 
-#' level and a specific value in the range of a univariate outcome variable. 
+#' interventional probability density function (pdf) for a specific 
+#' interventional level and a specific value in the range of a univariate 
+#' outcome variable. 
 #' @param model An object of class causalSEM (e.g., the output of the 
 #' intervention_effect() function)
 #' @param x interventional levels 

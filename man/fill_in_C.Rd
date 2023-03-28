@@ -2,7 +2,7 @@
 % Please edit documentation in R/fill_in_C.R
 \name{fill_in_C}
 \alias{fill_in_C}
-\title{Extract Matrix of Structural Coefficients}
+\title{Fill Matrix of Structural Coefficients in List}
 \usage{
 fill_in_C(internal_list)
 }
@@ -11,19 +11,19 @@ fill_in_C(internal_list)
 model.}
 }
 \value{
-The inputted internal_list with slots in the sublist 
-   ..$C filled in:
+The inputted list with slots in the sublist \code{..$C} filled in:
 \tabular{lll}{
-     .. ..$values: num[0, 0]   \tab \tab numeric matrix containing 
-     parameter values of matrix of structural coefficients\cr
-     .. ..$labels: chr[0, 0]   \tab \tab character matrix containing 
-     parameter labels of matrix of structural coefficients\cr
+     \code{..$values}:\tab \tab Numeric matrix containing 
+     parameter values of matrix of structural coefficients.\cr
+     \code{..$labels}:\tab \tab Character matrix containing 
+     parameter labels of matrix of structural coefficients.\cr
      \tab \tab (NA for unlabeled parameters, NULL if labels can not 
      be extracted.)}
 }
 \description{
 Extracts the structural coefficient matrix from a fitted
-   structural equation model. Supported objects types: lavaan.
+   structural equation model and fills them into the internal list.
+   Supported objects types: \code{causalSEM}.
 }
 \references{
 Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 

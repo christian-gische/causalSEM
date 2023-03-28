@@ -13,7 +13,7 @@ calculate_constant_matrices(
 )
 }
 \arguments{
-\item{model}{Object of class causalSEM.}
+\item{model}{Object of class \code{causalSEM}.}
 
 \item{intervention_names}{Names of interventional variables.}
 
@@ -22,21 +22,20 @@ calculate_constant_matrices(
 \item{verbose}{Verbosity of console output.}
 }
 \value{
-List with several zero-one matrices:\cr
-\tabular{ll}{
-List of 7 \tab \cr
-\tab   \code{$select_intervention} \cr
-\tab   \code{$select_non_intervention} \cr
-\tab   \code{$select_outcome} \cr
-\tab   \code{$eliminate_intervention} \cr
-\tab   \code{$duplication_matrix} \cr
-\tab   \code{$elimination_matrix} \cr
-\tab   \code{$commutation_matrix}}
+List with several zero-one matrices:
+\tabular{lll}{
+\tab   \code{$select_intervention} \tab   \cr
+\tab   \code{$select_non_intervention} \tab \cr
+\tab   \code{$select_outcome} \tab \cr
+\tab   \code{$eliminate_intervention} \tab \cr
+\tab   \code{$duplication_matrix} \tab \cr
+\tab   \code{$elimination_matrix} \tab \cr
+\tab   \code{$commutation_matrix} \tab}
 }
 \description{
 Calculates zero-one matrices used in the computation
 of the interventional distribution 
-(see for example Definition 1 in Gische and Voelkle, 2022).
+(see, for example, Definition 1 in Gische and Voelkle, 2022).
 }
 \references{
 Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 

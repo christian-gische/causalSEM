@@ -1,13 +1,14 @@
 ## Changelog:
+# CG 0.0.3 2023-03-24: changed name of object to internal_list
 # CG 0.0.2 2023-02-21: changes in preamble and comments
 # MH 0.0.1 2021-11-30: initial programming
 
 ## Documentation
-#' @title causalSEM S3 object
-#' @description Assign class causalSEM to internal list.
+#' @title causalSEM S3 Object
+#' @description Assign class \code{causalSEM} to internal list.
 #' @param internal_list A list with various information extracted from the
 #'    model.
-#' @return Object of class causalSEM.
+#' @return Object of class \code{causalSEM}.
 #' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
 #' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
 #' 868–901. https://doi.org/10.1007/s11336-021-09811-z
@@ -20,7 +21,7 @@ create_causalSEM_s3_object <- function( internal_list ){
 	fun.name <- "create_causalSEM_s3_object"
 
 	# function version
-	fun.version <- "0.0.2 2023-02-21"
+	fun.version <- "0.0.3 2023-03-24"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -29,10 +30,16 @@ create_causalSEM_s3_object <- function( internal_list ){
 	verbose <- internal_list$control$verbose
 
 	# console output
-	if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ", Sys.time(), "\n" ) )
+	if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ",
+	                                Sys.time(), "\n" ) )
 
 	# assign class causalSEM
-	causalSEM <- structure( internal_list, class = "causalSEM" )
+	# CG 0.0.3 2023-03-24: changed name of object of class causalSEM to 
+	# internal_list
+	
+	internal_list <- structure( internal_list, class = "causalSEM" )
+	
+	# causalSEM <- structure( internal_list, class = "causalSEM" )
 	
 	# class( causalSEM )
 	# inherits( causalSEM, "causalSEM" )
@@ -41,7 +48,7 @@ create_causalSEM_s3_object <- function( internal_list ){
 	if( verbose >= 2 ) cat( paste0( "  end of function ", fun.name.version, " ", Sys.time(), "\n" ) )
 
 	# return internal list
-	return( causalSEM )
+	return( internal_list )
 }
 
 

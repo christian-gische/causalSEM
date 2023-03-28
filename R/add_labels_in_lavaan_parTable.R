@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.4 2023-02-28: check if argument is of class causalSEM 
 # CG 0.0.3 2022-01-14: changed structure of internal_list
 #                      cleaned up code (documentation, 80 char per line)
 #                      changed dot-case to snake-case
@@ -8,16 +9,16 @@
 # CG 0.0.1 2021-09-04: initial programing
 
 ## Documentation
-#' @title Add Labels to lavaan parTable
-#' @description Fills in default labels from the lavaan model 
+#' @title Add Labels to \code{lavaan} \code{parTable}
+#' @description Fills in default labels from the \code{lavaan} model 
 #' syntax into empty slots (i.e., parameters that do not have a user
 #' specified label) of the lavaan parTable object.
 #' @param internal_list A list with various information extracted 
 #' from the model.
-#' @return A lavaan parTable object where empty slots (i.e., parameters 
-#' that do not have a user specified label) in the original 
-#' parTable object have been filled in with default labels from 
-#' the lavaan model syntax.
+#' @return A \code{lavaan} \code{parTable} object where empty slots (i.e., 
+#' parameters that do not have a user specified label) in the original 
+#' \code{parTable} object have been filled in with default labels from 
+#' the \code{lavaan} model syntax.
 #' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
 #' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
 #' 868–901. https://doi.org/10.1007/s11336-021-09811-z
@@ -28,10 +29,27 @@ add_labels_in_lavaan_parTable <- function(internal_list) {
   fun.name <- "add_labels_in_lavaan_parTable"
   
   # function version
-  fun.version <- "0.0.3 2022-01-14"
+  fun.version <- "0.0.4 2023-02-28"
   
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
+  
+  # CG 0.0.4 2023-02-28: check if argument is of class causalSEM 
+  # check function arguments 
+  ## get class of model object
+  model_class <- class(model)
+  
+  ## set supported classes of model objects
+  supported_model_classes <- c( "causalSEM" )
+  
+  ## check if argument model is supported
+  if(!any(model_class %in% supported_model_classes)) stop(
+    paste0(
+      fun.name.version, ": model of class ", model_class,
+      " not supported. Supported fit objects are: ",
+      paste(supported_model_classes, collapse = ", ")
+    )
+  )
   
   # get verbose argument
   verbose <- internal_list$control$verbose

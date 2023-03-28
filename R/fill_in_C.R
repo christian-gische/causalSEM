@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.12 2023-02-28: check if argument is of class causalSEM 
 # CG 0.0.11 2023-03-22: removed check if representation is of type LISREL
 # MH 0.0.10 2022-03-17: removed "require", solves NOTE in package checking
 # CG 0.0.9 2022-01-13: changed structure of internal_list
@@ -22,18 +23,18 @@
 # MH 0.0.1 2021-07-20: initial programming
 
 ## Documentation
-#' @title Extract Matrix of Structural Coefficients 
+#' @title Fill Matrix of Structural Coefficients in List 
 #' @description Extracts the structural coefficient matrix from a fitted
-#'    structural equation model. Supported objects types: lavaan.
+#'    structural equation model and fills them into the internal list.
+#'    Supported objects types: \code{causalSEM}.
 #' @param internal_list A list with various information extracted from the
 #'    model.
-#' @return The inputted internal_list with slots in the sublist 
-#'    ..$C filled in:
+#' @return The inputted list with slots in the sublist \code{..$C} filled in:
 #' \tabular{lll}{
-#'      .. ..$values: num[0, 0]   \tab \tab numeric matrix containing 
-#'      parameter values of matrix of structural coefficients\cr
-#'      .. ..$labels: chr[0, 0]   \tab \tab character matrix containing 
-#'      parameter labels of matrix of structural coefficients\cr
+#'      \code{..$values}:\tab \tab Numeric matrix containing 
+#'      parameter values of matrix of structural coefficients.\cr
+#'      \code{..$labels}:\tab \tab Character matrix containing 
+#'      parameter labels of matrix of structural coefficients.\cr
 #'      \tab \tab (NA for unlabeled parameters, NULL if labels can not 
 #'      be extracted.)}
 #' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
@@ -48,10 +49,27 @@ fill_in_C <- function( internal_list ){
 	fun.name <- "fill_in_C"
 
 	# function version
-	fun.version <- "0.0.10 2022-03-17"
+	fun.version <- "0.0.12 2023-02-28"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
+	
+	# CG 0.0.12 2023-02-28: check if argument is of class causalSEM 
+	# check function arguments 
+	## get class of model object
+	model_class <- class(model)
+	
+	## set supported classes of model objects
+	supported_model_classes <- c( "causalSEM" )
+	
+	## check if argument model is supported
+	if(!any(model_class %in% supported_model_classes)) stop(
+	  paste0(
+	    fun.name.version, ": model of class ", model_class,
+	    " not supported. Supported fit objects are: ",
+	    paste(supported_model_classes, collapse = ", ")
+	  )
+	)
 
 	# get verbose argument
 	verbose <- internal_list$control$verbose
