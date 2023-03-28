@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.8 2023-02-28: check if argument is of class causalSEM 
 # CG 0.0.7 2022-03-18: added lavaan:: before calling the coef()-function
 # MH 0.0.6 2022-03-17: removed "require", solves NOTE in package checking
 # CG 0.0.5 2022-01-13: changed structure of internal_list
@@ -28,17 +29,17 @@
 #' @return The inputted internal_list with slots in the sublist \code{..$param}
 #' filled in:
 #' \tabular{lll}{
-#' .. ..$n_par: \tab \tab Integer number indicating the total number of 
+#' \code{..$n_par}: \tab \tab Integer number indicating the total number of 
 #' estimated parameters.\cr
 #' \tab \tab Duplicates due to symmetry or equality constraints are counted.\cr
-#' .. ..$n_par_unique  \tab \tab Integer number indicating the number of 
+#' \code{..$n_par_unique}:  \tab \tab Integer number indicating the number of 
 #' distinct and functionally unrelated parameters.\cr
-#' .. ..$labels_par_unique  \tab \tab Character vector containing the labels of
+#' \code{..$labels_par_unique}:  \tab \tab Character vector containing the labels of
 #'  distinct and functionally unrelated parameters.\cr
-#' .. ..$values_par_unique  \tab \tab Numeric vector containing the parameter 
+#' \code{..$values_par_unique}:  \tab \tab Numeric vector containing the parameter 
 #' values (estimates) of distinct and functionally\cr
 #' \tab \tab unrelated parameters.\cr
-#' .. ..$varcov_par_unique  \tab \tab Numeric matrix containing the 
+#' \code{..$varcov_par_unique}:  \tab \tab Numeric matrix containing the 
 #' (co-) variances of the estimator of distinct and\cr
 #'  functionally unrelated parameters.}
 #' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
@@ -47,16 +48,34 @@
 
 
 # function definition
-fill_in_theta <- function( internal_list ){
+fill_in_theta <- function( internal_list = NULL ){
 
   # function name
   fun.name <- "fill_in_theta"
 
   # function version
-  fun.version <- "0.0.7 2022-03-18"
+  fun.version <- "0.0.8 2023-02-28"
 
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
+  
+  # CG 0.0.4 2023-02-28: check if argument is of class causalSEM 
+  # check function arguments 
+  ## get class of model object
+  model_class <- class(internal_list)
+  
+  ## set supported classes of model objects
+  supported_model_classes <- c( "causalSEM" )
+  
+  ## check if argument model is supported
+  if(!any(model_class %in% supported_model_classes)) stop(
+    paste0(
+      fun.name.version, ": model of class ", model_class,
+      " not supported. Supported fit objects are: ",
+      paste(supported_model_classes, collapse = ", ")
+    )
+  )
+  
 
   # get verbose argument
   verbose <- internal_list$control$verbose

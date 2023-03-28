@@ -23,7 +23,7 @@
 #' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
 #' 868–901. https://doi.org/10.1007/s11336-021-09811-z
 
-add_labels_in_lavaan_parTable <- function(internal_list) {
+add_labels_in_lavaan_parTable <- function(internal_list = NULL) {
   
   # function name
   fun.name <- "add_labels_in_lavaan_parTable"
@@ -37,7 +37,7 @@ add_labels_in_lavaan_parTable <- function(internal_list) {
   # CG 0.0.4 2023-02-28: check if argument is of class causalSEM 
   # check function arguments 
   ## get class of model object
-  model_class <- class(model)
+  model_class <- class(internal_list)
   
   ## set supported classes of model objects
   supported_model_classes <- c( "causalSEM" )

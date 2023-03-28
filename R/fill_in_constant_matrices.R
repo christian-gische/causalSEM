@@ -47,7 +47,7 @@ fill_in_constant_matrices <- function( internal_list = NULL ){
   # CG 0.0.6 2023-02-28: check if argument is of class causalSEM 
   # check function arguments 
   ## get class of model object
-  model_class <- class(model)
+  model_class <- class(internal_list)
   
   ## set supported classes of model objects
   supported_model_classes <- c( "causalSEM" )

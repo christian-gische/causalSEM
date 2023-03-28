@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.5 2023-02-28: check if argument is of class causalSEM 
 # CG 0.0.4 2022-01-13: changed structure of internal_list
 #                       cleaned up code (documentation, 80 char per line)
 #                       changed dot-case to snake-case
@@ -6,28 +7,28 @@
 # MA 0.0.3 2021-11-26: changed function name from "build_Psi" to "fill_in_Psi"
 # MA 0.0.2 2021-10-31: fixed some variables names related to verbosity
 
-#' @title Extract Covariance Matrix
-#' @description Extracts the variance covariance matrix (Psi-matrix) 
-#' from a fitted SEM model. Currently, this function will only work if all 
-#' variance parameters are stored in lavaan's psi matrix (covariance of the 
-#' latent errors) and the theta matrix (covariance of the manifest errors) is 
-#' empty.
+#' @title Fill in Covariance Matrix to List
+#' @description Extracts the covariance matrix (Psi-matrix) 
+#' from a fitted SEM model and fills it into the internal list. 
 #' @param internal_list A list with various information extracted from the
 #' model.
 #' @return The inputted list with slots in the sublist \code{..$Psi} 
 #' filled in:
 #' \tabular{lll}{
-#' .. ..$values: num[0, 0]   \tab \tab numeric matrix containing 
+#'  \code{..$values}:   \tab \tab numeric matrix containing 
 #'      parameter values of covariance matrix.\cr
-#' .. ..$labels: chr[0, 0]   \tab \tab character matrix containing 
+#'  \code{..$labels}:   \tab \tab character matrix containing 
 #'      parameter labels of covariance matrix.}
 #' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
 #' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
 #' 868–901. https://doi.org/10.1007/s11336-021-09811-z
 
-fill_in_Psi <- function(internal_list) {
+# TODO: Currently, this function will only work if all 
+#' variance parameters are stored in lavaan's psi matrix (covariance of the 
+#' latent errors) and the theta matrix (covariance of the manifest errors) is 
+#' empty.
 
-  # Verbosity and bug tracking ----
+fill_in_Psi <- function(internal_list = NULL) {
 
   # function name
   fun_name <- "fill_in_Psi"
@@ -37,6 +38,23 @@ fill_in_Psi <- function(internal_list) {
 
   # function name+version
   fun_name_version <- paste0(fun_name, " (", fun_version, ")")
+  
+  # CG 0.0.12 2023-02-28: check if argument is of class causalSEM 
+  # check function arguments 
+  ## get class of model object
+  model_class <- class(internal_list)
+  
+  ## set supported classes of model objects
+  supported_model_classes <- c( "causalSEM" )
+  
+  ## check if argument model is supported
+  if(!any(model_class %in% supported_model_classes)) stop(
+    paste0(
+      fun.name.version, ": model of class ", model_class,
+      " not supported. Supported fit objects are: ",
+      paste(supported_model_classes, collapse = ", ")
+    )
+  )
 
   # get verbose argument
   verbose <- internal_list$control$verbose
