@@ -4,7 +4,7 @@
 \alias{fill_in_C}
 \title{Fill Matrix of Structural Coefficients in List}
 \usage{
-fill_in_C(internal_list)
+fill_in_C(internal_list = NULL)
 }
 \arguments{
 \item{internal_list}{A list with various information extracted from the

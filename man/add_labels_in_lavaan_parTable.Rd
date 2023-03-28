@@ -4,7 +4,7 @@
 \alias{add_labels_in_lavaan_parTable}
 \title{Add Labels to \code{lavaan} \code{parTable}}
 \usage{
-add_labels_in_lavaan_parTable(internal_list)
+add_labels_in_lavaan_parTable(internal_list = NULL)
 }
 \arguments{
 \item{internal_list}{A list with various information extracted 

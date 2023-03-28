@@ -4,7 +4,7 @@
 \alias{fill_in_theta}
 \title{Extract Model Parameters}
 \usage{
-fill_in_theta(internal_list)
+fill_in_theta(internal_list = NULL)
 }
 \arguments{
 \item{internal_list}{A list with various information extracted from the
@@ -14,17 +14,17 @@ model.}
 The inputted internal_list with slots in the sublist \code{..$param}
 filled in:
 \tabular{lll}{
-.. ..$n_par: \tab \tab Integer number indicating the total number of 
+\code{..$n_par}: \tab \tab Integer number indicating the total number of 
 estimated parameters.\cr
 \tab \tab Duplicates due to symmetry or equality constraints are counted.\cr
-.. ..$n_par_unique  \tab \tab Integer number indicating the number of 
+\code{..$n_par_unique}:  \tab \tab Integer number indicating the number of 
 distinct and functionally unrelated parameters.\cr
-.. ..$labels_par_unique  \tab \tab Character vector containing the labels of
+\code{..$labels_par_unique}:  \tab \tab Character vector containing the labels of
  distinct and functionally unrelated parameters.\cr
-.. ..$values_par_unique  \tab \tab Numeric vector containing the parameter 
+\code{..$values_par_unique}:  \tab \tab Numeric vector containing the parameter 
 values (estimates) of distinct and functionally\cr
 \tab \tab unrelated parameters.\cr
-.. ..$varcov_par_unique  \tab \tab Numeric matrix containing the 
+\code{..$varcov_par_unique}:  \tab \tab Numeric matrix containing the 
 (co-) variances of the estimator of distinct and\cr
  functionally unrelated parameters.}
 }

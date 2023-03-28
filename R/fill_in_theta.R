@@ -160,7 +160,7 @@ fill_in_theta <- function( internal_list = NULL ){
   values_par_unique <- 
     lavaan::coef(internal_list$fitted_object)[labels_par_unique]
 
-  # todo: CHECK if result is identical to reading the slots
+  # TODO: potential CHECK if result is identical to reading the slots
   # internal_list$info_model$C and internal_list$info_model$Psi, respectively
 
   # get variance covariance matrices of estimator of uniquely labelled
@@ -171,7 +171,7 @@ fill_in_theta <- function( internal_list = NULL ){
   varcov_par_unique_r <- varcov_par_unique[labels_par_unique, ]
   varcov_par_unique <- varcov_par_unique_r[, labels_par_unique]
 
-  # todo: DO DIMENSION CHECK
+  # TODO: DO DIMENSION CHECK
 
   dim(varcov_par_unique) == c(n_par_unique, n_par_unique)
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculate_jacobian_C.R
 \name{calculate_jacobian_C}
 \alias{calculate_jacobian_C}
-\title{Calculate Jacobian of Matrix of Structural Coefficients}
+\title{Calculate Jacobian of C-Matrix}
 \usage{
 calculate_jacobian_C(internal_list)
 }
@@ -11,18 +11,20 @@ calculate_jacobian_C(internal_list)
 model.}
 }
 \value{
-The inputted internal_list with the slot "derivative" of
-the ..$C slot containing the vectorized Jacobian of the C matrix.
+The inputted list with the slot \code{..$derivative}
+ in the sublist \code{..$C} filled in:
+\tabular{lll}{
+     \code{..$derivative}:\tab \tab Numeric matrix containing 
+     the Jacobian of the vectorized C matrix.\cr}
 }
 \description{
 Calculates the Jacobian of the vectorized matrix of structural 
-coefficients (partial derivative with respect to the parameters vector theta)
+coefficients (C-matrix). The Jacobian is defined as the partial derivative 
+with respect to the parameters vector theta of distinct and functionally 
+unrelated parameters.
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-framework for studying causal effects using linear models. Psychometrika 
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
-}
-\seealso{
-\code{\link{calculate_jacobian_Psi}}
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }
