@@ -19,9 +19,8 @@
 #'    model.
 #' @return The inputted list with the slot \code{..$derivative}
 #'  in the sublist \code{..$Psi} filled in:
-#' \tabular{lll}{
-#'      \code{..$derivative}:\tab \tab Numeric matrix containing 
-#'      the Jacobian of the vectorized Psi matrix.\cr}
+#' \tabular{lll}{\code{..$derivative}:\tab \tab Numeric matrix containing 
+#'      the Jacobian of the vectorized Psi matrix.}
 #' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
 #' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
 #' 868–901. https://doi.org/10.1007/s11336-021-09811-z
@@ -29,7 +28,7 @@
 
 
 ## Function definition
-calculate_jacobian_Psi <- function(internal_list){
+calculate_jacobian_Psi <- function(internal_list = NULL){
   
   # function name
   fun.name <- "calculate_jacobian_Psi"

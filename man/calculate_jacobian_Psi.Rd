@@ -4,7 +4,7 @@
 \alias{calculate_jacobian_Psi}
 \title{Calculate Jacobian of Covariance Matrix}
 \usage{
-calculate_jacobian_Psi(internal_list)
+calculate_jacobian_Psi(internal_list = NULL)
 }
 \arguments{
 \item{internal_list}{A list with various information extracted from the
@@ -13,9 +13,8 @@ model.}
 \value{
 The inputted list with the slot \code{..$derivative}
  in the sublist \code{..$Psi} filled in:
-\tabular{lll}{
-     \code{..$derivative}:\tab \tab Numeric matrix containing 
-     the Jacobian of the vectorized Psi matrix.\cr}
+\tabular{lll}{\code{..$derivative}:\tab \tab Numeric matrix containing 
+     the Jacobian of the vectorized Psi matrix.}
 }
 \description{
 Calculates the Jacobian of the vectorized covariance matrix of  

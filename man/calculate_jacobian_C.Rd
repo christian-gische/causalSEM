@@ -4,7 +4,7 @@
 \alias{calculate_jacobian_C}
 \title{Calculate Jacobian of C-Matrix}
 \usage{
-calculate_jacobian_C(internal_list)
+calculate_jacobian_C(internal_list = NULL)
 }
 \arguments{
 \item{internal_list}{A list with various information extracted from the
@@ -13,9 +13,8 @@ model.}
 \value{
 The inputted list with the slot \code{..$derivative}
  in the sublist \code{..$C} filled in:
-\tabular{lll}{
-     \code{..$derivative}:\tab \tab Numeric matrix containing 
-     the Jacobian of the vectorized C matrix.\cr}
+\tabular{lll}{\code{..$derivative}:\tab \tab Numeric matrix containing 
+     the Jacobian of the vectorized C matrix.}
 }
 \description{
 Calculates the Jacobian of the vectorized matrix of structural 
