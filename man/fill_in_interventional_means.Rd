@@ -2,26 +2,25 @@
 % Please edit documentation in R/fill_in_interventional_means.R
 \name{fill_in_interventional_means}
 \alias{fill_in_interventional_means}
-\title{Fills in Mean Vector of the Interventional Distribution to Internal 
-List}
+\title{Fills in Interventional Mean to List}
 \usage{
-fill_in_interventional_means(internal_list)
+fill_in_interventional_means(internal_list = NULL)
 }
 \arguments{
 \item{internal_list}{A list with various information extracted from the
 model.}
 }
 \value{
-The inputted internal_list with slot
-   interventional_distribution$means$values filled in.
+The inputted list with slot
+   \code{..interventional_distribution$means$values} filled in.
 }
 \description{
-Fills in the mean vector of the interventional distribution to
-the slot internal_list$interventional_distribution$means$values 
-in the internal_list.
+Fills in the mean vector of the interventional distribution into
+the internal list (see, for example, Eq. 6a in Gische and Voelkle, 
+2022).
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-framework for studying causal effects using linear models. Psychometrika 
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }

@@ -69,7 +69,7 @@
 #' \code{outcome}. Lower bounds of critical range of outcome variables.
 #' @param upper_bound Numeric vector of same length and order as argument
 #' \code{outcome}. Upper bounds of critical range of outcome variables.
-#' @param verbose Integer number decribing the verbosity of console output.
+#' @param verbose Integer number describing the verbosity of console output.
 #' Admissible values: 0: no output (default), 1: user messages, 
 #' 2: debugging-relevant messages.
 #' @return An object of class \code{causalSEM} for which several methods 

@@ -2,31 +2,34 @@
 % Please edit documentation in R/calculate_interventional_means.R
 \name{calculate_interventional_means}
 \alias{calculate_interventional_means}
-\title{Calculate Mean Vector of the Interventional Distribution}
+\title{Calculate Interventional Mean}
 \usage{
 calculate_interventional_means(C, x, SI, n, IN, verbose)
 }
 \arguments{
-\item{C}{C matrix}
+\item{x}{Numeric vector of interventional levels.}
 
-\item{x}{interventional level}
+\item{SI}{Numeric selection matrix.}
 
-\item{SI}{selection matrix 1_I}
+\item{n}{Integer number of observed variables.}
 
-\item{n}{number of observed variables}
+\item{IN}{Numeric zero-one matrix.}
 
-\item{IN}{I_N matrix}
+\item{verbose}{Integer number describing the verbosity of console output.
+Admissible values: 0: no output (default), 1: user messages, 
+2: debugging-relevant messages.}
 
-\item{verbose}{A single number, integer. 0...no output (default),
-1...user messages, 2...debugging-relevant messages.}
-
-\item{Psi}{Psi matrix}
+\item{Psi}{Numeric covariance matrix (Psi-matrix).}
 }
 \value{
-The Mean Vector of the Interventional Distribution.
+The mean vector of the interventional distribution.
 }
 \description{
-Calculate Mean Vector of the Interventional Distribution.
+Calculate mean vector of the interventional distribution 
+(see, for example, Eq. 6a in Gische and Voelkle, 2022). The arguments of 
+the \link{\code{calculate_interventional_means}} function are described in 
+Definition 1 in Gische and Voelkle (2022).
+#' @param C Numeric matrix of structural coefficients.
 }
 \references{
 Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible
