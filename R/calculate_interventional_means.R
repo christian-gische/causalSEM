@@ -10,7 +10,7 @@
 #' @title Calculate Interventional Mean
 #' @description Calculate mean vector of the interventional distribution 
 #' (see, for example, Eq. 6a in Gische and Voelkle, 2022). The arguments of 
-#' the \link{\code{calculate_interventional_means}} function are described in 
+#' the \code{\link{calculate_interventional_means}} function are described in 
 #' Definition 1 in Gische and Voelkle (2022).
 #' @param C Numeric matrix of structural coefficients.
 #' @param x Numeric vector of interventional levels.

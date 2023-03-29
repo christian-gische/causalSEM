@@ -4,32 +4,44 @@
 \alias{calculate_interventional_covariance_matrix}
 \title{Calculate Covariance Matrix of the Interventional Distribution}
 \usage{
-calculate_interventional_covariance_matrix(C, Psi, x, SI, n, IN, verbose)
+calculate_interventional_covariance_matrix(
+  C = NULL,
+  Psi = NULL,
+  x = NULL,
+  SI = NULL,
+  n = NULL,
+  IN = NULL,
+  verbose = NULL
+)
 }
 \arguments{
-\item{C}{C matrix}
+\item{C}{Numeric matrix of structural coefficients.}
 
-\item{Psi}{Psi matrix}
+\item{Psi}{Numeric covariance matrix (Psi-matrix).}
 
-\item{x}{interventional level}
+\item{x}{Numeric vector of interventional levels.}
 
-\item{SI}{selection matrix 1_I}
+\item{SI}{Numeric selection matrix.}
 
-\item{n}{number of observed variables}
+\item{n}{Integer number of observed variables.}
 
-\item{IN}{I_N matrix}
+\item{IN}{Numeric zero-one matrix.}
 
-\item{verbose}{A single number, integer. 0...no output (default),
-1...user messages, 2...debugging-relevant messages.}
+\item{verbose}{Integer number describing the verbosity of console output.
+Admissible values: 0: no output (default), 1: user messages, 
+2: debugging-relevant messages.}
 }
 \value{
 The covariance matrix of the interventional distribution.
 }
 \description{
 Calculate Covariance Matrix of the Interventional Distribution.
+(see, for example, Eq. 6b in Gische and Voelkle, 2022). The arguments of 
+the \code{\link{calculate_interventional_covariance_matrix}} function are 
+described in Definition 1 in Gische and Voelkle (2022).
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible
-framework for studying causal effects using linear models. Psychometrika
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }

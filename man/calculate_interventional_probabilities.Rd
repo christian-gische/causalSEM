@@ -4,30 +4,37 @@
 \alias{calculate_interventional_probabilities}
 \title{Calculate Probabilities of Interventional Events}
 \usage{
-calculate_interventional_probabilities(mean, sd, y_low, y_up, verbose)
+calculate_interventional_probabilities(
+  mean = NULL,
+  sd = NULL,
+  y_low = NULL,
+  y_up = NULL,
+  verbose = NULL
+)
 }
 \arguments{
-\item{mean}{mean(s)}
+\item{mean}{Numeric vector of means.}
 
-\item{sd}{standard deviation(s)}
+\item{sd}{Numeric vector of standard deviations.}
 
-\item{y_low}{lower bound(s)}
+\item{y_low}{Numeric vector of lower bounds.}
 
-\item{y_up}{upper bound(s)}
+\item{y_up}{Numeric vector of upper bounds.}
 
-\item{verbose}{verbosity of console outputs}
+\item{verbose}{Integer number setting verbosity of console outputs.}
 }
 \value{
-The interventional probability/ies (numeric value/s) as defined in
- Eq. 22d (p. 22) of Gische and Voelkle (2021).
+The interventional probabilities (numeric values) as defined in
+ Eq. 22d (p. 22) of Gische and Voelkle (2022).
 }
 \description{
 Calculates probabilities of interventional events, for example,
-the probabily that the outcome variable realizes within a critical range of
-values given an intervention on the exposure.
+the probability that the outcome variable realizes within a critical range of
+values given an intervention on the exposure. See, for example, Eqs. 10, 15, 
+and 22d in Gische and Voelkle (2022).
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-framework for studying causal effects using linear models. Psychometrika 
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }

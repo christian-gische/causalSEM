@@ -4,9 +4,18 @@
 \alias{calculate_interventional_means}
 \title{Calculate Interventional Mean}
 \usage{
-calculate_interventional_means(C, x, SI, n, IN, verbose)
+calculate_interventional_means(
+  C = NULL,
+  x = NULL,
+  SI = NULL,
+  n = NULL,
+  IN = NULL,
+  verbose = NULL
+)
 }
 \arguments{
+\item{C}{Numeric matrix of structural coefficients.}
+
 \item{x}{Numeric vector of interventional levels.}
 
 \item{SI}{Numeric selection matrix.}
@@ -27,12 +36,11 @@ The mean vector of the interventional distribution.
 \description{
 Calculate mean vector of the interventional distribution 
 (see, for example, Eq. 6a in Gische and Voelkle, 2022). The arguments of 
-the \link{\code{calculate_interventional_means}} function are described in 
+the \code{\link{calculate_interventional_means}} function are described in 
 Definition 1 in Gische and Voelkle (2022).
-#' @param C Numeric matrix of structural coefficients.
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible
-framework for studying causal effects using linear models. Psychometrika
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }

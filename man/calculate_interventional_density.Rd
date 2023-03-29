@@ -2,28 +2,35 @@
 % Please edit documentation in R/calculate_interventional_density.R
 \name{calculate_interventional_density}
 \alias{calculate_interventional_density}
-\title{Calculate the Density Function of the Interventional Distribution}
+\title{Calculate pdf of Interventional Distribution}
 \usage{
-calculate_interventional_density(E, V, var_names = NULL, verbose)
+calculate_interventional_density(
+  E = NULL,
+  V = NULL,
+  var_names = NULL,
+  verbose = NULL
+)
 }
 \arguments{
-\item{E}{vector of means}
+\item{E}{Numeric vector of mean values.}
 
-\item{V}{vector of variances}
+\item{V}{Numeric vector of variances.}
 
-\item{var_names}{optional, vector of variable names}
+\item{var_names}{Character vector of variable names.}
 }
 \value{
-vector (named if var_names are supplied) of density values
- [ stats::pnorm( q=E, mean=E, sd=sqrt(V) ) ]
+List of Numeric vectors (named if \code{var_names} are supplied) 
+containing the values of the marginal pdfs.
 }
 \description{
-Calculate the density function of the interventional 
-distribution. The values are computed pointwise over a grid of 200 
-values in the range [-3*SD, 3*SD] of each univariate variable separately.
+Calculate the probability density function (pdf) of the 
+interventional distribution. The values are computed pointwise over a grid of
+values for each univariate variable separately (i.e., the pdfs of the 
+ marginal distributions). See, for example, Eqs. 9, 14, and 22c in Gische and
+  Voelkle (2022).
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-framework for studying causal effects using linear models. Psychometrika 
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }

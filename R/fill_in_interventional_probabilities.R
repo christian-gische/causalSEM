@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.7 2023-02-28: check if argument is of class causalSEM
 # CG 0.0.6 2022-03-08: allow for multivariate lower and upper bounds
 # CG 0.0.5 2022-01-13: changed structure of internal_list
 #                       cleaned up code (documentation, 80 char per line)
@@ -10,31 +11,46 @@
 # MH 0.0.1 2021-09-27: initial programming
 
 ## Documentation
-#' @title Fills in Probabilities of Interventional Events to Internal List
+#' @title Fill in Interventional Probabilities to List
 #' @description Fills in probabilities of interventional events to internal 
-#' list.
-#' @param internal_list A list with various information extracted from the
-#'    model.
-#' @return Returns the inputted internal_list with slot
-#'    interventional_distribution$probabilities$values populated with (a) numeric 
-#'    value(s); interventional probabilities are only calculated for outcome 
-#'    variables (drawn from internal_list$info_interventions$outcome_names).
-#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-#' framework for studying causal effects using linear models. Psychometrika 
-#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+#' list. See, for example, Eqs. 10, 15, and 22d in Gische and Voelkle (2022).
+#' @param internal_list A list with information extracted from the model.
+#' @return The inputted list with slot
+#' \code{..$interventional_distribution$probabilities$values} 
+#' filled in.
+#' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+#' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+#' 868–901. https://doi.org/10.1007/s11336-021-09811-z
 
 
 ## Function definition
-fill_in_interventional_probabilities <- function( internal_list ){
+fill_in_interventional_probabilities <- function(internal_list = NULL){
 
 	# function name
 	fun.name <- "fill_in_interventional_probabilities"
 
 	# function version
-	fun.version <- "0.0.6 2022-03-08"
+	fun.version <- "0.0.7 2023-02-28"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
+	
+	# CG 0.0.7 2023-02-28: check if argument is of class causalSEM 
+	# check function arguments 
+	## get class of model object
+	model_class <- class(internal_list)
+	
+	## set supported classes of model objects
+	supported_model_classes <- c( "causalSEM" )
+	
+	## check if argument model is supported
+	if(!any(model_class %in% supported_model_classes)) stop(
+	  paste0(
+	    fun.name.version, ": model of class ", model_class,
+	    " not supported. Supported fit objects are: ",
+	    paste(supported_model_classes, collapse = ", ")
+	  )
+	)
 
 	# get verbose argument
 	verbose <- internal_list$control$verbose
@@ -60,13 +76,15 @@ fill_in_interventional_probabilities <- function( internal_list ){
 
 		# select only outcome variables
 		outcomes <- internal_list$info_interventions$outcome_names
-		means <- E[outcomes,1]
+		means <- E[outcomes, 1]
 		sds <- sds[outcomes]
 		
 		# calculate interventional probability
-		p <- calculate_interventional_probabilities( mean=means, sd=sds, 
-		                                             y_low=y_low, y_up=y_up, 
-		                                             verbose=verbose )
+		p <- calculate_interventional_probabilities(mean = means,
+		                                            sd = sds, 
+		                                            y_low = y_low,
+		                                            y_up = y_up, 
+		                                            verbose = verbose)
 	}
 	
 	# populate slot

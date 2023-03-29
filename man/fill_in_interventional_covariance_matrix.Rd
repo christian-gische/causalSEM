@@ -2,24 +2,25 @@
 % Please edit documentation in R/fill_in_interventional_covariance_matrix.R
 \name{fill_in_interventional_covariance_matrix}
 \alias{fill_in_interventional_covariance_matrix}
-\title{Fill in the Interventional Covariance Matrix to Internal List}
+\title{Fill in the Interventional Covariance Matrix to List}
 \usage{
-fill_in_interventional_covariance_matrix(internal_list)
+fill_in_interventional_covariance_matrix(internal_list = NULL)
 }
 \arguments{
 \item{internal_list}{A list with various information extracted from the
 model.}
 }
 \value{
-The inputted internal_list with slot
-   interventional_distribution$moments$variance_matrix filled in.
+The inputted list with slot
+   \code{interventional_distribution$moments$variance_matrix} filled in.
 }
 \description{
-Fills in slot internal_list$interventional_distribution$
-covariance_matrix$values
+Fills in the covariance matrix of the interventional 
+distribution into the internal list (see, for example, Eq. 6a in 
+Gische and Voelkle, 2022).
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-framework for studying causal effects using linear models. Psychometrika 
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }

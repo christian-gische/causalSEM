@@ -2,24 +2,33 @@
 % Please edit documentation in R/fill_in_interventional_density.R
 \name{fill_in_interventional_density}
 \alias{fill_in_interventional_density}
-\title{Fill in Density Function of the Interventional Distribution}
+\title{Fill in pdf of Interventional Distribution to List
+Fill in the probability density function (pdf) of the 
+interventional distribution to the internal list. The values are computed 
+pointwise over a grid of values for each univariate variable separately 
+(i.e., the pdfs of the marginal distributions). See, for example, 
+Eqs. 9, 14, and 22c in Gische and Voelkle (2022).}
 \usage{
-fill_in_interventional_density(internal_list)
+fill_in_interventional_density(internal_list = NULL)
 }
 \arguments{
-\item{internal_list}{A list with various information extracted from the
-model.}
+\item{internal_list}{A list with information extracted from the model.}
 }
 \value{
-The inputted internal_list with slot
-internal_list$interventional_distribution$density_function$values filled in.
+The inputted list with slot
+\code{..$interventional_distribution$density_function$values} 
+filled in.
 }
 \description{
-Fills in slot internal_list$interventional_distribution$
-density_function$values in the internal_list.
+Fill in pdf of Interventional Distribution to List
+Fill in the probability density function (pdf) of the 
+interventional distribution to the internal list. The values are computed 
+pointwise over a grid of values for each univariate variable separately 
+(i.e., the pdfs of the marginal distributions). See, for example, 
+Eqs. 9, 14, and 22c in Gische and Voelkle (2022).
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-framework for studying causal effects using linear models. Psychometrika 
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }

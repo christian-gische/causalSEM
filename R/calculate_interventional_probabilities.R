@@ -11,23 +11,26 @@
 ## Documentation
 #' @title Calculate Probabilities of Interventional Events
 #' @description Calculates probabilities of interventional events, for example,
-#' the probabily that the outcome variable realizes within a critical range of
-#' values given an intervention on the exposure. 
-#' @param mean mean(s)
-#' @param sd standard deviation(s)
-#' @param y_low lower bound(s)
-#' @param y_up upper bound(s)
-#' @param verbose verbosity of console outputs
-#' @return The interventional probability/ies (numeric value/s) as defined in
-#'  Eq. 22d (p. 22) of Gische and Voelkle (2021).
-#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-#' framework for studying causal effects using linear models. Psychometrika 
-#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+#' the probability that the outcome variable realizes within a critical range of
+#' values given an intervention on the exposure. See, for example, Eqs. 10, 15, 
+#' and 22d in Gische and Voelkle (2022).
+#' @param mean Numeric vector of means.
+#' @param sd Numeric vector of standard deviations.
+#' @param y_low Numeric vector of lower bounds.
+#' @param y_up Numeric vector of upper bounds.
+#' @param verbose Integer number setting verbosity of console outputs.
+#' @return List of numeric vectors of probabilities interventional events.
+#' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+#' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+#' 868–901. https://doi.org/10.1007/s11336-021-09811-z
 
 
 ## Function definition
-calculate_interventional_probabilities <- function( mean, sd, y_low, y_up,
-                                                    verbose ){
+calculate_interventional_probabilities <- function(mean = NULL,
+                                                   sd = NULL,
+                                                   y_low = NULL,
+                                                   y_up = NULL,
+                                                   verbose = NULL){
 
 	# function name
 	fun.name <- "calculate_interventional_probabilities"
@@ -49,7 +52,7 @@ calculate_interventional_probabilities <- function( mean, sd, y_low, y_up,
 	p <- mapply( function( mean, sd, y_low, y_up ) { 
 	  stats::pnorm( ( y_up - mean ) / sd ) - 
 	    stats::pnorm( ( y_low - mean ) / sd ) }, 
-	  mean, sd, y_low, y_up, SIMPLIFY=TRUE )
+	  mean, sd, y_low, y_up, SIMPLIFY = TRUE )
 
 	# return p
 	return( p )

@@ -7,22 +7,28 @@
 # MH 0.0.1 2021-11-30: chunked from interventional_density() 0.0.5 2021-11-24
 
 ## Documentation
-#' @title Calculate the Density Function of the Interventional Distribution
-#' @description Calculate the density function of the interventional 
-#' distribution. The values are computed pointwise over a grid of 200 
-#' values in the range [-3*SD, 3*SD] of each univariate variable separately.
-#' @param E vector of means
-#' @param V vector of variances
-#' @param var_names optional, vector of variable names
-#' @return vector (named if var_names are supplied) of density values
-#'  [ stats::pnorm( q=E, mean=E, sd=sqrt(V) ) ]
-#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-#' framework for studying causal effects using linear models. Psychometrika 
-#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+#' @title Calculate pdf of Interventional Distribution
+#' @description Calculate the probability density function (pdf) of the 
+#' interventional distribution. The values are computed pointwise over a grid of
+#' values for each univariate variable separately (i.e., the pdfs of the 
+#'  marginal distributions). See, for example, Eqs. 9, 14, and 22c in Gische and
+#'   Voelkle (2022).
+#' @param E Numeric vector of mean values.
+#' @param V Numeric vector of variances.
+#' @param var_names Character vector of variable names.
+#' @return List of Numeric vectors (named if \code{var_names} are supplied) 
+#' containing the values of the marginal pdfs. 
+#' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+#' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+#' 868–901. https://doi.org/10.1007/s11336-021-09811-z
 
 ## Function definition
-calculate_interventional_density <- function( E, V, var_names=NULL, verbose ){
-
+calculate_interventional_density <- function(E = NULL,
+                                             V = NULL,
+                                             var_names = NULL,
+                                             verbose = NULL){
+#TODO: make use of the n_grid argument! 
+  
 	# function name
 	fun.name <- "calculate_interventional_density"
 

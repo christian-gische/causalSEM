@@ -10,7 +10,7 @@
 #' @title Calculate Covariance Matrix of the Interventional Distribution
 #' @description Calculate Covariance Matrix of the Interventional Distribution.
 #' (see, for example, Eq. 6b in Gische and Voelkle, 2022). The arguments of 
-#' the \link{\code{calculate_interventional_covariance_matrix}} function are 
+#' the \code{\link{calculate_interventional_covariance_matrix}} function are 
 #' described in Definition 1 in Gische and Voelkle (2022).
 #' @param C Numeric matrix of structural coefficients.
 #' @param Psi Numeric covariance matrix (Psi-matrix).
