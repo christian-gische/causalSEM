@@ -1,29 +1,34 @@
 ## Changelog:
+# CG 0.0.3 2023-02-23: include check of user-specified arguments model
 # CG 0.0.2 2022-01-13: changed structure of internal_list
 #                      cleaned up code (documentation, 80 char per line)
 #                      changed dot-case to snake-case
 # MA 0.0.1 2021-11-19: initial programming
 
 ## Documentation
-#' @title Calculate Asymptotics of the Interventional Mean Vector
+#' @title Calculate Asymptotics of Interventional Mean
 #' @description Calculates the asysmptotic covariance matrix,
 #' the aysmptotic standard errors, and the approximate z-values 
 #' of the of the interventional means for a specific interventional level.
-#' @param model internal_list or object of class causalSEM
-#' @param x interventional levels
-#' @param intervention_names names of interventional variables
-#' @param outcome_names names of outcome variables
-#' @param verbose verbosity of console outputs
-#' @return The asysmptotic covariance matrix, the aysmptotic 
+#' @param model Object of class \code{causalSEM}.
+#' @param x Numveric vector of interventional levels.
+#' @param intervention_names Character vector of names of interventional 
+#' variables.
+#' @param outcome_names Character vector of names of outcome variables.
+#' @param verbose Integer number setting verbosity of console outputs.
+#' @return The asymptotic covariance matrix, the asymptotic 
 #' standard errors, and the approximate z-values of the the interventional
-#' means for a specific interventional level.
-#' (see Corollaries, 10, 11 in Gische and Voelkle, 2021).
-#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-#' framework for studying causal effects using linear models. Psychometrika 
-#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+#' means for a specific interventional level. See, for example, Theorem 9 and 
+#' Corollaries 10 and 11 in Gische and Voelkle (2021).
+#' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+#' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+#' 868–901. https://doi.org/10.1007/s11336-021-09811-z
 
-calculate_ase_interventional_means <- function(model, x, intervention_names, 
-                                               outcome_names, verbose) {
+calculate_ase_interventional_means <- function(model = NULL,
+                                               x = NULL,
+                                               intervention_names = NULL, 
+                                               outcome_names = NULL,
+                                               verbose = NULL) {
 
   # function name
   fun_name <- "calculate_ase_interventional_means"
@@ -33,6 +38,22 @@ calculate_ase_interventional_means <- function(model, x, intervention_names,
 
   # function name+version
   fun_name_version <- paste0(fun_name, " (", fun_version, ")")
+  
+  # CG 0.0.3 2023-02-23: include check of user-specified arguments model
+  # get class of model object
+  model_class <- class(model)
+  
+  # set supported classes of model objects
+  supported_model_classes <- c( "causalSEM" )
+  
+  # check if argument model is supported
+  if(!any(model_class %in% supported_model_classes)) stop(
+    paste0(
+      fun.name.version, ": model of class ", model_class,
+      " not supported. Supported fit objects are: ",
+      paste(supported_model_classes, collapse = ", ")
+    )
+  )
 
   # get verbose argument
   verbose <- model$control$verbose
@@ -42,8 +63,7 @@ calculate_ase_interventional_means <- function(model, x, intervention_names,
     cat(paste0("start of function ", fun_name_version, " ", Sys.time(), "\n"))
   }
 
-  # TODO check if user argument model is the internal_list or
-  # an object of class causalSEM
+  
   # CURRENTLY, the function assumes that the input model is
   # of type internal_list. After allowing for objects of class causalSEM
   # the pathes starting with internal_list$ might need adjustment

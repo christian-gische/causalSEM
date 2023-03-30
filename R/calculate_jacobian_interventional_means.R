@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.4 2023-02-23: include check of user-specified arguments model
 # CG 0.0.3 2022-01-13:  changed structure of internal_list
 #                       cleaned up code (documentation, 80 char per line)
 #                       changed dot-case to snake-case
@@ -8,24 +9,29 @@
 # CG 0.0.1 2021-11-10: initial programming
 
 ## Documentation
-#' @title Calculate Jacobian of the Interventional Mean Vector
+#' @title Calculate Jacobian of Interventional Mean
 #' @description Calculate Jacobian of the interventional mean Vector for a 
 #' specific interventional level.
-#' @param model internal_list or object of class causalSEM
-#' @param x interventional level
-#' @param intervention_names names of interventional variables
-#' @param outcome_names name of outcome variable
-#' @param verbose verbosity of console outputs
+#' @param model Object of class \code{causalSEM}.
+#' @param x Numveric vector of interventional levels.
+#' @param intervention_names Character vector of names of interventional 
+#' variables.
+#' @param outcome_names Character vector of names of outcome variables.
+#' @param verbose Integer number setting verbosity of console outputs.
 #' @return The Jacobian of interventional mean vector (numeric matrices)
-#'    as defined in Eq. 18a (p. 17).
-#' @references Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-#' framework for studying causal effects using linear models. Psychometrika 
-#' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+#'    as defined in Eq. 18a in Gische and Voelkle (2022).
+#' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+#' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+#' 868–901. https://doi.org/10.1007/s11336-021-09811-z
 
 
 ## Function definition
 calculate_jacobian_interventional_means <- 
-  function(model, x, intervention_names, outcome_names, verbose){
+  function(model = NULL,
+           x = NULL,
+           intervention_names = NULL,
+           outcome_names = NULL,
+           verbose = NULL){
 
   # function name
   fun_name <- "calculate_jacobian_interventional_means"
@@ -35,6 +41,22 @@ calculate_jacobian_interventional_means <-
 
   # function name+version
   fun_name_version <- paste0(fun_name, " (", fun_version, ")")
+  
+  # CG 0.0.4 2023-02-23: include check of user-specified arguments model
+  # get class of model object
+  model_class <- class(model)
+  
+  # set supported classes of model objects
+  supported_model_classes <- c( "causalSEM" )
+  
+  # check if argument model is supported
+  if(!any(model_class %in% supported_model_classes)) stop(
+    paste0(
+      fun.name.version, ": model of class ", model_class,
+      " not supported. Supported fit objects are: ",
+      paste(supported_model_classes, collapse = ", ")
+    )
+  )
 
   # console output
   if(verbose >= 2) cat(paste0( "start of function ", fun_name_version, " ",

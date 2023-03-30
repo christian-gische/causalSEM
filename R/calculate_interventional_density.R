@@ -7,7 +7,7 @@
 # MH 0.0.1 2021-11-30: chunked from interventional_density() 0.0.5 2021-11-24
 
 ## Documentation
-#' @title Calculate pdf of Interventional Distribution
+#' @title Calculate PDF of Interventional Distribution
 #' @description Calculate the probability density function (pdf) of the 
 #' interventional distribution. The values are computed pointwise over a grid of
 #' values for each univariate variable separately (i.e., the pdfs of the 
@@ -16,8 +16,12 @@
 #' @param E Numeric vector of mean values.
 #' @param V Numeric vector of variances.
 #' @param var_names Character vector of variable names.
-#' @return List of Numeric vectors (named if \code{var_names} are supplied) 
-#' containing the values of the marginal pdfs. 
+#' @param verbose Integer number describing the verbosity of console output.
+#' Admissible values: 0: no output (default), 1: user messages, 
+#' 2: debugging-relevant messages.
+#' @return List of numeric vectors (named if \code{var_names} are supplied) 
+#' containing the values of the marginal pdf of each outcome variable (over 
+#' a grid of values). 
 #' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
 #' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
 #' 868–901. https://doi.org/10.1007/s11336-021-09811-z
@@ -28,6 +32,7 @@ calculate_interventional_density <- function(E = NULL,
                                              var_names = NULL,
                                              verbose = NULL){
 #TODO: make use of the n_grid argument! 
+#TODO: require var_names as an obligatory argument!
   
 	# function name
 	fun.name <- "calculate_interventional_density"

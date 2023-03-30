@@ -2,37 +2,38 @@
 % Please edit documentation in R/calculate_jacobian_interventional_means.R
 \name{calculate_jacobian_interventional_means}
 \alias{calculate_jacobian_interventional_means}
-\title{Calculate Jacobian of the Interventional Mean Vector}
+\title{Calculate Jacobian of Interventional Mean}
 \usage{
 calculate_jacobian_interventional_means(
-  model,
-  x,
-  intervention_names,
-  outcome_names,
-  verbose
+  model = NULL,
+  x = NULL,
+  intervention_names = NULL,
+  outcome_names = NULL,
+  verbose = NULL
 )
 }
 \arguments{
-\item{model}{internal_list or object of class causalSEM}
+\item{model}{Object of class \code{causalSEM}.}
 
-\item{x}{interventional level}
+\item{x}{Numveric vector of interventional levels.}
 
-\item{intervention_names}{names of interventional variables}
+\item{intervention_names}{Character vector of names of interventional 
+variables.}
 
-\item{outcome_names}{name of outcome variable}
+\item{outcome_names}{Character vector of names of outcome variables.}
 
-\item{verbose}{verbosity of console outputs}
+\item{verbose}{Integer number setting verbosity of console outputs.}
 }
 \value{
 The Jacobian of interventional mean vector (numeric matrices)
-   as defined in Eq. 18a (p. 17).
+   as defined in Eq. 18a in Gische and Voelkle (2022).
 }
 \description{
 Calculate Jacobian of the interventional mean Vector for a 
 specific interventional level.
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-framework for studying causal effects using linear models. Psychometrika 
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }

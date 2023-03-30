@@ -9,9 +9,10 @@
 ## Documentation
 #' @title Fill in Asymptotics for the Mean to List
 #' @description Fills in the Jacobian, the asymptotic
-#' covariance matrix, the asymptotic standard errors, and asymptotic z-values 
+#' covariance matrix, the asymptotic standard errors, and approximate z-values 
 #' of the mean vector of the interventional distribution into the internal list.
-#' See, for example, Theorem 8 and Corollary 11 in Gische and Voelkle (2022).
+#' See, for example, Theorem 9 and Corollaries 10 and 11 in Gische and Voelkle 
+#' (2022).
 #' @param internal_list A list with various information extracted from the 
 #' model.
 #' @return The inputted list with several slots 
@@ -20,7 +21,7 @@
 #' \tab   \code{..$jacobian} \tab The Jacobian matrix. \cr
 #' \tab   \code{..$acov} \tab The asymptotic covariance matrix. \cr
 #' \tab   \code{..$ase} \tab Asymptotic standard errors. \cr
-#' \tab   \code{..$z_value} \tab Asymptotic z-values.} 
+#' \tab   \code{..$z_value} \tab Approximate z-values.} 
 #' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
 #' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
 #' 868–901. https://doi.org/10.1007/s11336-021-09811-z

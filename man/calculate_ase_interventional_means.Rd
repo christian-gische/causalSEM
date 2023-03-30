@@ -2,32 +2,33 @@
 % Please edit documentation in R/calculate_ase_interventional_means.R
 \name{calculate_ase_interventional_means}
 \alias{calculate_ase_interventional_means}
-\title{Calculate Asymptotics of the Interventional Mean Vector}
+\title{Calculate Asymptotics of Interventional Mean}
 \usage{
 calculate_ase_interventional_means(
-  model,
-  x,
-  intervention_names,
-  outcome_names,
-  verbose
+  model = NULL,
+  x = NULL,
+  intervention_names = NULL,
+  outcome_names = NULL,
+  verbose = NULL
 )
 }
 \arguments{
-\item{model}{internal_list or object of class causalSEM}
+\item{model}{Object of class \code{causalSEM}.}
 
-\item{x}{interventional levels}
+\item{x}{Numveric vector of interventional levels.}
 
-\item{intervention_names}{names of interventional variables}
+\item{intervention_names}{Character vector of names of interventional 
+variables.}
 
-\item{outcome_names}{names of outcome variables}
+\item{outcome_names}{Character vector of names of outcome variables.}
 
-\item{verbose}{verbosity of console outputs}
+\item{verbose}{Integer number setting verbosity of console outputs.}
 }
 \value{
-The asysmptotic covariance matrix, the aysmptotic 
+The asymptotic covariance matrix, the asymptotic 
 standard errors, and the approximate z-values of the the interventional
-means for a specific interventional level.
-(see Corollaries, 10, 11 in Gische and Voelkle, 2021).
+means for a specific interventional level. See, for example, Theorem 9 and 
+Corollaries 10 and 11 in Gische and Voelkle (2021).
 }
 \description{
 Calculates the asysmptotic covariance matrix,
@@ -35,7 +36,7 @@ the aysmptotic standard errors, and the approximate z-values
 of the of the interventional means for a specific interventional level.
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-framework for studying causal effects using linear models. Psychometrika 
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }

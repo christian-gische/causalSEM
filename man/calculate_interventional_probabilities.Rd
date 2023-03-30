@@ -24,8 +24,7 @@ calculate_interventional_probabilities(
 \item{verbose}{Integer number setting verbosity of console outputs.}
 }
 \value{
-The interventional probabilities (numeric values) as defined in
- Eq. 22d (p. 22) of Gische and Voelkle (2022).
+List of numeric vectors of probabilities interventional events.
 }
 \description{
 Calculates probabilities of interventional events, for example,

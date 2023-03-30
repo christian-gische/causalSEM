@@ -2,30 +2,32 @@
 % Please edit documentation in R/fill_in_asymptotics_interventional_means.R
 \name{fill_in_asymptotics_interventional_means}
 \alias{fill_in_asymptotics_interventional_means}
-\title{Fill in Asymptotics for the Mean Vector of the Interventional
- Distribution}
+\title{Fill in Asymptotics for the Mean to List}
 \usage{
-fill_in_asymptotics_interventional_means(internal_list)
+fill_in_asymptotics_interventional_means(internal_list = NULL)
 }
 \arguments{
 \item{internal_list}{A list with various information extracted from the 
 model.}
 }
 \value{
-The inputted internal_list with several slots 
-in ..$interventional_distribution filled in.
-   ..$jacobian
-   ..$acov
-   ..$ase
-   ..$z_value
+The inputted list with several slots 
+in \code{..$interventional_distribution$means} filled in.\cr
+\tabular{lll}{
+\tab   \code{..$jacobian} \tab The Jacobian matrix. \cr
+\tab   \code{..$acov} \tab The asymptotic covariance matrix. \cr
+\tab   \code{..$ase} \tab Asymptotic standard errors. \cr
+\tab   \code{..$z_value} \tab Approximate z-values.}
 }
 \description{
 Fills in the Jacobian, the asymptotic
-covariance matrix, the asymptotic standard errors, and asymptotic z-values 
+covariance matrix, the asymptotic standard errors, and approximate z-values 
 of the mean vector of the interventional distribution into the internal list.
+See, for example, Theorem 9 and Corollaries 10 and 11 in Gische and Voelkle 
+(2022).
 }
 \references{
-Gische, C., Voelkle, M.C. (2021) Beyond the mean: a flexible 
-framework for studying causal effects using linear models. Psychometrika 
-(advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
+Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
+Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
+868–901. https://doi.org/10.1007/s11336-021-09811-z
 }

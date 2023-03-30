@@ -9,19 +9,18 @@
 ## Documentation
 #' @title Calculate Interventional Mean
 #' @description Calculate mean vector of the interventional distribution 
-#' (see, for example, Eq. 6a in Gische and Voelkle, 2022). The arguments of 
-#' the \code{\link{calculate_interventional_means}} function are described in 
-#' Definition 1 in Gische and Voelkle (2022).
+#' (see, for example, Eqs. 6a, 12a, and 22a in Gische and Voelkle, 2022). 
+#' The arguments SI and IN (zero-one matrices) of the function are 
+#' described in Definition 1 in Gische and Voelkle (2022).
 #' @param C Numeric matrix of structural coefficients.
 #' @param x Numeric vector of interventional levels.
-#' @param Psi Numeric covariance matrix (Psi-matrix).
 #' @param SI Numeric selection matrix.
 #' @param n Integer number of observed variables.
 #' @param IN Numeric zero-one matrix.
 #' @param verbose Integer number describing the verbosity of console output.
 #' Admissible values: 0: no output (default), 1: user messages, 
 #' 2: debugging-relevant messages.
-#' @return The mean vector of the interventional distribution.
+#' @return The numeric mean vector of the interventional distribution.
 #' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
 #' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
 #' 868–901. https://doi.org/10.1007/s11336-021-09811-z
