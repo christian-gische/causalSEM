@@ -9,6 +9,8 @@ calculate_interventional_probabilities(
   sd = NULL,
   y_low = NULL,
   y_up = NULL,
+  model = NULL,
+  use_model_values = FALSE,
   verbose = NULL
 )
 }
