@@ -24,7 +24,7 @@
 #' Framework for Studying Causal Effects Using Linear Models. Psychometrika 87, 
 #' 868–901. https://doi.org/10.1007/s11336-021-09811-z
 
-calculate_ase_interventional_means <- function(model = NULL,
+calculate_ase_interventional_means_backup <- function(model = NULL,
                                                x = NULL,
                                                intervention_names = NULL, 
                                                outcome_names = NULL,

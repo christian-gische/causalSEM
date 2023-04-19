@@ -11,7 +11,9 @@ calculate_interventional_covariance_matrix(
   SI = NULL,
   n = NULL,
   IN = NULL,
-  verbose = NULL
+  verbose = NULL,
+  model = NULL,
+  use_model_values = FALSE
 )
 }
 \arguments{

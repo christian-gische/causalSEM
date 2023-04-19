@@ -67,10 +67,8 @@ fill_in_asymptotics_interventional_means <- function(internal_list = NULL){
                                Sys.time(), "\n" ))
 
   # calculate asymptotic standard errors
-  ase <- calculate_ase_interventional_means(
-    model = internal_list,
-    use_model_values = TRUE
-  )
+  ase <- calculate_ase_interventional_means(model = internal_list,
+                                            use_model_values = TRUE)
 
   # fill in slots of ...$interventional_distribution$means
   

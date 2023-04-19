@@ -1,4 +1,6 @@
 ## Changelog:
+# CG 0.0.8 2023-04-19: changed arguments in call of 
+#                      calculate_interventional_probability
 # CG 0.0.7 2023-02-28: check if argument is of class causalSEM
 # CG 0.0.6 2022-03-08: allow for multivariate lower and upper bounds
 # CG 0.0.5 2022-01-13: changed structure of internal_list
@@ -59,33 +61,12 @@ fill_in_interventional_probabilities <- function(internal_list = NULL){
 	if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ", 
 	                                Sys.time(), "\n" ) )
 
-	# get upper lower bound
-	y_low <- internal_list$info_interventions$lower_bounds
-	y_up <- internal_list$info_interventions$upper_bounds
-
-	# if y_low/y_up NULL then return NULL
-	if( any( is.null( c( y_low, y_up ) ) ) ){
-		p <- NULL
-	} else {
-		# get intervential mean and variance
-		E <- internal_list$interventional_distribution$means$values
-		V <- internal_list$interventional_distribution$covariance_matrix$values
-		
-		# standard deviations (sqrt of diagonal elements of V)
-		sds <- sqrt( diag( V ) )
-
-		# select only outcome variables
-		outcomes <- internal_list$info_interventions$outcome_names
-		means <- E[outcomes, 1]
-		sds <- sds[outcomes]
+	
 		
 		# calculate interventional probability
-		p <- calculate_interventional_probabilities(mean = means,
-		                                            sd = sds, 
-		                                            y_low = y_low,
-		                                            y_up = y_up, 
-		                                            verbose = verbose)
-	}
+		p <- calculate_interventional_probabilities(model = internal_list,
+		                                            use_model_values = TRUE)
+	
 	
 	# populate slot
 	internal_list$interventional_distribution$probabilities$values <- p

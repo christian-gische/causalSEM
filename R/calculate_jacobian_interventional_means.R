@@ -18,6 +18,8 @@
 #' @param intervention_names Character vector of names of interventional 
 #' variables.
 #' @param outcome_names Character vector of names of outcome variables.
+#' @param use_model_values Logical indicating if values stored in model object 
+#' should be used (TRUE).
 #' @param verbose Integer number setting verbosity of console outputs.
 #' @return The Jacobian of interventional mean vector (numeric matrices)
 #'    as defined in Eq. 18a in Gische and Voelkle (2022).
@@ -107,8 +109,7 @@ calculate_jacobian_interventional_means <-
       model = model,
       intervention_names = intervention_names,
       outcome_names = outcome_names,
-      verbose = verbose
-    )
+      verbose = verbose)
     
     # Create identity matrix
     I_n <- diag(model$info_model$n_ov)

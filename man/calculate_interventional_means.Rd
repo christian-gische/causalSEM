@@ -10,7 +10,9 @@ calculate_interventional_means(
   SI = NULL,
   n = NULL,
   IN = NULL,
-  verbose = NULL
+  verbose = NULL,
+  model = NULL,
+  use_model_values = FALSE
 )
 }
 \arguments{

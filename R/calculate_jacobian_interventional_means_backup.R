@@ -27,7 +27,7 @@
 
 
 ## Function definition
-calculate_jacobian_interventional_means <- 
+calculate_jacobian_interventional_means_backup <- 
   function(model = NULL,
            x = NULL,
            intervention_names = NULL,
@@ -35,7 +35,7 @@ calculate_jacobian_interventional_means <-
            verbose = NULL){
     
     # function name
-    fun_name <- "calculate_jacobian_interventional_means"
+    fun_name <- "calculate_jacobian_interventional_means_backup"
     
     # function version
     fun_version <- "0.0.3 2022-01-13"

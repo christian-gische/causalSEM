@@ -54,10 +54,8 @@ fill_in_jacobian_interventional_means <- function(internal_list = NULL){
                                Sys.time(), "\n" ))
   
   # calculate jacobian
-  jacobian <- calculate_jacobian_interventional_means(
-    model = internal_list,
-    use_model_values = TRUE
-  )
+  jacobian <- calculate_jacobian_interventional_means(model = internal_list,
+                                                      use_model_values = TRUE)
   
   # fill in slots of ...$interventional_distribution$means
   internal_list$interventional_distribution$means$jacobian <- jacobian

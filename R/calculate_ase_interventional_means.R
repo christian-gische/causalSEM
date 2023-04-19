@@ -15,6 +15,8 @@
 #' @param intervention_names Character vector of names of interventional 
 #' variables.
 #' @param outcome_names Character vector of names of outcome variables.
+#' @param use_model_values Logical indicating if values stored in model object 
+#' should be used (TRUE).
 #' @param verbose Integer number setting verbosity of console outputs.
 #' @return The asymptotic covariance matrix, the asymptotic 
 #' standard errors, and the approximate z-values of the the interventional
@@ -35,7 +37,7 @@ calculate_ase_interventional_means <- function(model = NULL,
   fun_name <- "calculate_ase_interventional_means"
 
   # function version
-  fun_version <- "0.0.2 2022-01-13"
+  fun_version <- "0.0.3 2023-02-23"
 
   # function name+version
   fun_name_version <- paste0(fun_name, " (", fun_version, ")")

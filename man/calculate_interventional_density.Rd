@@ -8,6 +8,9 @@ calculate_interventional_density(
   E = NULL,
   V = NULL,
   var_names = NULL,
+  n_grid = NULL,
+  model = NULL,
+  use_model_values = FALSE,
   verbose = NULL
 )
 }
