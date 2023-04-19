@@ -28,15 +28,14 @@ calculate_ase_interventional_means <- function(model = NULL,
                                                x = NULL,
                                                intervention_names = NULL, 
                                                outcome_names = NULL,
-                                               verbose = NULL,
-                                               use_model_values = FALSE) {
-
+                                               verbose = NULL) {
+  
   # function name
   fun_name <- "calculate_ase_interventional_means"
-
+  
   # function version
   fun_version <- "0.0.2 2022-01-13"
-
+  
   # function name+version
   fun_name_version <- paste0(fun_name, " (", fun_version, ")")
   
@@ -55,114 +54,91 @@ calculate_ase_interventional_means <- function(model = NULL,
       paste(supported_model_classes, collapse = ", ")
     )
   )
-
+  
   # get verbose argument
   verbose <- model$control$verbose
-
+  
   # console output
   if (verbose >= 2) {
     cat(paste0("start of function ", fun_name_version, " ", Sys.time(), "\n"))
   }
-
+  
   
   # CURRENTLY, the function assumes that the input model is
   # of type internal_list. After allowing for objects of class causalSEM
   # the pathes starting with internal_list$ might need adjustment
   
-  # check if model values of should be used; if not, use user specified 
-  # arguments (after checking if they are admissible)
-  if(use_model_values == TRUE) {
-    
-    # assign values from the model objects to function arguments 
-    x_values <- model$info_interventions$intervention_levels
-    x_labels <- model$info_interventions$intervention_names
-    y_labels <- model$info_interventions$outcome_names
-    
-      # get total number of variables
-      # get number of unique parameters
-      n <- model$info_model$n_ov
-      n_unique <- model$info_model$param$n_par_unique
-      
-      # get interventoial means
-      gamma_1 <- model$interventional_distribution$means$values
-      
-      # get jacobian of interventional means
-      jac_g1 <- model$interventional_distribution$means$jacobian
-      
+  
+  # get variable names of interventional variables
+  # TODO: Rethink setting a default here
+  if (is.character(intervention_names) &&
+      all(intervention_names %in% model$info_model$var_names)) {
+    x_labels <- intervention_names
   } else {
-    
-    # get variable names of interventional variables
-    # TODO: Rethink setting a default here
-    if (is.character(intervention_names) &&
-        all(intervention_names %in% model$info_model$var_names)) {
-      x_labels <- intervention_names
-    } else {
-      x_labels <- model$info_interventions$intervention_names
-    }
-    
-    # get interventional levels
-    # TODO: Rethink setting a default here
-    if (is.numeric(x) && length (x) == length(intervention_names)) {
-      x_values <- x
-    } else {
-      x_values <- model$info_interventions$intervention_levels
-    }
-    
-    # get variable name of outcome variable
-    # TODO: Rethink setting a default here
-    if( is.character( outcome_names ) &&
-        all( outcome_names %in% setdiff(model$info_model$var_names, x_labels) 
-        )){
-      y_labels <- outcome_names
-    } else {
-      stop( paste0( fun.name.version, ": Argument outcome_names needs to be the a
+    x_labels <- model$info_interventions$intervention_names
+  }
+  
+  # get interventional levels
+  # TODO: Rethink setting a default here
+  if (is.numeric(x) && length (x) == length(intervention_names)) {
+    x_values <- x
+  } else {
+    x_values <- model$info_interventions$intervention_levels
+  }
+  
+  # get variable name of outcome variable
+  # TODO: Rethink setting a default here
+  if( is.character( outcome_names ) &&
+      all( outcome_names %in% setdiff(model$info_model$var_names, x_labels) 
+      )){
+    y_labels <- outcome_names
+  } else {
+    stop( paste0( fun.name.version, ": Argument outcome_names needs to be the a
                   character string with the name of a non-interventional 
                   variable."  ) )
-    }
-    
-    # get total number of variables
-    # get number of unique parameters
-    n <- model$info_model$n_ov
-    n_unique <- model$info_model$param$n_par_unique
-    
-    # get intervential means
-    # TODO: assign E by calling the function calculate_interventional_means
-    gamma_1 <- model$interventional_distribution$means$values
-    
-    # compute jacobian of the pdf
-    jac_g1 <- calculate_jacobian_interventional_means(
-      model = model,
-      x = x_values,
-      intervention_names = intervention_names,
-      outcome_names = y_labels,
-      verbose = verbose
-    )
-    
   }
-
+  
+  # get total number of variables
+  # get number of unique parameters
+  n <- model$info_model$n_ov
+  n_unique <- model$info_model$param$n_par_unique
+  
+  # get intervential means
+  # TODO: assign E by calling the function calculate_interventional_means
+  gamma_1 <- model$interventional_distribution$means$values
+  
+  # compute jacobian of the pdf
+  jac_g1 <- calculate_jacobian_interventional_means(
+    model = model,
+    x = x_values,
+    intervention_names = intervention_names,
+    outcome_names = y_labels,
+    verbose = verbose
+  )
+  
   # get AV of parameter vector
   acov <- model$info_model$param$varcov_par_unique
-
+  
   # compute asymptotic variance
   acov_gamma_1 <- jac_g1 %*% acov %*% t(jac_g1)
-
+  
   # compute asymptotic standard errors
   ase_gamma_1 <- sqrt(diag(acov_gamma_1))
-
+  
   # compute approximate z-value
   z_gamma_1 <- gamma_1 / ase_gamma_1
-
+  
   # Prepare output ----
-
+  
   # Console output
   if (verbose >= 2) {
     cat(paste0("  end of function ", fun_name_version, " ", Sys.time(), "\n"))
   }
-
+  
   # Output
   list(gamma_1 = gamma_1,
        acov_gamma_1 = acov_gamma_1,
        ase_gamma_1 = ase_gamma_1,
        z_gamma_1 = z_gamma_1)
-
+  
 }

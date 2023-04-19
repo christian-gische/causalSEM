@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.19 2023-03-23: include fill_in_jacobian_interventional_means function
 # CG 0.0.19 2023-03-23: changes to preamble to print documentation
 #                       changed all arguments to = NULL
 # CG 0.0.18 2023-02-20: changes to preamble to print documentation
@@ -187,7 +188,9 @@ intervention_effect <- function(model = NULL,
    internal_list <- fill_in_interventional_probabilities( internal_list = 
                                                          internal_list )
 
-  #
+  # CG 0.0.19 2023-03-23: include fill_in_jacobian_interventional_means function
+  internal_list <- fill_in_jacobian_interventional_means( internal_list = 
+                                                            internal_list )
   # CG 0.0.12 2021-11-24: add fill_in_asymptotics functions
   internal_list <- fill_in_asymptotics_interventional_means( internal_list = 
                                                              internal_list )

@@ -1,4 +1,6 @@
 ## Changelog:
+# CG 0.0.4 2023-04-19: changed arguments in call of 
+#                      calculate_interventional_means
 # CG 0.0.3 2023-02-28: check if argument is of class causalSEM 
 # CG 0.0.2 2022-01-13: changed structure of internal_list
 #                       cleaned up code (documentation, 80 char per line)
@@ -55,24 +57,11 @@ fill_in_interventional_means <- function(internal_list = NULL){
 	if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ",
 	                                Sys.time(), "\n" ) )
 	
-	# get/define terms
-	C <- internal_list$info_model$C$values
-	
-	# interventional level
-	x <- internal_list$info_interventions$intervention_levels
-	
-	# selection matrix 1_I
-	SI <- internal_list$constant_matrices$select_intervention
-	
-	# number of observed variables
-	n <- internal_list$info_model$n_ov
-	
-	# I_N matrix
-	IN <- internal_list$constant_matrices$eliminate_intervention	
-	
+	# CG 0.0.4 2023-04-19: changed arguments in call of 
+	#                      calculate_interventional_means
 	# calculate interventional means
-	E <- calculate_interventional_means( C=C, x=x, SI=SI, n=n, IN=IN,
-	                                     verbose=verbose )
+	E <- calculate_interventional_means(model = internal_list,
+	                                    use_model_values = TRUE)
 	
 	# populate slots
 	internal_list$interventional_distribution$means$values <- E

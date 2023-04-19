@@ -1,4 +1,6 @@
 ## Changelog:
+# CG 0.0.4 2023-04-19: changed arguments in call of 
+#                      calculate_interventional_density
 # CG 0.0.3 2023-02-28: check if argument is of class causalSEM 
 # CG 0.0.2 2022-01-13: changed structure of internal_list
 #                      cleaned up code (documentation, 80 char per line)
@@ -27,7 +29,7 @@ fill_in_interventional_density <- function(internal_list = NULL){
 	fun.name <- "fill_in_interventional_density"
 
 	# function version
-	fun.version <- "0.0.3 2023-02-28"
+	fun.version <- "0.0.4 2023-04-19"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -56,15 +58,9 @@ fill_in_interventional_density <- function(internal_list = NULL){
 	if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ",
 	                                Sys.time(), "\n" ) )
 
-	# get intervential mean and variance and variable names
-	E <- internal_list$interventional_distribution$means$values[,1]
-	V <- 
-	  diag( internal_list$interventional_distribution$covariance_matrix$values )
-	var_names <- internal_list$info_model$var_names
-
 	# calculate interventional density
-	pdfs <- calculate_interventional_density( E=E, V=V, var_names=var_names, 
-	                                          verbose=verbose )
+	pdfs <- calculate_interventional_density(model = internal_list,
+	                                         use_model_values = TRUE)
 
 	# populate slot
 	internal_list$interventional_distribution$density_function$values <- pdfs

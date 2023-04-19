@@ -1,4 +1,7 @@
 ## Changelog:
+# CG 0.0.3 2023-04-19: allow for arguments model, use_model_values, and n_grid
+#                      include if statements to check which arguments to use
+#                      check if argument model is of admissible class
 # CG 0.0.2 2022-01-13: function now computes the values of the pdf 
 #                      over a grid of -3*SD ; +3*SD
 #                      changed structure of internal_list
@@ -30,6 +33,9 @@
 calculate_interventional_density <- function(E = NULL,
                                              V = NULL,
                                              var_names = NULL,
+                                             n_grid = NULL,
+                                             model = NULL,
+                                             use_model_values = FALSE,
                                              verbose = NULL){
 #TODO: make use of the n_grid argument! 
 #TODO: require var_names as an obligatory argument!
@@ -42,6 +48,54 @@ calculate_interventional_density <- function(E = NULL,
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
+	
+	# if model is provided, check if it of admissible class 
+	
+	if ( !is.null(model)){
+	  # get class of model object
+	  model_class <- class(model)
+	  
+	  # set supported classes of model objects
+	  supported_model_classes <- c( "causalSEM" )
+	  
+	  # check if argument model is supported
+	  if(!any(model_class %in% supported_model_classes)) stop(
+	    paste0(
+	      fun.name.version, ": model of class ", model_class,
+	      " not supported. Supported fit objects are: ",
+	      paste(supported_model_classes, collapse = ", ")
+	    )
+	  )
+	  
+	  verbose <- model$control$verbose
+	  
+	}
+	
+	if (!is.null(model) && use_model_values == TRUE){
+	  
+	  
+	  E <- model$interventional_distribution$means$values[,1]
+	  V <- 
+	    diag( model$interventional_distribution$covariance_matrix$values )
+	  var_names <- model$info_model$var_names
+	  
+	  n_grid <- "default"
+	  
+	  } else if (use_model_values == FALSE) {
+	  
+	  # TODO: include argument check
+	  
+	  verbose <- handle_verbose_argument(verbose)
+	  
+	  E <- E
+	    
+	  V <- V
+	    
+	  var_names <- var_names
+	    
+	  n_grid <- n_grid
+	  
+	}
 
 	# console output
 	if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ",
@@ -57,10 +111,16 @@ calculate_interventional_density <- function(E = NULL,
 	
 	# CG 0.0.2 2022-01-13 introduced this part
 	# generate x values and calculate pdfs for each variable, return list
+	# TODO: use the n_grid argument here when defining the x sequence
 	pdfs <- mapply( function( mean, sd ){
 	  
 	  # generate x-axis values
-	  x <- seq( -3*sd, 3*sd, length.out=200 ) + mean
+	  
+	  if (n_grid == "default"){
+	    x <- seq( -3*sd, 3*sd, length.out=200 ) + mean
+	  } else {
+	    x <- seq( -3*sd, 3*sd, length.out=200 ) + mean  
+	  }
 	  
 	  # get pdf values
 	  pdf.values <- stats::dnorm( x, mean=mean, sd=sd )

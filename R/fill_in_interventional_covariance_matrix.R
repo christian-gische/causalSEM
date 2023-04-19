@@ -1,4 +1,6 @@
 ## Changelog:
+# CG 0.0.5 2023-04-19: changed arguments in call of 
+#                      calculate_interventional_covariance_matrix
 # CG 0.0.4 2023-02-28: check if argument is of class causalSEM 
 # CG 0.0.3 2022-01-13: changed structure of internal_list
 #                       cleaned up code (documentation, 80 char per line)
@@ -76,8 +78,8 @@ fill_in_interventional_covariance_matrix <- function(internal_list = NULL){
 	IN <- internal_list$constant_matrices$eliminate_intervention
 	
 	# calculate interventional covariance matrix
-	V <- calculate_interventional_covariance_matrix( C=C, Psi=Psi, x=x, SI=SI,
-	                                                 n=n, IN=IN, verbose=verbose )
+	V <- calculate_interventional_covariance_matrix(model = internal_list,
+	                                                use_model_values = TRUE)
 	
 	# populate slots
 	internal_list$interventional_distribution$covariance_matrix$values <- V

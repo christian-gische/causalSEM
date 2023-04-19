@@ -2,7 +2,7 @@
 % Please edit documentation in R/calculate_interventional_density.R
 \name{calculate_interventional_density}
 \alias{calculate_interventional_density}
-\title{Calculate pdf of Interventional Distribution}
+\title{Calculate PDF of Interventional Distribution}
 \usage{
 calculate_interventional_density(
   E = NULL,
@@ -17,10 +17,15 @@ calculate_interventional_density(
 \item{V}{Numeric vector of variances.}
 
 \item{var_names}{Character vector of variable names.}
+
+\item{verbose}{Integer number describing the verbosity of console output.
+Admissible values: 0: no output (default), 1: user messages, 
+2: debugging-relevant messages.}
 }
 \value{
-List of Numeric vectors (named if \code{var_names} are supplied) 
-containing the values of the marginal pdfs.
+List of numeric vectors (named if \code{var_names} are supplied) 
+containing the values of the marginal pdf of each outcome variable (over 
+a grid of values).
 }
 \description{
 Calculate the probability density function (pdf) of the 

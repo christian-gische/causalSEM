@@ -1,4 +1,7 @@
 ## Changelog:
+# CG 0.0.5 2023-02-28: remove part where the jacobian is computed and 
+#                      and define it as as standalone function 
+#                      fill_in_jacobian_interventional_means
 # CG 0.0.4 2023-02-28: check if argument is of class causalSEM
 # MH 0.0.3 2022-03-17: removed "seealso", solves NOTE in package checking
 # CG 0.0.2 2022-01-13: changed structure of internal_list
@@ -63,26 +66,14 @@ fill_in_asymptotics_interventional_means <- function(internal_list = NULL){
   if(verbose >= 2) cat(paste0( "start of function ", fun_name_version, " ",
                                Sys.time(), "\n" ))
 
-  # calculate jacobian
-  jacobian <- calculate_jacobian_interventional_means(
-    model = internal_list,
-    x = internal_list$info_interventions$intervention_levels,
-    intervention_names = internal_list$info_interventions$intervention_names,
-    outcome_names = internal_list$info_interventions$outcome_names,
-    verbose = verbose
-  )
-
   # calculate asymptotic standard errors
   ase <- calculate_ase_interventional_means(
     model = internal_list,
-    x = internal_list$info_interventions$intervention_levels,
-    intervention_names = internal_list$info_interventions$intervention_names,
-    outcome_names = internal_list$info_interventions$outcome_names,
-    verbose = verbose
+    use_model_values = TRUE
   )
 
   # fill in slots of ...$interventional_distribution$means
-  internal_list$interventional_distribution$means$jacobian <- jacobian
+  
   internal_list$interventional_distribution$means$acov <- ase$acov_gamma_1
   internal_list$interventional_distribution$means$ase <- ase$ase_gamma_1
   internal_list$interventional_distribution$means$z_values <- ase$z_gamma_1
