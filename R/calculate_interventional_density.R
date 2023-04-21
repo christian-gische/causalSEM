@@ -1,5 +1,7 @@
 ## Changelog:
-# CG 0.0.3 2023-04-19: allow for arguments model, use_model_values, and n_grid
+# CG 0.0.4 2023-04-19: inlcude the n_grid argument
+#                      remove check of var_names towards the end of the script
+# CG 0.0.3 2023-04-19: allow for arguments model, use_model_values, 
 #                      include if statements to check which arguments to use
 #                      check if argument model is of admissible class
 # CG 0.0.2 2022-01-13: function now computes the values of the pdf 
@@ -19,6 +21,11 @@
 #' @param E Numeric vector of mean values.
 #' @param V Numeric vector of variances.
 #' @param var_names Character vector of variable names.
+#' @param n_grid Integer number indicating the number of values (in the grid) 
+#' for which the pdf should be evaluated.
+#' @param model Object of class \code{causalSEM}.
+#' @param use_model_values Logical value indicating if model values should be 
+#' used (TRUE) in calculation. Default: FALSE.
 #' @param verbose Integer number describing the verbosity of console output.
 #' Admissible values: 0: no output (default), 1: user messages, 
 #' 2: debugging-relevant messages.
@@ -37,14 +44,12 @@ calculate_interventional_density <- function(E = NULL,
                                              model = NULL,
                                              use_model_values = FALSE,
                                              verbose = NULL){
-#TODO: make use of the n_grid argument! 
-#TODO: require var_names as an obligatory argument!
-  
+
 	# function name
 	fun.name <- "calculate_interventional_density"
 
 	# function version
-	fun.version <- "0.0.2 2022-01-13"
+	fun.version <- "0.0.4 2023-04-21"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
@@ -76,23 +81,19 @@ calculate_interventional_density <- function(E = NULL,
 	  
 	  E <- model$interventional_distribution$means$values[,1]
 	  V <- 
-	    diag( model$interventional_distribution$covariance_matrix$values )
+	    diag(model$interventional_distribution$covariance_matrix$values)
 	  var_names <- model$info_model$var_names
-	  
-	  n_grid <- "default"
+	  n_grid <- NULL
 	  
 	  } else if (use_model_values == FALSE) {
 	  
 	  # TODO: include argument check
+	  # TODO: require var_names as an obligatory argument!
 	  
 	  verbose <- handle_verbose_argument(verbose)
-	  
 	  E <- E
-	    
 	  V <- V
-	    
 	  var_names <- var_names
-	    
 	  n_grid <- n_grid
 	  
 	}
@@ -116,10 +117,10 @@ calculate_interventional_density <- function(E = NULL,
 	  
 	  # generate x-axis values
 	  
-	  if (n_grid == "default"){
-	    x <- seq( -3*sd, 3*sd, length.out=200 ) + mean
+	  if (is.null(n_grid)){
+	    x <- seq( -3*sd, 3*sd, length.out = 5 ) + mean
 	  } else {
-	    x <- seq( -3*sd, 3*sd, length.out=200 ) + mean  
+	    x <- seq( -3*sd, 3*sd, length.out = n_grid ) + mean  
 	  }
 	  
 	  # get pdf values
@@ -132,9 +133,10 @@ calculate_interventional_density <- function(E = NULL,
 	
 
 	# set variable names for list elements 
-	if( !is.null( var_names ) ){
+	# CG 0.0.4 2023-04-19: remove check of var_names towards the end of the script
+	#if( !is.null( var_names ) ){
 		names( pdfs ) <- var_names
-	}
+	#}
 
 	# console output
 	if( verbose >= 2 ) cat( paste0( "  end of function ", fun.name.version, " ",

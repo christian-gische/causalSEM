@@ -23,9 +23,23 @@
 #' framework for studying causal effects using linear models. Psychometrika 
 #' (advanced online publication). https://doi.org/10.1007/s11336-021-09811-z
 
-calculate_ase_interventional_variances <- function(model, x, intervention_names,
-                                                   outcome_names, verbose) {
+calculate_ase_interventional_variances <- function(model = NULL,
+                                                   x = NULL,
+                                                   intervention_names = NULL,
+                                                   outcome_names = NULL,
+                                                   use_model_values = FALSE,
+                                                   verbose = NULL) {
 
+  ######## TODO: REMOVE DEBUG
+  # START DEBUG
+  
+  #model <- internal_list_no_outcome
+  #use_model_values <- FALSE
+  #intervention_names <- "x2" 
+  #outcome_names <- "y3"
+  #x <- 11.54
+  # END DEBUG
+  
   # function name
   fun_name <- "calculate_ase_interventional_variances"
 
@@ -34,35 +48,91 @@ calculate_ase_interventional_variances <- function(model, x, intervention_names,
 
   # function name+version
   fun_name_version <- paste0(fun_name, " (", fun_version, ")")
-
-  # get verbose argument
-  verbose <- model$control$verbose
+  
+  # CG 0.0.3 2023-02-23: include check of user-specified arguments model
+  # get class of model object
+  model_class <- class(model)
+  
+  # set supported classes of model objects
+  supported_model_classes <- c( "causalSEM" )
+  
+  # check if argument model is supported
+  if(!any(model_class %in% supported_model_classes)) stop(
+    paste0(
+      fun.name.version, ": model of class ", model_class,
+      " not supported. Supported fit objects are: ",
+      paste(supported_model_classes, collapse = ", ")
+    )
+  )
+  
+  if(use_model_values == TRUE) {
+    
+    
+    verbose <- model$control$verbose
+    x <- model$info_interventions$intervention_levels
+    intervention_names <- model$info_interventions$intervention_names
+    outcome_names <- model$info_interventions$outcome_names
+    
+    gamma_2 <- model$interventional_distribution$covariance_matrix$values
+    jac_g2 <- model$interventional_distribution$covariance_matrix$jacobian
+    constant_matrices <- model$constant_matrices
+      
+    
+  } else {
+    
+    #TODO: argument check
+    
+    verbose <- handle_verbose_argument(verbose)
+    x <- x
+    intervention_names <- intervention_names
+    outcome_names <- outcome_names
+    
+    # get zero one matrices
+    constant_matrices <- calculate_constant_matrices(
+      model = model,
+      intervention_names = intervention_names,
+      outcome_names = outcome_names)
+    
+    # get interventional variances
+    # TODO: check: do we need function call here?
+    gamma_2 <- calculate_interventional_covariance_matrix(
+      C = model$info_model$C$values,
+      Psi= model$info_model$Psi$values,
+      x = x,
+      SI = constant_matrices$select_intervention,
+      n = model$info_model$n_ov,
+      IN = constant_matrices$eliminate_intervention)
+    
+    # compute jacobian of the interventional variances
+    jac_g2 <- calculate_jacobian_interventional_variances(
+      model = model,
+      intervention_names = intervention_names,
+      outcome_names = outcome_names,
+      verbose = verbose
+    )
+    
+    # get variable names of interventional variables
+    # TODO: reconsider setting defaults
+    # if (is.character(intervention_names) &&
+    #    all(intervention_names %in% model$info_model$var_names)) {
+    #  x_labels <- intervention_names
+    #} else {
+    #  x_labels <- model$info_interventions$intervention_names
+    #}
+    
+    # get interventional levels
+    # TODO: reconsider setting defaults
+    #if (is.numeric(x) && length (x) == length(intervention_names)) {
+    #  x_values <- x
+    #} else {
+    #  x_values <- model$info_interventions$intervention_levels
+    #}
+    
+  }
 
   # console output
   if (verbose >= 2) {
     cat(paste0("start of function ", fun_name_version, " ", Sys.time(), "\n"))
-  }
-
-  # TODO check if user argument model is the internal_list or
-  # an object of class causalSEM
-  # CURRENTLY, the function assumes that the input model is
-  # of type internal_list. After allowing for objects of class causalSEM
-  # the pathes starting with internal_list$ might need adjustment
-
-
-  # get variable names of interventional variables
-  if (is.character(intervention_names) &&
-      all(intervention_names %in% model$info_model$var_names)) {
-    x_labels <- intervention_names
-  } else {
-    x_labels <- model$info_interventions$intervention_names
-  }
-
-  # get interventional levels
-  if (is.numeric(x) && length (x) == length(intervention_names)) {
-    x_values <- x
-  } else {
-    x_values <- model$info_interventions$intervention_levels
   }
 
   # get total number of variables
@@ -70,25 +140,6 @@ calculate_ase_interventional_variances <- function(model, x, intervention_names,
   n <- model$info_model$n_ov
   n_unique <- model$info_model$param$n_par_unique
 
-  # get intervential means
-  # TODO: assign E by calling the function calculate_interventional_means
-  gamma_2 <- model$interventional_distribution$covariance_matrix$values
-
-  # compute jacobian of the pdf
-  jac_g2 <- calculate_jacobian_interventional_variances(
-    model = model,
-    intervention_names = intervention_names,
-    outcome_names = outcome_names,
-    verbose = verbose
-  )
-
-  # get zero one matrices
-  constant_matrices <- calculate_constant_matrices(
-    model = model,
-    intervention_names = intervention_names,
-    outcome_names = outcome_names,
-    verbose = verbose
-  )
   D_n <- constant_matrices$duplication_matrix
 
   # compute vectorized jacobian

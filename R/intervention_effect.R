@@ -197,6 +197,12 @@ intervention_effect <- function(model = NULL,
   # MH 0.0.14 2021-11-30, disabled/crashes
   # internal_list <- fill_in_asymptotics_interventional_probabilities( 
   # internal_list = internal_list )
+  
+  # CG 0.0.20 2023-03-23: include fill_in_jacobian_interventional_variances 
+  # function
+  internal_list <- fill_in_jacobian_interventional_variances(internal_list =
+                                                             internal_list)
+  
   internal_list <- 
     fill_in_asymptotics_interventional_variances( internal_list = 
                                                   internal_list )
@@ -212,8 +218,8 @@ intervention_effect <- function(model = NULL,
   # Implement this when calc_ase_density is done
   #internal_list <- calc_ase_density(internal_list = internal_list)
   
- internal_list <- fill_in_asymptotics_interventional_density( internal_list = 
-                                                              internal_list )
+ #internal_list <- fill_in_asymptotics_interventional_density( internal_list = 
+ #                                                              internal_list )
   
 
 
@@ -243,9 +249,9 @@ intervention_effect <- function(model = NULL,
        # intervention = "x2", 
        # intervention_level = 2)
 
-  internal_list <- 
-   fill_in_asymptotics_interventional_probabilities( internal_list = 
-                                                     internal_list )
+  # internal_list <- 
+  # fill_in_asymptotics_interventional_probabilities( internal_list = 
+  #                                                  internal_list )
   
   
 

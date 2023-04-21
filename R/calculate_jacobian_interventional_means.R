@@ -108,8 +108,7 @@ calculate_jacobian_interventional_means <-
     constant_matrices <- calculate_constant_matrices(
       model = model,
       intervention_names = intervention_names,
-      outcome_names = outcome_names,
-      verbose = verbose)
+      outcome_names = outcome_names)
     
     # Create identity matrix
     I_n <- diag(model$info_model$n_ov)

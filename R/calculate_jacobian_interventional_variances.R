@@ -22,9 +22,22 @@
 
 ## Function definition
 calculate_jacobian_interventional_variances <- function(
-  model, intervention_names, outcome_names, verbose
-  ) {
+    model = NULL, 
+    intervention_names = NULL, 
+    outcome_names = NULL, 
+    use_model_values = FALSE,
+    verbose = NULL){
 
+  ######## TODO: REMOVE DEBUG
+  # START DEBUG
+  
+  #model <- internal_list_no_outcome
+  #use_model_values <- FALSE
+  #intervention_names <- "x2" 
+  #outcome_names <- "y3"
+  
+  # END DEBUG
+  
   # function name
   fun_name <- "calculate_jacobian_interventional_variances"
 
@@ -33,6 +46,45 @@ calculate_jacobian_interventional_variances <- function(
 
   # function name+version
   fun_name_version <- paste0(fun_name, " (", fun_version, ")")
+  
+  # CG 0.0.3 2023-02-23: include check of user-specified arguments model
+  # get class of model object
+  model_class <- class(model)
+  
+  # set supported classes of model objects
+  supported_model_classes <- c( "causalSEM" )
+  
+  # check if argument model is supported
+  if(!any(model_class %in% supported_model_classes)) stop(
+    paste0(
+      fun.name.version, ": model of class ", model_class,
+      " not supported. Supported fit objects are: ",
+      paste(supported_model_classes, collapse = ", ")
+    )
+  )
+  
+  if(use_model_values == TRUE) {
+    
+    verbose <- model$control$verbose
+    intervention_names <- model$info_interventions$intervention_names
+    outcome_names <- model$info_interventions$outcome_names
+    constant_matrices <- model$constant_matrices
+    
+  } else {
+    
+    #TODO: include argument check
+    
+    verbose <- handle_verbose_argument(verbose)
+    intervention_names <- intervention_names
+    outcome_names <- outcome_names
+    
+    # # Calculate zero one matrices
+    constant_matrices <- calculate_constant_matrices(
+      model = model,
+      intervention_names = intervention_names,
+      outcome_names = outcome_names)
+    
+  }
 
   # console output
   if(verbose >= 2) cat(paste0( "start of function ", fun_name_version, " ",
@@ -47,14 +99,6 @@ calculate_jacobian_interventional_variances <- function(
   # Identity matrices
   I_n <- diag(n)
   I_n2 <- diag(n^2)
-
-  # # Calculate zero one matrices
-  constant_matrices <- calculate_constant_matrices(
-    model = model,
-    intervention_names = intervention_names,
-    outcome_names = outcome_names,
-    verbose = verbose
-  )
 
   # Selection
   ONE_I <- constant_matrices$select_intervention

@@ -14,13 +14,16 @@
 #' @description Calculate Covariance Matrix of the Interventional Distribution.
 #' (see, for example, Eq. 6b in Gische and Voelkle, 2022). The arguments of 
 #' the \code{\link{calculate_interventional_covariance_matrix}} function are 
-#' described in Definition 1 in Gische and Voelkle (2022).
+#' described in detail in Definition 1 in Gische and Voelkle (2022).
 #' @param C Numeric matrix of structural coefficients.
 #' @param Psi Numeric covariance matrix (Psi-matrix).
 #' @param x Numeric vector of interventional levels.
 #' @param SI Numeric selection matrix.
 #' @param n Integer number of observed variables.
 #' @param IN Numeric zero-one matrix.
+#' @param model Object of class \code{causalSEM}.
+#' @param use_model_values Logical value indicating if model values should be 
+#' used (TRUE) in calculation. Default: FALSE.
 #' @param verbose Integer number describing the verbosity of console output.
 #' Admissible values: 0: no output (default), 1: user messages, 
 #' 2: debugging-relevant messages.

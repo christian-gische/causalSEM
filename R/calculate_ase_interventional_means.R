@@ -30,8 +30,8 @@ calculate_ase_interventional_means <- function(model = NULL,
                                                x = NULL,
                                                intervention_names = NULL, 
                                                outcome_names = NULL,
-                                               verbose = NULL,
-                                               use_model_values = FALSE) {
+                                               use_model_values = FALSE,
+                                               verbose = NULL) {
 
   # function name
   fun_name <- "calculate_ase_interventional_means"
@@ -57,15 +57,6 @@ calculate_ase_interventional_means <- function(model = NULL,
       paste(supported_model_classes, collapse = ", ")
     )
   )
-
-  # get verbose argument
-  verbose <- model$control$verbose
-
-  # console output
-  if (verbose >= 2) {
-    cat(paste0("start of function ", fun_name_version, " ", Sys.time(), "\n"))
-  }
-
   
   # CURRENTLY, the function assumes that the input model is
   # of type internal_list. After allowing for objects of class causalSEM
@@ -74,6 +65,9 @@ calculate_ase_interventional_means <- function(model = NULL,
   # check if model values of should be used; if not, use user specified 
   # arguments (after checking if they are admissible)
   if(use_model_values == TRUE) {
+    
+    # get verbose argument
+    verbose <- model$control$verbose
     
     # assign values from the model objects to function arguments 
     x_values <- model$info_interventions$intervention_levels
@@ -92,6 +86,8 @@ calculate_ase_interventional_means <- function(model = NULL,
       jac_g1 <- model$interventional_distribution$means$jacobian
       
   } else {
+    
+    verbose <- handle_verbose_argument(verbose)
     
     # get variable names of interventional variables
     # TODO: Rethink setting a default here
@@ -127,7 +123,7 @@ calculate_ase_interventional_means <- function(model = NULL,
     n <- model$info_model$n_ov
     n_unique <- model$info_model$param$n_par_unique
     
-    # get intervential means
+    # get interventional means
     # TODO: assign E by calling the function calculate_interventional_means
     gamma_1 <- model$interventional_distribution$means$values
     
@@ -140,6 +136,11 @@ calculate_ase_interventional_means <- function(model = NULL,
       verbose = verbose
     )
     
+  }
+  
+  # console output
+  if (verbose >= 2) {
+    cat(paste0("start of function ", fun_name_version, " ", Sys.time(), "\n"))
   }
 
   # get AV of parameter vector

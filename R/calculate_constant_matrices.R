@@ -1,4 +1,8 @@
 ## Changelog:
+# CG 0.0.6 2023-04-21: change _labels to _names
+#                      change check of argument outcome_names 
+#                      remove argument verbose (since model is a mandatory 
+#                      argument)
 # CG 0.0.5 2023-02-23: include argument use_model_values and change 
 #                       checks of user-specified arguments accordingly
 # CG 0.0.4 2023-02-20: changes to preamble to print documentation
@@ -21,7 +25,6 @@
 #' @param model Object of class \code{causalSEM}.
 #' @param intervention_names Names of interventional variables.
 #' @param outcome_names Names of outcome variables.
-#' @param verbose Verbosity of console output.
 #' @return List with several zero-one matrices:
 #' \tabular{lll}{
 #' \tab   \code{$select_intervention} \tab   \cr
@@ -45,7 +48,6 @@
 calculate_constant_matrices <- function(model = NULL,
                                         intervention_names = NULL,
                                         outcome_names = NULL,
-                                        verbose = NULL,
                                         use_model_values = FALSE){
 
   # function name
@@ -57,12 +59,6 @@ calculate_constant_matrices <- function(model = NULL,
   # function name+version
   fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
 
-  # get verbose argument
-  verbose <- handle_verbose_argument(verbose)
-
-  # console output
-  if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ",
-                                  Sys.time(), "\n" ) )
   
   # CG 0.0.5 2023-02-23: include argument use_model_values and change 
   #                      checks of user-specified arguments accordingly
@@ -82,15 +78,23 @@ calculate_constant_matrices <- function(model = NULL,
     )
   )
   
+  # get verbose argument
+  verbose <- model$control$verbose
+  
+  # console output
+  if( verbose >= 2 ) cat( paste0( "start of function ", fun.name.version, " ",
+                                  Sys.time(), "\n" ) )
+  
   # CG 0.0.5 2023-02-23: include argument use_model_values and change 
   #                      checks of user-specified arguments accordingly
   
   # check if model values of should be used; if not, use user specified 
   # arguments (after checking if they are admissible)
   if(use_model_values == TRUE) {
-    intervention_labels <- model$info_interventions$intervention_names
-    outcome_labels <- model$info_interventions$outcome_names
-    verbose <- model$control$verbose
+    
+    intervention_names <- model$info_interventions$intervention_names
+    outcome_names <- model$info_interventions$outcome_names
+  
   } else {
   
   # CG 0.0.5 2023-02-23: include argument use_model_values and change 
@@ -100,14 +104,14 @@ calculate_constant_matrices <- function(model = NULL,
   if( is.character( intervention_names ) && 
       all( intervention_names %in% model$info_model$var_names )){
     # set intervention_names
-    intervention_labels <- intervention_names
-  } else if ( is.null( intervention_names ) ){
-    intervention_labels <- model$info_interventions$intervention_names
+    intervention_names <- intervention_names
+    
   } else {
     stop( paste0( fun.name.version, ": Argument intervention_names needs to be 
     a character vector of variable names." ))
   }
-    
+  
+  # CG 0.0.6 2023-04-21: 
   #TODO: 
   # 1) set use_model_values = TRUE/FALSE in all calls of the
   # compute_constant_matrices function
@@ -118,31 +122,42 @@ calculate_constant_matrices <- function(model = NULL,
   #                      checks of user-specified arguments accordingly
     
   # get outcome_names and check if admissible
-  if( is.character( outcome_names ) && 
-      all( outcome_names %in% model$info_model$var_names))
-    {
+  #if( is.character( outcome_names ) && 
+  #    all( outcome_names %in% model$info_model$var_names))
+  #  {
     # set in internal_list
-    outcome_labels <- outcome_names
-  } else if ( is.null( outcome_names ) ){
-    outcome_labels <- model$info_interventions$outcome_names
-  } else {
-    stop( paste0( fun.name.version, ": Argument outcome needs to be a character 
-    vector of variable names of variables that are not subject to intervention."
-                  ))
-  }
-  }
+  #  outcome_names <- outcome_names
+  #} else if ( is.null( outcome_names ) ){
+  #  outcome_names <- model$info_interventions$outcome_names
+  #} else {
+  #  stop( paste0( fun.name.version, ": Argument outcome needs to be a character 
+  #  vector of variable names of variables that are not subject to intervention."
+  #                ))
+  #}
+  #}
+    
+    if( is.character( outcome ) &&
+        all( outcome %in% 
+             setdiff(internal_list$info_model$var_names, 
+                     internal_list$info_interventions$intervention_names) ) ){
+      # set in internal_list
+      internal_list$info_interventions$outcome_names <- outcome
+    } else {
+      stop( paste0( fun.name.version, ": setting outcome_names in internal list failed. Argument outcome needs to be a vector of names of NON-INTERVENTIONAL variables."))
+    }
+    }
 
   # number of interventions
-  n_int <- length(intervention_labels)
+  n_int <- length(intervention_names)
 
   # number of outcome variables
-  n_out <- length(outcome_labels)
+  n_out <- length(outcome_names)
 
   # set of interventional indeces
   intervention_index <- numeric(n_int)
   for (i in 1:n_int){
     intervention_index[i] <- 
-      which(intervention_labels[i] == model$info_model$var_names)
+      which(intervention_names[i] == model$info_model$var_names)
   }
 
   # set of non-interventional indeces
@@ -171,7 +186,7 @@ calculate_constant_matrices <- function(model = NULL,
   # set of outcome indeces
   outcome_index <- numeric(n_out)
   for (i in 1:n_out){
-    outcome_index[i] <- which(outcome_labels[i] == model$info_model$var_names)
+    outcome_index[i] <- which(outcome_names[i] == model$info_model$var_names)
   }
 
   # selection matrix for outcome variables

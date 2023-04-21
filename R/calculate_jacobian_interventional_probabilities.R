@@ -34,9 +34,14 @@
 # or change the code to provide full flexibility (see TODOS below)
 
 # CG 0.0.5 2022-03-09:  set default values 
-calculate_jacobian_interventional_probabilities <- function(
-  model, x = NULL, intervention_names = NULL, outcome_names = NULL, 
-  lower_bounds = NULL, upper_bounds = NULL, verbose = NULL ){
+calculate_jacobian_interventional_probabilities <- 
+  function(model = NULL,
+           x = NULL,
+           intervention_names = NULL,
+           outcome_names = NULL,
+           lower_bounds = NULL,
+           upper_bounds = NULL,
+           verbose = NULL ){
   
   # Verbosity and bug tracking ----
 
@@ -245,9 +250,7 @@ calculate_jacobian_interventional_probabilities <- function(
   constant_matrices <- calculate_constant_matrices(
     model = model,
     intervention_names = intervention_names,
-    outcome_names = outcome_names,
-    verbose = verbose
-  )
+    outcome_names = outcome_names)
 
   # Identity matrices
   I_n <- diag(n)

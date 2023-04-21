@@ -1,4 +1,5 @@
 ## Changelog:
+# CG 0.0.8 2023-04-19: include var_names argument
 # CG 0.0.7 2023-04-19: allow for arguments model and use_model_values
 #                      include if statements to check which arguments to use
 #                      check if argument model is of admissible class
@@ -21,6 +22,10 @@
 #' @param sd Numeric vector of standard deviations.
 #' @param y_low Numeric vector of lower bounds.
 #' @param y_up Numeric vector of upper bounds.
+#' @param var_names Character vector of variable names.
+#' @param model Object of class \code{causalSEM}.
+#' @param use_model_values Logical value indicating if model values should be 
+#' used (TRUE) in calculation. Default: FALSE.
 #' @param verbose Integer number setting verbosity of console outputs.
 #' @return List of numeric vectors of probabilities interventional events.
 #' @references Gische, C., Voelkle, M.C. (2022) Beyond the Mean: A Flexible 
@@ -33,6 +38,7 @@ calculate_interventional_probabilities <- function(mean = NULL,
                                                    sd = NULL,
                                                    y_low = NULL,
                                                    y_up = NULL,
+                                                   var_names = NULL,
                                                    model = NULL,
                                                    use_model_values = FALSE,
                                                    verbose = NULL){
@@ -91,27 +97,31 @@ calculate_interventional_probabilities <- function(mean = NULL,
 	    outcomes <- model$info_interventions$outcome_names
 	    means <- E[outcomes, 1]
 	    sds <- sds[outcomes]
+	    var_names <- outcomes
 	    }
 	  } else if (use_model_values == FALSE) {
 	  
 	  # TODO: include argument check for mean and sd and maybe elaborate 
 	  # argument check for y_low and y_up
+	  # TODO: include var_names also in the check
 	  
 	  verbose <- handle_verbose_argument(verbose)
 	  
 	  # CG 0.0.6 2022-03-08: argument check for upper and lower bound
 	  
-	  if( length(y_low) == length(y_up) && length(y_low) == length(sd) ){
+	  if( length(y_low) == length(y_up) && length(y_low) == length(sd) &&
+	      length(y_low) == length(mean) ){
 	    
 	    y_low <- y_low
 	    y_up <- y_up
 	    mean <- mean
 	    sd <- sd 
+	    var_names <- var_names
 	    
 	    } else {
 	    stop( paste0( fun.name.version, ": calculation of interventional 
-	  probabilities failed. Arguments y_low, y_up, sd, and mean need to be of 
-	  same length.") )
+	  probabilities failed. Arguments y_low, y_up, sd, mean and var_names need to 
+	  be of same length.") )
 	  } 
 	  
 	}
@@ -126,7 +136,7 @@ calculate_interventional_probabilities <- function(mean = NULL,
 	      stats::pnorm( ( y_low - mean ) / sd ) }, 
 	    mean, sd, y_low, y_up, SIMPLIFY = TRUE )
 	   
-	  
+	  # TODO: assign var_names to output
 	# return p
 	return( p )
 	

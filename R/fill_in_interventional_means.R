@@ -28,7 +28,7 @@ fill_in_interventional_means <- function(internal_list = NULL){
 	fun.name <- "fill_in_interventional_means"
 
 	# function version
-	fun.version <- "0.0.3 2023-02-28"
+	fun.version <- "0.0.4 2023-04-19"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )

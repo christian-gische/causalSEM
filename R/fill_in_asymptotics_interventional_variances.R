@@ -35,34 +35,37 @@ fill_in_asymptotics_interventional_variances <- function(internal_list){
 
   # function name+version
   fun_name_version <- paste0(fun_name, " (", fun_version, ")")
+  
+  # check function arguments 
+  ## get class of model object
+  model_class <- class(internal_list)
+  
+  ## set supported classes of model objects
+  supported_model_classes <- c( "causalSEM" )
+  
+  ## check if argument model is supported
+  if(!any(model_class %in% supported_model_classes)) stop(
+    paste0(
+      fun.name.version, ": model of class ", model_class,
+      " not supported. Supported fit objects are: ",
+      paste(supported_model_classes, collapse = ", ")
+    )
+  )
 
   # get verbose argument
   verbose <- internal_list$control$verbose
+  
+  
 
   # console output
   if(verbose >= 2) cat(paste0( "start of function ", fun_name_version, " ",
                                Sys.time(), "\n" ))
 
-  # calculate jacobian
-  jacobian <- calculate_jacobian_interventional_variances(
-    model = internal_list,
-    intervention_names = internal_list$info_interventions$intervention_names,
-    outcome_names = internal_list$info_interventions$outcome_names,
-    verbose = verbose
-  )
-
-  # calculate asym
-  ase <- calculate_ase_interventional_variances(
-    model = internal_list,
-    x = internal_list$info_interventions$intervention_levels,
-    intervention_names = internal_list$info_interventions$intervention_names,
-    outcome_names = internal_list$info_interventions$outcome_names,
-    verbose = verbose
-  )
+  # calculate asymptotics 
+  ase <- calculate_ase_interventional_variances(model = internal_list,
+                                                use_model_values = TRUE)
 
   # fill in slots of ...$interventional_distribution
-  internal_list$interventional_distribution$covariance_matrix$jacobian <-
-    jacobian
   internal_list$interventional_distribution$covariance_matrix$acov <- 
     ase$acov_gamma_2
   internal_list$interventional_distribution$covariance_matrix$ase <- 

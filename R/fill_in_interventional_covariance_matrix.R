@@ -29,7 +29,7 @@ fill_in_interventional_covariance_matrix <- function(internal_list = NULL){
 	fun.name <- "fill_in_interventional_covariance_matrix"
 
 	# function version
-	fun.version <- "0.0.4 2023-02-28"
+	fun.version <- "0.0.5 2023-04-19"
 
 	# function name+version
 	fun.name.version <- paste0( fun.name, " (", fun.version, ")" )
